@@ -6,11 +6,11 @@
 #    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/01/18 20:41:37 by aarnell          ###   ########.fr        #
+#    Updated: 2022/01/18 22:36:18 by aarnell          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =	minishell
+#NAME =	minishell
 SRC_DIR = ./src/
 
 
