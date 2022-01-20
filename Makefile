@@ -6,21 +6,17 @@
 #    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/01/18 22:42:28 by cnorma           ###   ########.fr        #
+#    Updated: 2022/01/20 22:38:01 by cnorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =	minishell2
+NAME =	minishell
 
 SRC_DIR = ./src/
-
-
 
 SRC_FILES =	main.c
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
-
-
 
 OBJ_DIR = ./obj/
 
