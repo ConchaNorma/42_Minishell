@@ -6,7 +6,7 @@
 #    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/01/20 22:38:01 by cnorma           ###   ########.fr        #
+#    Updated: 2022/01/20 23:04:54 by cnorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ OBJ_DIR = ./obj/
 
 OBJ = $(patsubst $(SRC_DIR)%, $(OBJ_DIR)%, $(SRC:.c=.o))
 
-HEADER = philo.h
+HEADER = inc/minishell.h
 
 CC = gcc
 
