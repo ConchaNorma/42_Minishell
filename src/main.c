@@ -6,14 +6,16 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/20 22:54:57 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/01/20 23:06:09 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 int	check_arg(int argc, char **arg)
 {
+	(void)arg;
+
 	if (argc < 1)
 		return (-1);
 	return (0);
