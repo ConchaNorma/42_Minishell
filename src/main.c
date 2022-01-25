@@ -3,30 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/24 21:43:36 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/01/25 22:43:16 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "minishell.h"
 
-int	check_arg(int argc, char **arg)
-{
-	(void)arg;
-	if (argc < 1)
-		return (-1);
-	return (0);
-}
-
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
-	if (check_arg(argc, argv) != 0)
+	(void)envp;
+
+	if (argc != 1)
 		return (printf("Wrong arguments\n"));
-	printf("%s\n", readline("minishell$ " ));
-	while (1)
-		;
+
+	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
+	while(1)
+	{
+		printf("minishell>$ ");
+		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
+
+		//Здесь будет парсер
+		parcer();	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+
+		//Здесь будет экзекютер
+		executer();	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+
+		break ; //Убрать, когда будет написан код, слушающий ввод строки
+	}
+	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	return (0);
 }

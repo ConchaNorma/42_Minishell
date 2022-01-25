@@ -3,48 +3,49 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
+#    By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/01/24 21:23:06 by cnorma           ###   ########.fr        #
+#    Updated: 2022/01/25 22:45:19 by aarnell          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =	minishell
+NAME 		=	minishell
 
-SRC_DIR = ./src/
+SRC_DIR		=	./src/
 
-SRC_FILES =	main.c
+SRC_FILES	=	main.c		parcer.c	executer.c	\
 
-SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
-OBJ_DIR = ./obj/
+SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 
-OBJ = $(patsubst $(SRC_DIR)%, $(OBJ_DIR)%, $(SRC:.c=.o))
+OBJ_DIR		=	./obj/
 
-HEADER = inc/minishell.h
+OBJ			=	$(patsubst $(SRC_DIR)%, $(OBJ_DIR)%, $(SRC:.c=.o))
 
-CC = gcc
+HEADER		=	inc/minishell.h
 
-FLAGS = -Wall -Wextra -Werror -g
+CC			=	gcc
 
-.PHONY: all re clean fclean
+FLAGS		=	-Wall -Wextra -Werror -g
 
-all : $(OBJ_DIR) $(NAME)
+.PHONY:			all re clean fclean
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
-	$(CC) $(FLAGS) -c $< -o $@ -I $(HEADER)
+all:			$(OBJ_DIR) $(NAME)
 
-$(NAME): $(OBJ) $(HEADER)
-	$(CC) $(FLAGS) $(OBJ) -lreadline -o $(NAME)
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADER)
+				$(CC) $(FLAGS) -c $< -o $@ -I inc/
+
+$(NAME):		$(OBJ) $(HEADER)
+				$(CC) $(FLAGS) $(OBJ) -lreadline -o $(NAME)
 
 $(OBJ_DIR):
-	@mkdir -p $@
+				@mkdir -p $@
 
 clean:
-	@rm -rf $(OBJ) $(OBJ_DIR)
+				@rm -rf $(OBJ) $(OBJ_DIR)
 
-fclean: clean
-	@rm -f $(NAME)
+fclean:			clean
+				@rm -f $(NAME)
 
-re: fclean all
+re:				fclean all

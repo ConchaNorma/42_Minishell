@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/25 22:43:48 by aarnell          ###   ########.fr       */
+/*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
+/*   Updated: 2022/01/23 19:57:38 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-// Здесь будут структуры переменных для создания списков и деревьев
-
-int parcer(void);
-int executer(void);
-
-#endif
+int executer(void)
+{
+	return (0);
+}
