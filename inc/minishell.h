@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/29 15:34:58 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/01/29 15:55:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ typedef enum e_tkn{
 	REDIR_IN,
 	REDIR_OUT,
 	APPEND,
-	HIREDOC
+	HEREDOC,
+	FILE,
+	WORD
 }	t_tkn;
+
+
 
 int parcer(void);
 int executer(void);
