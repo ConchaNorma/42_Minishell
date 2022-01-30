@@ -53,3 +53,6 @@ dkms.conf
 
 # Exe-file
 minishell
+
+# My-directory
+test/*
