@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **env)
 {
 	(void)argv;
-	(void)envp;
+	(void)env;
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
@@ -27,6 +27,8 @@ int	main(int argc, char **argv, char **envp)
 		readline("minishell>$ ");
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
 
+		//Здесь будет препарсер
+		preparcer();
 		//Здесь будет парсер
 		parcer();	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 
