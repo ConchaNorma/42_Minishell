@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/25 22:43:16 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/01/31 20:57:59 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	char *str;
 
-	str = NULL;
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 
@@ -27,10 +26,11 @@ int	main(int argc, char **argv, char **envp)
 	{
 		//printf("minishell>$ ");
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
+		str = NULL;
 		str = readline("minishell>$ ");
 		//Здесь будет парсер
 		parser(str);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-
+		free(str);
 		//Здесь будет экзекютер
 		executer();	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 
