@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 22:19:38 by aarnell           #+#    #+#             */
-/*   Updated: 2021/08/31 22:19:39 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/01/31 22:57:55 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,8 @@ char	**ft_split(char const *s, char c)
 {
 	char	**str;
 	int		size;
-	int		i;
-	int		n;
 
 	size = 0;
-	i = 0;
-	n = 0;
 	if (!s)
 		return (0);
 	size = ft_cntsz(s, c);

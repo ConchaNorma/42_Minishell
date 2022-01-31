@@ -3,12 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/01/25 22:45:19 by aarnell          ###   ########.fr        #
+#    Updated: 2022/01/31 22:47:27 by aarnell          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+SRC_LIB		=	./libft
+LIBFT		=	libft.a
 
 NAME 		=	minishell
 
@@ -29,7 +32,6 @@ CC			=	gcc
 
 FLAGS		=	-Wall -Wextra -Werror -g
 
-.PHONY:			all re clean fclean
 
 all:			$(OBJ_DIR) $(NAME)
 
@@ -37,15 +39,19 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADER)
 				$(CC) $(FLAGS) -c $< -o $@ -I inc/
 
 $(NAME):		$(OBJ) $(HEADER)
-				$(CC) $(FLAGS) $(OBJ) -lreadline -o $(NAME)
+				$(MAKE) -C $(SRC_LIB)
+				$(CC) $(FLAGS) $(OBJ) $(SRC_LIB)/$(LIBFT) -lreadline -o $(NAME)
 
 $(OBJ_DIR):
 				@mkdir -p $@
 
 clean:
+				$(MAKE) clean -C $(SRC_LIB)
 				@rm -rf $(OBJ) $(OBJ_DIR)
 
 fclean:			clean
-				@rm -f $(NAME)
+				@rm -f $(NAME) $(SRC_LIB)/$(LIBFT)
 
 re:				fclean all
+
+.PHONY:			all re clean fclean

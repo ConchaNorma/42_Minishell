@@ -25,8 +25,8 @@ OBJS	=	$(SRS:.c=.o)
 
 all : 		$(NAME)
 
-%.o :		%.c
-			gcc $(FLAGS) -c $< -o $@ -I $(HD)
+%.o :		%.c $(HD)
+			gcc $(FLAGS) -c $< -o $@
 
 $(NAME)	: 	$(OBJS) $(HD)
 			ar rc $(NAME) $?
