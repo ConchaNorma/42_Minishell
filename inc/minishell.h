@@ -28,13 +28,13 @@ typedef enum e_tkn{
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,
-	FILE,
+	FILE_,
 	WORD
 }	t_tkn;
 
 
 
-int parcer(void);
+int parser(void);
 int executer(void);
 
 #endif

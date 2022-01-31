@@ -14,7 +14,7 @@ NAME 		=	minishell
 
 SRC_DIR		=	./src/
 
-SRC_FILES	=	main.c		parcer.c	executer.c	\
+SRC_FILES	=	main.c		parser.c	executer.c	\
 
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
