@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/27 21:28:49 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/02 21:55:12 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	(void)envp;
+	char *str;
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
@@ -23,13 +24,13 @@ int	main(int argc, char **argv, char **envp)
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
 	while(1)
 	{
-		//printf("minishell>$ \n");
-		readline("minishell>$ ");
+		//printf("minishell>$ ");
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
-
+		str = NULL;
+		str = readline("minishell>$ ");
 		//Здесь будет парсер
-		parcer();	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-
+		parser(str);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		free(str);
 		//Здесь будет экзекютер
 		executer();	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/29 15:55:09 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/01/31 22:48:52 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "../libft/libft.h"
 
 // Здесь будут структуры переменных для создания списков и деревьев
 typedef enum e_tkn{
@@ -28,13 +29,13 @@ typedef enum e_tkn{
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,
-	FILE,
+	FILE_,
 	WORD
 }	t_tkn;
 
 
 
-int parcer(void);
+int parser(char *str);
 int executer(void);
 
 #endif
