@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+         #
+#    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/01/31 22:47:27 by aarnell          ###   ########.fr        #
+#    Updated: 2022/02/03 21:01:02 by cnorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADER)
 				$(CC) $(FLAGS) -c $< -o $@ -I inc/
 
 $(NAME):		$(OBJ) $(HEADER)
-				$(MAKE) -C $(SRC_LIB)
+				@$(MAKE) -C $(SRC_LIB)
 				$(CC) $(FLAGS) $(OBJ) $(SRC_LIB)/$(LIBFT) -lreadline -o $(NAME)
 
 $(OBJ_DIR):

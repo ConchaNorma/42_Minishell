@@ -3,25 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/01/31 22:48:21 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/03 22:09:41 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_squote(char *str, int i)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+	char	*tmp4;
+
+	j = i;
+	while (str[++i])
+	{
+		if (str[i] == '\'')
+			break ;
+	}
+	tmp = ft_substr(str, 0, j);
+	//printf("tmp= %s\n", tmp);
+	tmp2 = ft_substr(str, j + 1, i - j - 1);
+	//printf("tmp2= %s\n", tmp2);
+	tmp3 = ft_substr(str, i + 1, ft_strlen(str) - i);
+	//printf("tmp3= %s\n", tmp3);
+	tmp4 = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	//printf("tmp4= %s\n", tmp4);
+	return (tmp4);
+}
 
 int parser(char *str)
 {
 	int i;
 
 	i = -1;
-
 	while (str[++i])
 	{
 		if (str[i] == '\'')
-			continue ;
+			str = ft_squote(str, i);
 		if (str[i] == '"')
 			continue ;
 		if (str[i] == ' ')
@@ -32,7 +56,10 @@ int parser(char *str)
 			continue ;
 		if (str[i] == '<')
 			continue ;
+		if (str[i] == '$')
+			continue ;
 	}
+	printf("str_res= %s\n", str);
 	return (0);
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
 	//склеить по переносу "\"
