@@ -12,13 +12,34 @@
 
 #include "minishell.h"
 
+char	*ft_dquote(char *str, int i)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+
+	j = i;
+	while (str[++i])
+	{
+		if (str[i] == '\"')
+			break ;
+	}
+	tmp = ft_substr(str, 0, j);
+	tmp2 = ft_substr(str, j + 1, i - j - 1);
+	tmp3 = ft_substr(str, i + 1, ft_strlen(str) - i);
+	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	free (tmp2);
+	free (tmp3);
+	return (tmp);
+}
+
 char	*ft_squote(char *str, int i)
 {
 	int		j;
 	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
-	char	*tmp4;
 
 	j = i;
 	while (str[++i])
@@ -27,14 +48,10 @@ char	*ft_squote(char *str, int i)
 			break ;
 	}
 	tmp = ft_substr(str, 0, j);
-	//printf("tmp= %s\n", tmp);
 	tmp2 = ft_substr(str, j + 1, i - j - 1);
-	//printf("tmp2= %s\n", tmp2);
 	tmp3 = ft_substr(str, i + 1, ft_strlen(str) - i);
-	//printf("tmp3= %s\n", tmp3);
-	tmp4 = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
-	//printf("tmp4= %s\n", tmp4);
-	return (tmp4);
+	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	return (tmp);
 }
 
 int parser(char *str)
@@ -46,8 +63,8 @@ int parser(char *str)
 	{
 		if (str[i] == '\'')
 			str = ft_squote(str, i);
-		if (str[i] == '"')
-			continue ;
+		if (str[i] == '\"')
+			str = ft_dquote(str, i);
 		if (str[i] == ' ')
 			continue ;
 		if (str[i] == '|')
