@@ -26,10 +26,10 @@ OBJS	=	$(SRS:.c=.o)
 all : 		$(NAME)
 
 %.o :		%.c $(HD)
-			gcc $(FLAGS) -c $< -o $@
+			@gcc $(FLAGS) -c $< -o $@
 
 $(NAME)	: 	$(OBJS) $(HD)
-			ar rc $(NAME) $?
+			@ar rc $(NAME) $?
 			ranlib $(NAME)
 
 clean :
