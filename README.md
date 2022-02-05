@@ -18,9 +18,9 @@ readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_h
 2. Redirections
 
 * < should redirect input
-* > should redirect output
+* \> should redirect output
 * << read input from the current source until a line containing only the delimiter is even.
-* >> should redirect output in append mode.
+* \>> should redirect output in append mode.
 
 3. Pipes
 
@@ -59,25 +59,25 @@ cd can be used with these characters and the sequence matters.
 
 ### " ~ " can only be entered as the first argument to cd
 
-cd ~ (this is okay)
-cd ./~ (this won't work)
+cd ~ (this is okay)\
+cd ./~ (this won't work)\
 cd dir/~ (this won't work)
 
 ### " / " it can be used as a separator between folders.
 
-cd srcs/ (this is okay)
-cd ../ (this is okay)
+cd srcs/ (this is okay)\
+cd ../ (this is okay)\
 cd /srcs (this won't work)
 
 Functions required to write cd function
 
-getcwd - Get the current path\n
+getcwd - Get the current path\
 chrdir - if you put a path in chdir, it moves to that path
 
 ## Handling Quotes
 Constraint as discussed over quote handling
 
-' inhibit all interpretation of the following sequence of characters.
+' inhibit all interpretation of the following sequence of characters.\
 " inhibit all interpretation of the following sequence of characters expect for $
 
 ### Understanding Quotes and how they behave
@@ -192,3 +192,80 @@ Invalid quote handling includes:
 ## Relative Path
 * Repeat with multiple directories with complex relative paths
 * Set $PATH to a multiple directory value(dir1:dir2) and check those directories in left to right order.
+
+# The Parsing Process
+Let's try to put a mental model of how the entire command line string needs to be parsed and what are the various modules we might require along the way.
+
+* Scanner -> Parser -> Executer -> Command
+* Token_list -> Abstract Syntax Tree -> Convert to Execution Unit -> Execute-Execute
+
+## The Tentative Process:
+
+1. Get the whole string until new line using read_line library.
+2. Search the string from index 0 until '\0' for ('')
+3. Divide string in tokens based on whitespace
+* it can be any amount of whitespaces, abcd efgh or abcd efgh; They should both make two tokens.
+* whitespace cannot be included in token characters except when there are double or single quotes. ** "hello world" is one token hello world ** "" hello world "" is two tokens hello and world; and the empty string before and after hello world will not be tokenized. ** "'hello world'" -- A single quote inside a double quote will be included in the token, so the result will be one token called 'hello world'; All the above rules apply to single quotes as well.
+4. After dividing the tokens, if there is a token with a $ sign, whatever comes after the $ sign is compared with the list of all the env variables available and replaced with the value of the said variable. ** Important sub-point - In case of a string in single quote, even if there is a $ sign, it is not replaced with the value of the said env variable.
+5. Environment variables are received using envp parameter from the main function and stored in a key value structure t_env and put in a linked list.
+
+## Converting stuff into an Abstract Syntax Tree.
+
+1. A scanner will scan through the string and make a list of tokens based on the rules, we listed above.
+2. A parser takes that list of tokens verifies the syntax (represents an error if there is a syntax error), and converts it into a tree structure.
+
+Lets try to build the schematics top down:
+
+----- Command line -----\
+Job ; command line ; job \
+(Identify command line (unparsed line) as either a formed job or a combination of jobs and unparsed command_lines)
+
+----- Job ------\
+Command | job ; command \
+(Identify a job as a command or another job in a list)
+
+---------- Command ----\
+simple_command redirection list simple_command\
+(Identify a command as either a simple command or a redirection list )
+
+---------- Redirection List ---- \
+redirection redirection_list
+
+----------- Redirection ------\
+filename < filename >> filename
+
+---------- Simple_Command -------\
+pathname token_list
+
+----------- Token_List --------\
+token token_list
+
+For example: 
+cat > a > b < c should end up as:
+
+<img width="768" alt="Screen Shot 2022-02-05 at 12 59 33 PM" src="https://user-images.githubusercontent.com/86560809/152637094-f5750424-89f3-4994-b046-c5d958f8aef6.png">\
+
+<img width="763" alt="Screen Shot 2022-02-05 at 1 01 10 PM" src="https://user-images.githubusercontent.com/86560809/152637133-7a4ad291-2dc1-46b1-8d03-b055bbbbbb9c.png">\
+
+<img width="764" alt="Screen Shot 2022-02-05 at 1 01 43 PM" src="https://user-images.githubusercontent.com/86560809/152637167-ac18b4cf-0076-48f8-8f85-b576aa998034.png">\
+
+The tree could finally evaluate to Abstract Tree
+
+<img width="763" alt="Screen Shot 2022-02-05 at 1 02 53 PM" src="https://user-images.githubusercontent.com/86560809/152637199-a5af7fc1-5a75-4f2a-ae67-a1f38a4953d8.png">\
+
+## Let's breakdown the logic of the above command tree:
+
+We identify command as one of two structures:
+
+1. Simple_command and redirection_list structures
+2. Simple_command structure.
+
+3. In case of simple command
+
+First we check if it is simple_command\
+** We check the token_list with pathnames \
+** If it just one token we check once but it is a list we check each one.
+
+1. In case of redirection list\
+** We check if it just one redirection or a list. \
+** We attach one case ( <, >, <<, >>) and attach the filename information, create a node and add it to the list.\
