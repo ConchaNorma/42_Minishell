@@ -6,11 +6,11 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/03 22:09:41 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/05 13:50:13 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 char	*ft_dquote(char *str, int i)
 {

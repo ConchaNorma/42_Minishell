@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/01/31 22:48:52 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/04 22:20:20 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,22 @@ typedef enum e_tkn{
 	WORD
 }	t_tkn;
 
+typedef enum e_rtp{
+	OUT,
+	INP,
+	APN,
+	HRD
+}	t_rtp;
 
+typedef struct s_redir{
+	t_rtp	type;
+	int		fd;
+}	t_redir;
+
+typedef struct s_cmd{
+	t_redir	*v_rdr;
+	char	*cmd;
+}	t_cmd;
 
 int parser(char *str);
 int executer(void);
