@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/05 18:49:26 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/05 21:16:14 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,55 +94,98 @@ char	*ft_squote(char *str, int i)
 //	return (pipes);
 //}
 
-t_pipeline **ft_split_pipes(char *str)
+
+static void	ft_split_pipes_sup(t_pipeline	**pipes, char **tmp)
 {
-	t_pipeline	**pipes2;
-	char	**pipes;
 	int		len;
 	int		start;
 	int		i;
-	int		ii;
-	int		j;
-	int		a;
+
+	i = -1;
+	len = 0;
+	start = 0;
+	i = -1;
+	while (tmp[++i])
+	{
+		start = 0;
+		pipes[i] = (t_pipeline *)malloc(sizeof(t_pipeline));
+		len = ft_strlen(tmp[i]);
+		while (tmp[i][start] == ' ')
+			start++;
+		while (tmp[i][len - 1] == ' ')
+			len--;
+		pipes[i]->str = ft_substr(tmp[i], start, len - start);
+	}
+}
+
+t_pipeline **ft_split_pipes(char *str)
+{
+	t_pipeline	**pipes;
+	char	**tmp;
+	int		i;
 	int		pipe_count;
 
 	i = -1;
-	ii = -1;
-	j = -1;
-	a = 0;
+	pipe_count = 1;
+	while (str[++i])
+		if (str[i] == '|')
+			pipe_count++;
+	tmp = (char **)malloc(pipe_count * sizeof(char));
+	tmp = ft_split(str, '|');
+	pipes = (t_pipeline **)malloc((pipe_count + 1) * sizeof(t_pipeline *));
+	pipes[pipe_count] = NULL;
+	ft_split_pipes_sup(pipes, tmp);
+	i = -1;
+	while (tmp[++i])
+		free (tmp[i]);
+	free (tmp);
+	i = -1;
+	while (pipes[++i])
+		printf("pipe[%d]= %s\n", i, pipes[i]->str);
+	return (pipes);
+}
+
+/*
+t_pipeline **ft_split_pipes(char *str)
+{
+	t_pipeline	**pipes;
+	char	**tmp;
+	int		len;
+	int		start;
+	int		i;
+	int		pipe_count;
+
+	i = -1;
 	len = 0;
 	start = 0;
 	pipe_count = 1;
 	while (str[++i])
 		if (str[i] == '|')
 			pipe_count++;
-	pipes = (char **)malloc(pipe_count * sizeof(char));
-	pipes2 = (t_pipeline **)malloc((pipe_count + 1) * sizeof(t_pipeline *));
-	pipes2[pipe_count + 1] = NULL;
-	pipes = ft_split(str, '|');
-	j = -1;
-	while (pipes[++j])
-		printf("pipe[%d]= %s\n", j, pipes[j]);
+	tmp = (char **)malloc(pipe_count * sizeof(char));
+	tmp = ft_split(str, '|');
+	pipes = (t_pipeline **)malloc((pipe_count + 1) * sizeof(t_pipeline *));
+	pipes[pipe_count] = NULL;
 	i = -1;
-	while (pipes[++i])
+	while (tmp[++i])
 	{
 		start = 0;
-		pipes2[i] = (t_pipeline *)malloc(sizeof(t_pipeline));
-		j = -1;
-		len = ft_strlen(pipes[i]);
-		while (pipes[i][++j] == ' ')
+		pipes[i] = (t_pipeline *)malloc(sizeof(t_pipeline));
+		len = ft_strlen(tmp[i]);
+		while (tmp[i][start] == ' ')
 			start++;
-		while (pipes[i][len - 1] == ' ')
+		while (tmp[i][len - 1] == ' ')
 			len--;
-		pipes2[i]->str = ft_substr(pipes[i], start, len - start);
-		printf("pipe[%d]= %s\n", i, pipes2[i]->str);
+		pipes[i]->str = ft_substr(tmp[i], start, len - start);
+		free (tmp[i]);
 	}
-	j = -1;
-	while (pipes2[++j])
-		printf("pipe[%d]= %s\n", j, pipes2[j]->str);
-	return (pipes2);
+	free (tmp);
+	i = -1;
+	while (pipes[++i])
+		printf("pipe[%d]= %s\n", i, pipes[i]->str);
+	return (pipes);
 }
-
+*/
 
 int parser(char *str)
 {
