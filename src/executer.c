@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/04 22:43:15 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/05 13:31:18 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ static space_pars(char *str)
 }
 */
 
-static void init_cmd_struct(t_cmd **cmds, char **str)
+static t_cmd **init_cmd_struct(char **str)
 {
 	int i;
+	t_cmd **cmds;
 
 	i = -1;
 	while (str[++i])
@@ -37,6 +38,7 @@ static void init_cmd_struct(t_cmd **cmds, char **str)
 		cmds[i]->cmd = str[i];
 		cmds[i]->v_rdr = NULL;
 	}
+	return(cmds);
 }
 
 int executer(void)
@@ -44,9 +46,9 @@ int executer(void)
 	//представим, что подана строка "ls -al | wc -l"
 	char *str[] = {"ls -al", "wc -l", NULL};
 	t_cmd **cmds;
+	cmds = init_cmd_struct(str);
 
-	cmds = NULL;
-	init_cmd_struct(cmds, str);
+
 
 	printf("%s\n", cmds[1]->cmd);
 	return (0);
