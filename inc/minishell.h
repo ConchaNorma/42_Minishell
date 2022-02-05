@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/04 22:20:20 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/05 22:28:03 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,18 @@ typedef struct s_cmd{
 	char	*cmd;
 }	t_cmd;
 
+typedef struct s_exec
+{
+	char	**envp;
+	t_cmd	**cmds;
+	pid_t	pid;
+	int		fd[2];
+	int		st;
+	char	**cmd;
+	char	*path;
+}	t_exec;
+
 int parser(char *str);
-int executer(void);
+int executer(t_exec *vars);
 
 #endif
