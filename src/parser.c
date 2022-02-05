@@ -6,11 +6,11 @@
 /*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/01/31 22:48:21 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/04 21:26:38 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 int parser(char *str)
 {

@@ -6,11 +6,11 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/02 21:55:12 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/05 13:37:04 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -29,7 +29,8 @@ int	main(int argc, char **argv, char **envp)
 		str = NULL;
 		str = readline("minishell>$ ");
 		//Здесь будет парсер
-		parser(str);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		//parser(str);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		printf("%s\n", str);
 		free(str);
 		//Здесь будет экзекютер
 		executer();	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
