@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/04 22:20:20 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/05 18:52:43 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ typedef struct s_cmd{
 	t_redir	*v_rdr;
 	char	*cmd;
 }	t_cmd;
+
+typedef struct s_pipeline{
+	char	*str;
+}	t_pipeline;
 
 int parser(char *str);
 int executer(void);
