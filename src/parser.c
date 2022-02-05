@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/05 21:16:14 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/05 21:27:17 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,57 +139,13 @@ t_pipeline **ft_split_pipes(char *str)
 	while (tmp[++i])
 		free (tmp[i]);
 	free (tmp);
-	i = -1;
-	while (pipes[++i])
-		printf("pipe[%d]= %s\n", i, pipes[i]->str);
 	return (pipes);
 }
-
-/*
-t_pipeline **ft_split_pipes(char *str)
-{
-	t_pipeline	**pipes;
-	char	**tmp;
-	int		len;
-	int		start;
-	int		i;
-	int		pipe_count;
-
-	i = -1;
-	len = 0;
-	start = 0;
-	pipe_count = 1;
-	while (str[++i])
-		if (str[i] == '|')
-			pipe_count++;
-	tmp = (char **)malloc(pipe_count * sizeof(char));
-	tmp = ft_split(str, '|');
-	pipes = (t_pipeline **)malloc((pipe_count + 1) * sizeof(t_pipeline *));
-	pipes[pipe_count] = NULL;
-	i = -1;
-	while (tmp[++i])
-	{
-		start = 0;
-		pipes[i] = (t_pipeline *)malloc(sizeof(t_pipeline));
-		len = ft_strlen(tmp[i]);
-		while (tmp[i][start] == ' ')
-			start++;
-		while (tmp[i][len - 1] == ' ')
-			len--;
-		pipes[i]->str = ft_substr(tmp[i], start, len - start);
-		free (tmp[i]);
-	}
-	free (tmp);
-	i = -1;
-	while (pipes[++i])
-		printf("pipe[%d]= %s\n", i, pipes[i]->str);
-	return (pipes);
-}
-*/
 
 int parser(char *str)
 {
 	int	i;
+	t_pipeline	**pipes;
 
 	i = -1;
 	while (str[++i])
@@ -210,7 +166,11 @@ int parser(char *str)
 			continue ;
 	}
 	printf("str_res= %s\n", str);
-	ft_split_pipes(str);
+	pipes = ft_split_pipes(str);
+	i = -1;
+	while (pipes[++i])
+		printf("pipes[%d]= %s\n", i, pipes[i]->str);
+
 	return (0);
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
 	//склеить по переносу "\"
