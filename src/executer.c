@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/05 23:05:21 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/06 15:07:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*get_path(char **envp, char *cmd)
 		}
 		i++;
 	}
-	if (cmd[0] == '/')
+	if (cmd[0] == '/' || cmd[0] == '.')
 		if (access(cmd, 0) == 0)
 			return (cmd);
 	return (NULL);
@@ -64,18 +64,9 @@ static char	*get_path(char **envp, char *cmd)
 
 static int call_parent(t_exec *vars)
 {
-	/*if(vars->st > 1)
-	{
-		close(vars->fd[1]);
-		dup2(vars->fd[0], 0);	//дописать проверку на ошибку
-		//здесь сделать вэйтпид
-		waitpid(vars->pid, NULL, WUNTRACED);
-	}*/
+	vars->st--;
 	//здесь сделай функцию работы с редиректами
-	//здесь сплит строки команды
-	vars->cmd = ft_split(vars->cmds[vars->st-1]->cmd, ' ');
-
-	//здесь получение пути к команде с командой на конце
+	vars->cmd = ft_split(vars->cmds[vars->st]->cmd, ' ');
 	vars->path = get_path(vars->envp, vars->cmd[0]);
 	if (!vars->path)
 	{
@@ -83,8 +74,6 @@ static int call_parent(t_exec *vars)
 		//здесь подумать на счет выхода
 		//ft_exit(0, "The path to execute the parent command was not found.");
 	}
-
-	//здесь выполнение команды (экзекве)
 	if (execve(vars->path, vars->cmd, vars->envp) == -1)
 	{
 		free(vars->path);
@@ -92,7 +81,6 @@ static int call_parent(t_exec *vars)
 		//здесь подумать на счет выхода
 		//ft_exit(errno, NULL);
 	}
-	printf("Сработало я\n");
 	free(vars->path);
 	ft_frmtrx(vars->cmd);
 	close(vars->fd[0]);
@@ -101,12 +89,12 @@ static int call_parent(t_exec *vars)
 
 static int call_child(t_exec *vars)
 {
+	vars->st--;
 	close(vars->fd[0]);
-	dup2(vars->fd[1], 1);	//дописать проверку на ошибку
+	dup2(vars->fd[1], 1); //написать проверку
 	executer(vars);
 	return (0);
 }
-
 
 int executer(t_exec *vars)
 {
@@ -114,17 +102,14 @@ int executer(t_exec *vars)
 	{
 		pipe(vars->fd);
 		vars->pid = fork();
-		vars->st--;
 		//дописать проверку ошибок двух строк выше
 		if(!vars->pid)
-			//return(executer(vars));
 			return(call_child(vars));
 		else
 		{
 			close(vars->fd[1]);
 			dup2(vars->fd[0], 0);	//дописать проверку на ошибку
-			//здесь сделать вэйтпид
-			printf("%d\n", waitpid(vars->pid, NULL, WUNTRACED));
+			waitpid(vars->pid, NULL, WUNTRACED);
 		}
 	}
 	return (call_parent(vars));

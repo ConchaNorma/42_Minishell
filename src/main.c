@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/05 22:46:02 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/06 16:55:42 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,24 @@ static void init_cmd_struct(t_exec *vars, char **str)
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
-	char *str1;
+	//char *str1;
 	//представим, что подана строка "ls -al | wc -l"
-	char *str[] = {"ls -al", "wc -l", NULL};
+	//char *str[] = {"ls -al", "wc -l", "wc -c", NULL};
+	char *str[] = {"cd ..", NULL};
 	t_exec vars;
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = envp;
 	init_cmd_struct(&vars, str);
-	printf("%s\n", vars.cmds[0]->cmd);
-	printf("%s\n", vars.cmds[1]->cmd);
+	// printf("%s\n", vars.cmds[0]->cmd);
+	// printf("%s\n", vars.cmds[1]->cmd);
 
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
-		str1 = NULL;
+		//str1 = NULL;
 		//str1 = readline("minishell>$ ");
 
 		//Здесь будет парсер
