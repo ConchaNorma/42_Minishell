@@ -6,12 +6,12 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/07 19:32:55 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/07 20:03:51 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
+/*
 static void init_cmd_struct(t_exec *vars, char **str)
 {
 	int i;
@@ -29,20 +29,20 @@ static void init_cmd_struct(t_exec *vars, char **str)
 		vars->cmds[i]->v_rdr = NULL;
 	}
 }
-
+*/
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
-	char *str;
+	//char *str;
 	//представим, что подана строка "ls -al | wc -l"
 	//char *str[] = {"ls -al", "wc -l", "wc -c", NULL};
-	char *str1[] = {"cd ..", NULL};
+	//char *str1[] = {"cd ..", NULL};
 	t_exec vars;
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = envp;
-	init_cmd_struct(&vars, str1);
+	//init_cmd_struct(&vars, str1);
 	// printf("%s\n", vars.cmds[0]->cmd);
 	// printf("%s\n", vars.cmds[1]->cmd);
 
@@ -50,14 +50,15 @@ int	main(int argc, char **argv, char **envp)
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
-		str = NULL;
-		str = readline("minishell>$ ");
-		printf("%s\n", str);
+		vars.str = NULL;
+		vars.str = readline("minishell>$ ");
+		printf("%s\n", vars.str);
 
 		//Здесь будет парсер
-		//printf("%s\n", str);
-		parser(str);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-		free(str);
+		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		printf("%s\n", vars.str);
+		free(vars.str);
+
 		//Здесь будет экзекютер
 		executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 

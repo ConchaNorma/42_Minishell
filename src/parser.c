@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/07 19:31:16 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/07 20:10:37 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,29 +54,123 @@ char	*ft_squote(char *str, int i)
 	return (tmp);
 }
 
-int parser(char *str)
+//void *ft_split_pipes(char *str)
+//{
+//	t_pipeline	*pipes = NULL;
+//	int			i;
+//	int			ii;
+//	int			j;
+//	int			pipe_count;
+
+//	i = -1;
+//	ii = -1;
+//	j = -1;
+//	pipe_count = 0;
+//	printf("1\n");
+//	while (str[++i])
+//		if (str[i] == '|')
+//			pipe_count++;
+//	pipes = (t_pipeline *)malloc(pipe_count * sizeof(t_pipeline));
+//	i = -1;
+//	while (str[++i])
+//	{
+//		printf("2\n");
+//		if (str[i] == '|')
+//		{
+//			printf("3\n");
+//			++ii;
+//			//pipes->str[++j] =
+//			pipes->str[++j] = ft_substr(str, ii, i - ii - 1);
+//			printf("pipe0[%d]= %s\n", j, pipes->str[j]);
+//			ii = ++i;
+//		}
+//	}
+//	if (j == -1)
+//		pipes->str[++j] = ft_substr(str, 0, i - 1);
+//	pipes->str[++j] = NULL;
+//	j = -1;
+//	while (pipes->str[++j])
+//		printf("pipe[%d]= %s\n", j, pipes->str[j]);
+//	return (pipes);
+//}
+
+
+static void	ft_split_pipes_sup(t_cmd	**pipes, char **tmp)
 {
-	int i;
+	int		len;
+	int		start;
+	int		i;
 
 	i = -1;
-	while (str[++i])
+	len = 0;
+	start = 0;
+	i = -1;
+	while (tmp[++i])
 	{
-		if (str[i] == '\'')
-			str = ft_squote(str, i);
-		if (str[i] == '\"')
-			str = ft_dquote(str, i);
-		if (str[i] == ' ')
+		start = 0;
+		pipes[i] = (t_cmd *)malloc(sizeof(t_cmd));
+		len = ft_strlen(tmp[i]);
+		while (tmp[i][start] == ' ')
+			start++;
+		while (tmp[i][len - 1] == ' ')
+			len--;
+		pipes[i]->cmd = ft_substr(tmp[i], start, len - start);
+	}
+}
+
+// t_cmd **ft_split_pipes(char *str)
+static void ft_split_pipes(t_exec *vars)
+{
+	char	**tmp;
+	int		i;
+	int		pipe_count;
+
+	i = -1;
+	pipe_count = 1;
+	while (vars->str[++i])
+		if (vars->str[i] == '|')
+			pipe_count++;
+	vars->st = pipe_count;
+	tmp = (char **)malloc(pipe_count * sizeof(char));
+	tmp = ft_split(vars->str, '|');
+	vars->cmds = (t_cmd **)malloc((pipe_count + 1) * sizeof(t_cmd *));
+	vars->cmds[pipe_count] = NULL;
+	ft_split_pipes_sup(vars->cmds, tmp);
+	i = -1;
+	while (tmp[++i])
+		free (tmp[i]);
+	free (tmp);
+}
+
+int parser(t_exec *vars)
+{
+	int	i;
+
+	i = -1;
+	while (vars->str[++i])
+	{
+		if (vars->str[i] == '\'')
+			vars->str = ft_squote(vars->str, i);
+		if (vars->str[i] == '\"')
+			vars->str = ft_dquote(vars->str, i);
+		if (vars->str[i] == ' ')
 			continue ;
-		if (str[i] == '|')
+		if (vars->str[i] == '|')
 			continue ;
-		if (str[i] == '>')
+		if (vars->str[i] == '>')
 			continue ;
-		if (str[i] == '<')
+		if (vars->str[i] == '<')
 			continue ;
-		if (str[i] == '$')
+		if (vars->str[i] == '$')
 			continue ;
 	}
-	printf("str_res= %s\n", str);
+	printf("str_res= %s\n", vars->str);
+	//vars->cmds = ft_split_pipes(vars->str);
+	ft_split_pipes(vars);
+	i = -1;
+	while (vars->cmds[++i])
+		printf("pipes[%d]= %s\n", i, vars->cmds[i]->cmd);
+
 	return (0);
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
 	//склеить по переносу "\"
