@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/07 19:55:26 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/07 22:23:06 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,6 @@ typedef struct s_exec
 	char	*path;
 
 }	t_exec;
-
-typedef struct s_pipeline{
-	char	*cmd;
-}	t_pipeline;
 
 int parser(t_exec *vars);
 int executer(t_exec *vars);

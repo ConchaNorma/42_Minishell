@@ -6,45 +6,20 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/07 20:03:51 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/07 21:39:47 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-/*
-static void init_cmd_struct(t_exec *vars, char **str)
-{
-	int i;
 
-	i = -1;
-	while (str[++i])
-		;
-	vars->st = i;
-	vars->cmds = (t_cmd **)malloc(sizeof(t_cmd *) * (i + 1));
-	vars->cmds[i] = NULL;
-	while (i)
-	{
-		vars->cmds[--i] = (t_cmd *)malloc(sizeof(t_cmd));
-		vars->cmds[i]->cmd = str[i];
-		vars->cmds[i]->v_rdr = NULL;
-	}
-}
-*/
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
-	//char *str;
-	//представим, что подана строка "ls -al | wc -l"
-	//char *str[] = {"ls -al", "wc -l", "wc -c", NULL};
-	//char *str1[] = {"cd ..", NULL};
 	t_exec vars;
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = envp;
-	//init_cmd_struct(&vars, str1);
-	// printf("%s\n", vars.cmds[0]->cmd);
-	// printf("%s\n", vars.cmds[1]->cmd);
 
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
 	while(1)
