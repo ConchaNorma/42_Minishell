@@ -3,27 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/04 21:26:38 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/07 19:31:16 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+char	*ft_dquote(char *str, int i)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+
+	j = i;
+	while (str[++i])
+	{
+		if (str[i] == '\"')
+			break ;
+	}
+	tmp = ft_substr(str, 0, j);
+	tmp2 = ft_substr(str, j + 1, i - j - 1);
+	tmp3 = ft_substr(str, i + 1, ft_strlen(str) - i);
+	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	free (tmp2);
+	free (tmp3);
+	return (tmp);
+}
+
+char	*ft_squote(char *str, int i)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+
+	j = i;
+	while (str[++i])
+	{
+		if (str[i] == '\'')
+			break ;
+	}
+	tmp = ft_substr(str, 0, j);
+	tmp2 = ft_substr(str, j + 1, i - j - 1);
+	tmp3 = ft_substr(str, i + 1, ft_strlen(str) - i);
+	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	return (tmp);
+}
 
 int parser(char *str)
 {
 	int i;
 
 	i = -1;
-
 	while (str[++i])
 	{
 		if (str[i] == '\'')
-			continue ;
-		if (str[i] == '"')
-			continue ;
+			str = ft_squote(str, i);
+		if (str[i] == '\"')
+			str = ft_dquote(str, i);
 		if (str[i] == ' ')
 			continue ;
 		if (str[i] == '|')
@@ -32,7 +73,10 @@ int parser(char *str)
 			continue ;
 		if (str[i] == '<')
 			continue ;
+		if (str[i] == '$')
+			continue ;
 	}
+	printf("str_res= %s\n", str);
 	return (0);
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
 	//склеить по переносу "\"
