@@ -3,96 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/07 20:10:37 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/07 22:19:22 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_dquote(char *str, int i)
+char	*ft_bslesh(char *str, int *i)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	tmp = ft_substr(str, 0, *i);
+	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
+	tmp = ft_strjoin(tmp, tmp2);
+	(*i)++;
+	return (tmp);
+}
+
+char	*ft_dquote(char *str, int *i)
 {
 	int		j;
 	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
 
-	j = i;
-	while (str[++i])
+	j = *i;
+	while (str[++(*i)])
 	{
-		if (str[i] == '\"')
+		if (str[*i] =='\\' && (str[*i + 1] == '\"' || str[*i + 1] == '`'
+				|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
+			str = ft_bslesh(str, i);
+		if (str[*i] == '\"')
 			break ;
 	}
 	tmp = ft_substr(str, 0, j);
-	tmp2 = ft_substr(str, j + 1, i - j - 1);
-	tmp3 = ft_substr(str, i + 1, ft_strlen(str) - i);
+	tmp2 = ft_substr(str, j + 1, *i - j - 1);
+	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
 	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
 	free (tmp2);
 	free (tmp3);
 	return (tmp);
 }
 
-char	*ft_squote(char *str, int i)
+char	*ft_squote(char *str, int *i)
 {
 	int		j;
 	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
 
-	j = i;
-	while (str[++i])
+	j = *i;
+	while (str[++(*i)])
 	{
-		if (str[i] == '\'')
+		if (str[*i] == '\'')
 			break ;
 	}
 	tmp = ft_substr(str, 0, j);
-	tmp2 = ft_substr(str, j + 1, i - j - 1);
-	tmp3 = ft_substr(str, i + 1, ft_strlen(str) - i);
+	tmp2 = ft_substr(str, j + 1, *i - j - 1);
+	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
 	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
 	return (tmp);
 }
-
-//void *ft_split_pipes(char *str)
-//{
-//	t_pipeline	*pipes = NULL;
-//	int			i;
-//	int			ii;
-//	int			j;
-//	int			pipe_count;
-
-//	i = -1;
-//	ii = -1;
-//	j = -1;
-//	pipe_count = 0;
-//	printf("1\n");
-//	while (str[++i])
-//		if (str[i] == '|')
-//			pipe_count++;
-//	pipes = (t_pipeline *)malloc(pipe_count * sizeof(t_pipeline));
-//	i = -1;
-//	while (str[++i])
-//	{
-//		printf("2\n");
-//		if (str[i] == '|')
-//		{
-//			printf("3\n");
-//			++ii;
-//			//pipes->str[++j] =
-//			pipes->str[++j] = ft_substr(str, ii, i - ii - 1);
-//			printf("pipe0[%d]= %s\n", j, pipes->str[j]);
-//			ii = ++i;
-//		}
-//	}
-//	if (j == -1)
-//		pipes->str[++j] = ft_substr(str, 0, i - 1);
-//	pipes->str[++j] = NULL;
-//	j = -1;
-//	while (pipes->str[++j])
-//		printf("pipe[%d]= %s\n", j, pipes->str[j]);
-//	return (pipes);
-//}
 
 
 static void	ft_split_pipes_sup(t_cmd	**pipes, char **tmp)
@@ -150,9 +125,11 @@ int parser(t_exec *vars)
 	while (vars->str[++i])
 	{
 		if (vars->str[i] == '\'')
-			vars->str = ft_squote(vars->str, i);
+			vars->str = ft_squote(vars->str, &i);
+		if (vars->str[i] == '\\')
+			vars->str = ft_bslesh(vars->str, &i);
 		if (vars->str[i] == '\"')
-			vars->str = ft_dquote(vars->str, i);
+			vars->str = ft_dquote(vars->str, &i);
 		if (vars->str[i] == ' ')
 			continue ;
 		if (vars->str[i] == '|')
