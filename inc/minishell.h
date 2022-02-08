@@ -6,13 +6,14 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/07 22:23:06 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/08 19:44:05 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -43,10 +44,11 @@ typedef enum e_rtp{
 typedef struct s_redir{
 	t_rtp	type;
 	int		fd;
+	char	*filename;
 }	t_redir;
 
 typedef struct s_cmd{
-	t_redir	*v_rdr;
+	t_redir	**v_rdr;
 	char	*cmd;
 }	t_cmd;
 
@@ -63,7 +65,11 @@ typedef struct s_exec
 
 }	t_exec;
 
-int parser(t_exec *vars);
-int executer(t_exec *vars);
+
+void	ft_exit(int err, char *str);
+char	*get_path(char **envp, char *cmd);
+int		redirection_fd(t_exec *vars);
+int		parser(t_exec *vars);
+int		executer(t_exec *vars);
 
 #endif
