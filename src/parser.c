@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/07 22:19:22 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/08 22:25:48 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,35 @@ char	*ft_squote(char *str, int *i)
 	return (tmp);
 }
 
+char	*ft_dollar(char *str, int *i, char **envp)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
 
-static void	ft_split_pipes_sup(t_cmd	**pipes, char **tmp)
+	j = *i;
+	while (str[(j + 1)] == '_' || ft_isalnum(str[(j + 1)]))
+		j++;
+	if (j == *i)
+		return (str);
+	tmp = ft_substr(str, *i + 1, j - *i);
+	tmp2 = ft_strjoin(tmp, "=");
+	tmp3 = ft_strdup("");
+	j = -1;
+	while (envp[++j])
+	{
+		if (!ft_strncmp(tmp2, ft_substr(envp[j], 0, ft_strlen(tmp2)), ft_strlen(tmp2)))
+			tmp3 = ft_substr(envp[j], ft_strlen(tmp2), ft_strlen(envp[j]) - ft_strlen(tmp2));;
+	}
+	tmp2 = ft_substr(str, 0, *i);
+	tmp = ft_strjoin(ft_strjoin(tmp2, tmp3), ft_substr(str,
+		*i + ft_strlen(tmp) + 1, ft_strlen(str) - (*i + ft_strlen(tmp))));
+	*i += (1 +ft_strlen(tmp3));
+	return (tmp);
+}
+
+static void	ft_split_pipes_sup(t_cmd **pipes, char **tmp)
 {
 	int		len;
 	int		start;
@@ -93,7 +120,6 @@ static void	ft_split_pipes_sup(t_cmd	**pipes, char **tmp)
 	}
 }
 
-// t_cmd **ft_split_pipes(char *str)
 static void ft_split_pipes(t_exec *vars)
 {
 	char	**tmp;
@@ -130,6 +156,8 @@ int parser(t_exec *vars)
 			vars->str = ft_bslesh(vars->str, &i);
 		if (vars->str[i] == '\"')
 			vars->str = ft_dquote(vars->str, &i);
+		if (vars->str[i] == '$')
+			vars->str = ft_dollar(vars->str, &i, vars->envp);
 		if (vars->str[i] == ' ')
 			continue ;
 		if (vars->str[i] == '|')
