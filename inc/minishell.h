@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/08 19:44:05 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/09 19:39:21 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef enum e_rtp{
 typedef struct s_redir{
 	t_rtp	type;
 	int		fd;
-	char	*filename;
+	char	*file;
 }	t_redir;
 
 typedef struct s_cmd{

@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/08 19:59:20 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/09 19:40:05 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void redir_apn(t_exec *vars)
 
 static void redir_heredoc(t_exec *vars)
 {
-
+	//ридлайном счит
 }
 
 int redirection_fd(t_exec *vars)
@@ -53,6 +53,7 @@ int redirection_fd(t_exec *vars)
 		else
 			//Здесь возврат ошибки или завершение с ошибкой
 			;
+		i++;
 	}
 	return (0);
 }
