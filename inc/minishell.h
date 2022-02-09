@@ -6,17 +6,18 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/09 19:39:21 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/09 20:17:25 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <errno.h>
+# include <errno.h>					//для вывода кода ошибок из errno
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <fcntl.h>					//для переменных внутри функции open()
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
