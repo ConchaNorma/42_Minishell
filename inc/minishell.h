@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/07 19:55:26 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/09 19:47:10 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ typedef enum e_rtp{
 typedef struct s_redir{
 	t_rtp	type;
 	int		fd;
+	char	*file;
 }	t_redir;
 
 typedef struct s_cmd{
-	t_redir	*v_rdr;
+	t_redir	**v_rdr;
 	char	*cmd;
 }	t_cmd;
 
