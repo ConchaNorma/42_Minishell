@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/09 19:47:10 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/09 21:33:12 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -68,7 +69,11 @@ typedef struct s_pipeline{
 	char	*cmd;
 }	t_pipeline;
 
-int parser(t_exec *vars);
-int executer(t_exec *vars);
+int		parser(t_exec *vars);
+int		executer(t_exec *vars);
+char	*ft_dquote(char *str, int *i, char **envp);
+char	*ft_squote(char *str, int *i);
+char	*ft_bslesh(char *str, int *i);
+char	*ft_dollar(char *str, int *i, char **envp);
 
 #endif
