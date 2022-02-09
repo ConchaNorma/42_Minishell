@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/10 00:01:58 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/10 01:08:30 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,19 @@ char	*ft_space(char *str, int *i)
 
 	j = *i;
 	tmp = ft_strdup(str);
-	while (str[++j])
+	if (*i == 0)
 	{
-		if (str[j] != ' ' || !str[j])
-			break ;
-		tmp = ft_strjoin(ft_substr(str, 0, *i), ft_substr(str, j, ft_strlen(str) - *i - 1));
-
+		while (str[++j] == ' ')
+			;
+		tmp = ft_substr(str, j, ft_strlen(str) - j);
 	}
+	else
+		while (str[++j])
+		{
+			if (str[j] != ' ' || !str[j])
+				break ;
+			tmp = ft_strjoin(ft_substr(str, 0, *i), ft_substr(str, j, ft_strlen(str) - *i - 1));
+		}
 	return (tmp);
 }
 
