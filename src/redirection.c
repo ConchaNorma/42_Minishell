@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/09 22:33:22 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/10 22:04:17 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,37 @@
 
 static int redir_out(t_redir *v_rdr)
 {
-	//дописать: при открытии нового, закрывать старый
+	int fd;
+	//дописать: при открытии нового, закрывать старый - не надо, dup закроет
 	//открыть файл со стиранием данных и созданием в случае отсутствия, и права на запись
-	v_rdr->fd = open(v_rdr->file, O_RDWR | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
+	fd = open(v_rdr->file, O_RDWR | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
 	//прописать обработку ошибок
 	//делаем редирект stdout на файл
-	dup2(v_rdr->fd, 1);	//дописать обработку ошибок
+	dup2(fd, 1);	//дописать обработку ошибок
 	return (0);
 	//как быть при перенаправлении на один STDIN/STDOUT/STDERR
 }
 
 static int redir_inp(t_redir *v_rdr)
 {
+	int fd;
 	//дописать: при открытии нового, закрывать старый
 	//открыть файл с правами на чтение
-	v_rdr->fd = open(v_rdr->file, O_RDONLY, S_IREAD);
+	fd = open(v_rdr->file, O_RDONLY, S_IREAD);
 	//прописать обработку ошибок
 	//делаем редирект stdin на файл
-	dup2(v_rdr->fd, 0);	//дописать обработку ошибок
+	dup2(fd, 0);	//дописать обработку ошибок
 	return (0);
 }
 
 static int redir_apn(t_redir *v_rdr)
 {
+	int fd;
 	//открыть файл без стирания данных и созданием в случае отсутствия, и права на запись
-	v_rdr->fd = open(v_rdr->file, O_RDWR | O_CREAT | O_APPEND, S_IWRITE | S_IREAD);
+	fd = open(v_rdr->file, O_RDWR | O_CREAT | O_APPEND, S_IWRITE | S_IREAD);
 	//прописать обработку ошибок
 	//делаем редирект stdout на файл
-	dup2(v_rdr->fd, 1);
+	dup2(fd, 1);
 	return (0);
 }
 
@@ -49,8 +52,10 @@ static int redir_heredoc(t_redir *v_rdr)
 {
 	char *str;
 	int len;
+	int fd;
 
-	str = NULL;
+	fd = open(TMP_FILE, O_RDWR | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
+	//прописать обработку ошибок
 	str = readline(">$ ");
 	//цикл
 	while (str)
@@ -65,32 +70,31 @@ static int redir_heredoc(t_redir *v_rdr)
 			break ;
 		}
 		//пишем сроку в stdin
-		write(0, str, ft_strlen(str));
-		write(0, "\n", 1);
+		write(fd, str, ft_strlen(str));
+		write(fd, "\n", 1);
 		//чистим строку
 		free(str);
 		//ридлайном считываем новую строку во временный указатель
 		str = readline(">$ ");
 	}
-	return (0);		//нужно ли здесь где-то обработчик ошибок
+	write(fd, "\0", 1); //нужно ли это для обозначения конца файла
+	dup2(fd, 0);	//прописать обработку ошибок
+	return (0);		//нужно ли здесь где-то обработчик ошибокю если нет,
 }
 
-int redirection_fd(t_exec *vars)
+int redirection_fd(t_redir *v_rdr)
 {
-	int i;
-
-	i = 0;
-	while (vars->cmds[vars->st]->v_rdr[i])
+	while (v_rdr)
 	{
-		if (vars->cmds[vars->st]->v_rdr[i]->type == OUT)
-			redir_out(vars->cmds[vars->st]->v_rdr[i]);
-		else if (vars->cmds[vars->st]->v_rdr[i]->type == INP)
-			redir_inp(vars->cmds[vars->st]->v_rdr[i]);
-		else if (vars->cmds[vars->st]->v_rdr[i]->type == APN)
-			redir_apn(vars->cmds[vars->st]->v_rdr[i]);
-		else if (vars->cmds[vars->st]->v_rdr[i]->type == HRD)
-			redir_heredoc(vars->cmds[vars->st]->v_rdr[i]);
-		i++;
+		if (v_rdr->type == OUT)
+			redir_out(v_rdr);
+		else if (v_rdr->type == INP)
+			redir_inp(v_rdr);
+		else if (v_rdr->type == APN)
+			redir_apn(v_rdr);
+		else if (v_rdr->type == HRD)
+			redir_heredoc(v_rdr);
+		v_rdr = v_rdr->next;
 	}
 	return (0);	//возможно где-то здесь нужен обработчик ошибок
 }

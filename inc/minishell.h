@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/09 20:17:25 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/10 21:17:59 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+
+# define TMP_FILE "here_doc"
 
 // Здесь будут структуры переменных для создания списков и деревьев
 typedef enum e_tkn{
@@ -43,25 +45,27 @@ typedef enum e_rtp{
 }	t_rtp;
 
 typedef struct s_redir{
-	t_rtp	type;
-	int		fd;
-	char	*file;
+	t_rtp			type;
+	int				fd;
+	char			*file;
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_cmd{
-	t_redir	**v_rdr;
-	char	*cmd;
+	t_redir			*v_rdr;
+	char			*cmd;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_exec
 {
 	char	**envp;
 	char	*str;
-	t_cmd	**cmds;
+	t_cmd	*cmds;
 	pid_t	pid;
 	int		fd[2];
 	int		st;
-	char	**cmd;
+	char	**exe;
 	char	*path;
 
 }	t_exec;
@@ -69,7 +73,7 @@ typedef struct s_exec
 
 void	ft_exit(int err, char *str);
 char	*get_path(char **envp, char *cmd);
-int		redirection_fd(t_exec *vars);
+int		redirection_fd(t_redir *v_rdr);
 int		parser(t_exec *vars);
 int		executer(t_exec *vars);
 

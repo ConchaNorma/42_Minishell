@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/08 19:28:57 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/10 21:20:17 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,35 @@
 
 static int call_parent(t_exec *vars)
 {
-	vars->st--;
-	//здесь сделай функцию работы с редиректами
-	//void redirection_fd(vars);
-	vars->cmd = ft_split(vars->cmds[vars->st]->cmd, ' ');
+	t_cmd *tmp;
+
+	tmp = vars->cmds;
+	//vars->st--;
+	while (--vars->st)
+		tmp = tmp->next;
+	//здесь сделать обработку редиректов
+	redir_heredoc(tmp->v_rdr);
+	vars->exe = ft_split(tmp->cmd, ' ');
 	//здесь сделать проверку на built-in и их выполнение. В случае, если это не они, выполнять то, что ниже
-	vars->path = get_path(vars->envp, vars->cmd[0]);
+	vars->path = get_path(vars->envp, vars->exe[0]);
 	if (!vars->path)
 	{
-		ft_frmtrx(vars->cmd);
+		ft_frmtrx(vars->exe);
+		//сделать очистку списков и замолоченных структур
 		//здесь подумать на счет выхода
 		ft_exit(0, "The path to execute the parent command was not found.");
 	}
-	if (execve(vars->path, vars->cmd, vars->envp) == -1)
+	if (execve(vars->path, vars->exe, vars->envp) == -1)
 	{
 		free(vars->path);
-		ft_frmtrx(vars->cmd);
+		ft_frmtrx(vars->exe);
+		//сделать очистку списков и замолоченных структур
 		//здесь подумать на счет выхода
 		ft_exit(errno, NULL);
 	}
 	free(vars->path);
-	ft_frmtrx(vars->cmd);
+	ft_frmtrx(vars->exe);
+	//сделать очистку списков и замолоченных структур
 	close(vars->fd[0]);
 	return (0);
 }
