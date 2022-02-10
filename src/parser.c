@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/10 01:08:30 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/10 22:29:17 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,19 @@ char	*ft_space(char *str, int *i)
 		tmp = ft_substr(str, j, ft_strlen(str) - j);
 	}
 	else
+	{
 		while (str[++j])
 		{
 			if (str[j] != ' ' || !str[j])
 				break ;
-			tmp = ft_strjoin(ft_substr(str, 0, *i), ft_substr(str, j, ft_strlen(str) - *i - 1));
+			tmp = ft_strjoin(ft_substr(str, 0, *i), \
+				ft_substr(str, j, ft_strlen(str) - *i - 1));
 		}
+	}
 	return (tmp);
 }
+
+/* functions for working with massives. massives changed to lists
 
 static void	ft_split_pipes_sup(t_cmd **pipes, char **tmp)
 {
@@ -171,11 +176,52 @@ static void ft_split_pipes(t_exec *vars)
 		free (tmp[i]);
 	free (tmp);
 }
+*/
+t_cmd	*ft_create_cmds(void)
+{
+	t_cmd	*tmp;
+
+	tmp = NULL;
+	tmp = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!tmp)
+		exit (1);
+	tmp->v_rdr = NULL;
+	tmp->cmd = NULL;
+	tmp->next = NULL;
+	return (tmp);
+}
+
+char *ft_split_pipe(t_exec *vars, int *i)
+{
+	char	*tmp;
+	t_cmd	*new;
+
+	if (vars->str[*i + 1] == '|')
+		exit(1);
+	new = ft_create_cmds();
+	if (vars->cmds)
+	{
+		while (vars->cmds)
+			vars->cmds = vars->cmds->next;
+		vars->cmds = new;
+	}
+	else
+		vars->cmds = new;
+	vars->cmds->cmd = ft_substr(vars->str, 0, *i);
+	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
+	printf("str_0= %s\n", vars->str);
+	printf("str_2= %s\n", tmp);
+	printf("str_cmd= %s\n", vars->cmds->cmd);
+	*i = 0;
+	vars->st++;
+	return (tmp);
+}
 
 int parser(t_exec *vars)
 {
 	int	i;
 
+	vars->cmds = NULL;
 	i = -1;
 	while (vars->str[++i])
 	{
@@ -189,8 +235,8 @@ int parser(t_exec *vars)
 			vars->str = ft_dollar(vars->str, &i, vars->envp);
 		if (vars->str[i] == ' ')
 			vars->str = ft_space(vars->str, &i);
-		if (vars->str[i] == '|')
-			continue ;
+		if (vars->str[i] == '|' || !vars->str[i])
+			vars->str = ft_split_pipe(vars, &i);
 		if (vars->str[i] == '>')
 			continue ;
 		if (vars->str[i] == '<')
@@ -200,10 +246,13 @@ int parser(t_exec *vars)
 	}
 	printf("str_res= %s\n", vars->str);
 	//vars->cmds = ft_split_pipes(vars->str);
-	ft_split_pipes(vars);
+	//ft_split_pipes(vars);
 	i = -1;
-	while (vars->cmds[++i])
-		printf("pipes[%d]= %s\n", i, vars->cmds[i]->cmd);
+	while (vars->cmds)
+	{
+		printf("pipes[%d]= %s\n", ++i, vars->cmds->cmd);
+		vars->cmds = vars->cmds->next;
+	}
 
 	return (0);
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
