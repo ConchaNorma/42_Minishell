@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/09 21:44:43 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/10 01:08:30 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*ft_dquote(char *str, int *i, char **envp)
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
 	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	--(*i);
 	free (tmp2);
 	free (tmp3);
 	return (tmp);
@@ -68,6 +69,7 @@ char	*ft_squote(char *str, int *i)
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
 	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	--(*i);
 	return (tmp);
 }
 
@@ -98,6 +100,29 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	tmp = ft_strjoin(ft_strjoin(tmp2, tmp3), ft_substr(str, \
 			*i + ft_strlen(tmp) + 1, ft_strlen(str) - (*i + ft_strlen(tmp))));
 	*i += (1 +ft_strlen(tmp3));
+	return (tmp);
+}
+
+char	*ft_space(char *str, int *i)
+{
+	int		j;
+	char	*tmp;
+
+	j = *i;
+	tmp = ft_strdup(str);
+	if (*i == 0)
+	{
+		while (str[++j] == ' ')
+			;
+		tmp = ft_substr(str, j, ft_strlen(str) - j);
+	}
+	else
+		while (str[++j])
+		{
+			if (str[j] != ' ' || !str[j])
+				break ;
+			tmp = ft_strjoin(ft_substr(str, 0, *i), ft_substr(str, j, ft_strlen(str) - *i - 1));
+		}
 	return (tmp);
 }
 
@@ -163,7 +188,7 @@ int parser(t_exec *vars)
 		if (vars->str[i] == '$')
 			vars->str = ft_dollar(vars->str, &i, vars->envp);
 		if (vars->str[i] == ' ')
-			continue ;
+			vars->str = ft_space(vars->str, &i);
 		if (vars->str[i] == '|')
 			continue ;
 		if (vars->str[i] == '>')
