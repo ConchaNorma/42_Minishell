@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/09 21:33:12 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/10 20:25:06 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,27 @@ typedef enum e_rtp{
 }	t_rtp;
 
 typedef struct s_redir{
-	t_rtp	type;
-	int		fd;
-	char	*file;
+	t_rtp			type;
+	int				fd;
+	char			*file;
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_cmd{
-	t_redir	**v_rdr;
-	char	*cmd;
+	t_redir			*v_rdr;
+	char			*cmd;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_exec
 {
 	char	**envp;
 	char	*str;
-	t_cmd	**cmds;
+	t_cmd	*cmds;
 	pid_t	pid;
 	int		fd[2];
 	int		st;
-	char	**cmd;
+	char	**exe;
 	char	*path;
 
 }	t_exec;
