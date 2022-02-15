@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/10 21:20:17 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/13 19:30:53 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int call_parent(t_exec *vars)
 	while (--vars->st)
 		tmp = tmp->next;
 	//здесь сделать обработку редиректов
-	redir_heredoc(tmp->v_rdr);
+	//redir_heredoc(tmp->v_rdr);
+	redirection_fd(tmp->v_rdr);
 	vars->exe = ft_split(tmp->cmd, ' ');
 	//здесь сделать проверку на built-in и их выполнение. В случае, если это не они, выполнять то, что ниже
 	vars->path = get_path(vars->envp, vars->exe[0]);
@@ -43,6 +44,7 @@ static int call_parent(t_exec *vars)
 	free(vars->path);
 	ft_frmtrx(vars->exe);
 	//сделать очистку списков и замолоченных структур
+	//закрыть и удалить временнй файл heredoc
 	close(vars->fd[0]);
 	return (0);
 }

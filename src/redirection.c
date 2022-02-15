@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/10 22:04:17 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/13 19:31:33 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int redir_apn(t_redir *v_rdr)
 static int redir_heredoc(t_redir *v_rdr)
 {
 	char *str;
-	int len;
+	size_t len;
 	int fd;
 
 	fd = open(TMP_FILE, O_RDWR | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
