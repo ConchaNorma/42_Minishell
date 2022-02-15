@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/14 08:58:44 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/15 20:38:51 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	tmp2 = ft_substr(str, 0, *i);
 	tmp = ft_strjoin(ft_strjoin(tmp2, tmp3), ft_substr(str, \
 			*i + ft_strlen(tmp) + 1, ft_strlen(str) - (*i + ft_strlen(tmp))));
-	*i += (1 +ft_strlen(tmp3));
+	*i += (1 + ft_strlen(tmp3));
 	return (tmp);
 }
 
@@ -127,6 +127,19 @@ char	*ft_space(char *str, int *i)
 		}
 	}
 	return (tmp);
+}
+
+char	*ft_tab(char *str, int *i)
+{
+	int		j;
+
+	j = *i;
+	while (str[j] == '\t')
+	{
+		str[j] = ' ';
+		j++;
+	}
+	return (ft_space(str, i));
 }
 
 /* functions for working with massives. massives changed to lists
@@ -223,7 +236,7 @@ t_redir	*ft_redir_sup(t_cmd *tmp_cmds)
 		tmp_cmds->v_rdr = ft_create_redir();
 		tmp_redir = tmp_cmds->v_rdr;
 	}
-	else{
+	else {
 		tmp_redir = tmp_cmds->v_rdr;
 		new = ft_create_redir();
 		while (tmp_redir->next)
@@ -251,18 +264,11 @@ char	*ft_forward_redir(t_exec *vars, int *i)
 		tmp_redir->type = APN;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars->str, &j);
-	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1), ft_substr(vars->str, j, ft_strlen(vars->str) - j));
-	printf("3\n");
-	//printf("redir_tmp2= %s\n", tmp2);
+	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
+		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
 	printf("tmp_redir->type= %u\n", tmp_redir->type);
 	printf("tmp_redir->file= %s\n", tmp_redir->file);
 	printf("tmp= %s\n", tmp);
-	//printf("str_2= %s\n", tmp);
-	//tmp = ft_substr(str, 0, j);
-	//tmp2 = ft_substr(str, j + 1, *i - j - 1);
-	//tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
-	//tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
-	//--(*i);
 	return (tmp);
 }
 
@@ -332,6 +338,8 @@ int parser(t_exec *vars)
 			vars->str = ft_dollar(vars->str, &i, vars->envp);
 		if (vars->str[i] == ' ')
 			vars->str = ft_space(vars->str, &i);
+		if (vars->str[i] == '\t')
+			vars->str = ft_tab(vars->str, &i);
 		if (vars->str[i] == '>')
 			vars->str = ft_forward_redir(vars, &i);
 		if (vars->str[i] == '<')
