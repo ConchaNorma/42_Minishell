@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/13 19:30:53 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/15 20:33:52 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,28 @@ static int call_parent(t_exec *vars)
 	while (--vars->st)
 		tmp = tmp->next;
 	//здесь сделать обработку редиректов
-	//redir_heredoc(tmp->v_rdr);
 	redirection_fd(tmp->v_rdr);
-	vars->exe = ft_split(tmp->cmd, ' ');
+	//vars->exe = ft_split(tmp->cmd, ' ');
 	//здесь сделать проверку на built-in и их выполнение. В случае, если это не они, выполнять то, что ниже
-	vars->path = get_path(vars->envp, vars->exe[0]);
+	builtin_check(tmp->cmd, vars->envp);
+	vars->path = get_path(vars->envp, tmp->cmd[0]);
 	if (!vars->path)
 	{
-		ft_frmtrx(vars->exe);
+		ft_frmtrx(tmp->cmd);		//как сделать очистку в некоторой общей структуре
 		//сделать очистку списков и замолоченных структур
 		//здесь подумать на счет выхода
 		ft_exit(0, "The path to execute the parent command was not found.");
 	}
-	if (execve(vars->path, vars->exe, vars->envp) == -1)
+	if (execve(vars->path, tmp->cmd, vars->envp) == -1)
 	{
 		free(vars->path);
-		ft_frmtrx(vars->exe);
+		ft_frmtrx(tmp->cmd);
 		//сделать очистку списков и замолоченных структур
 		//здесь подумать на счет выхода
 		ft_exit(errno, NULL);
 	}
 	free(vars->path);
-	ft_frmtrx(vars->exe);
+	ft_frmtrx(tmp->cmd);
 	//сделать очистку списков и замолоченных структур
 	//закрыть и удалить временнй файл heredoc
 	close(vars->fd[0]);

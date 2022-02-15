@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/13 19:29:06 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/15 21:02:44 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_redir{
 
 typedef struct s_cmd{
 	t_redir			*v_rdr;
-	char			*cmd;
+	char			**cmd;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -65,7 +65,7 @@ typedef struct s_exec
 	pid_t	pid;
 	int		fd[2];
 	int		st;
-	char	**exe;
+	//char	**exe;
 	char	*path;
 
 }	t_exec;
@@ -77,6 +77,8 @@ int		redirection_fd(t_redir *v_rdr);
 //int		parser(t_exec *vars);
 int		executer(t_exec *vars);
 
-int builtin_cd(char *exe, char **envp);
+int builtin_check(char **cmd, char **envp);
+char *builtin_pwd(int sgn);
+int builtin_cd(char *dir, char **envp);
 
 #endif
