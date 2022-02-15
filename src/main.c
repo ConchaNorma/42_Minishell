@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/10 22:44:48 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/15 20:09:35 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	main(int argc, char **argv, char **envp)
 	//char *str[] = {"ls -al", "wc -l", "wc -c", NULL};
 	//char *str1[] = {"cd ..", NULL};
 	t_exec vars;
+	t_cmd	*tmp_cmds;
+	t_redir	*tmp_redir;
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
@@ -56,11 +58,29 @@ int	main(int argc, char **argv, char **envp)
 
 		//Здесь будет парсер
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-		printf("%s\n", vars.str);
+		printf("vars.str1= %s\n", vars.str);
+		tmp_cmds = vars.cmds;
+		while (tmp_cmds)
+		{
+			printf("12\n");
+			printf("pipes[%d]= %s\n", 1, tmp_cmds->cmd);
+			if (tmp_cmds->v_rdr){
+				tmp_redir = vars.cmds->v_rdr;
+				while(tmp_redir){
+					printf("13\n");
+					printf("vars.cmds->v_rdr->type= %u\n", tmp_redir->type);
+					printf("vars.cmds->v_rdr->fd= %d\n", tmp_redir->fd);
+					printf("vars.cmds->v_rdr->file= %s\n", tmp_redir->file);
+					tmp_redir = tmp_redir->next;
+				}
+			}
+			tmp_cmds = tmp_cmds->next;
+		}
 		free(vars.str);
 
 		//Здесь будет экзекютер
 		//executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		printf("11\n");
 		break ; //Убрать, когда будет написан код, слушающий ввод строки
 	}
 	printf("1");
