@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/16 20:23:59 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/16 22:38:25 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,11 @@ static void builtin_echo(char **cmd)
 	if (nl != 1)
 		write(1, "\n", 1);
 }
-/*
-static int builtin_unset(void);
-static int builtin_export(void);
-*/
+
+//static int builtin_unset(void);
+
+//static int builtin_export();
+
 int builtin_check(char **cmd, char **envp)
 {
 	int len_cmd;
@@ -171,7 +172,7 @@ int builtin_check(char **cmd, char **envp)
 	else if (len_cmd == 4)
 	{
 		if (!ft_memcmp(cmd[0], "echo", len_cmd))
-			;
+			builtin_echo(cmd);
 		if (!ft_memcmp(cmd[0], "exit", len_cmd))
 			; //Дописать
 	}
