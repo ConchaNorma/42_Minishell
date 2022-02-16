@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/16 19:58:13 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/16 20:01:48 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,11 @@ static void builtin_env(char **envp)
 
 	i = 0;
 	while (envp[i])
-		ft_putstr_fd(envp[i++], 1);
+	{
+		write(1, envp[i], ft_strlen(envp[i]));
+		write(1, "\n", 1);
+		i++;
+	}
 }
 /*
 static int builtin_exit(void);
