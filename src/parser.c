@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/16 18:08:11 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/16 22:47:24 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*ft_squote(char *str, int *i)
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
 	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
-	--(*i);
+	*i -= 2;
 	return (tmp);
 }
 
@@ -116,6 +116,11 @@ char	*ft_space(t_exec *vars, int *i)
 		while (vars->str[++j] == ' ')
 			;
 		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+		if (vars->cmds->cmd_num == 1)
+		{
+			*i = -1;
+			return (tmp);
+		}
 	}
 	else
 	{
@@ -125,24 +130,25 @@ char	*ft_space(t_exec *vars, int *i)
 				break ;
 			//tmp = ft_strjoin(ft_substr(str, 0, *i), \
 			//	ft_substr(str, j, ft_strlen(str) - *i - 1));
-			ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
-			tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
 		}
 	}
+	ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
+	*i = -1;
 	return (tmp);
 }
 
-char	*ft_tab(char *str, int *i)
+char	*ft_tab(t_exec *vars, int *i)
 {
 	int		j;
 
 	j = *i;
-	while (str[j] == '\t')
+	while (vars->str[j] == '\t')
 	{
-		str[j] = ' ';
+		vars->str[j] = ' ';
 		j++;
 	}
-	return (ft_space(str, i));
+	return (ft_space(vars, i));
 }
 
 char *ft_file_parser(t_exec *vars, int *i)
@@ -236,6 +242,7 @@ char	*ft_forward_redir(t_exec *vars, int *i)
 	printf("tmp_redir->type= %u\n", tmp_redir->type);
 	printf("tmp_redir->file= %s\n", tmp_redir->file);
 	printf("tmp= %s\n", tmp);
+	*i = -1;
 	return (tmp);
 }
 
@@ -268,15 +275,18 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str)
 		tmp_cmds->cmd = (char **)malloc(sizeof(char *) * tmp_cmds->cmd_num);
 	else
 	{
-		tmp = (char **)malloc(sizeof(char *) * ++cmd_num);
-		while (i < cmd_num - 1)
+		tmp = (char **)malloc(sizeof(char *) * ++(tmp_cmds->cmd_num));
+		i = -1;
+		while (++i < tmp_cmds->cmd_num - 1)
 			tmp[i] = tmp_cmds->cmd[i];
 		free (tmp_cmds->cmd);
-		tmp_cmd->cmd = tmp;
+		tmp_cmds->cmd = tmp;
 	}
-	tmp[i] = ft_strdup(new_str);
+	//tmp_cmds->cmd[i] = (char *)malloc(sizeof(char) * ft_strlen(new_str));
+	tmp_cmds->cmd[i] = ft_strdup(new_str);
 
 	printf("massive of cmd for execve\n");
+	//return (0);
 }
 
 char *ft_split_pipe(t_exec *vars, int *i)
@@ -285,6 +295,7 @@ char *ft_split_pipe(t_exec *vars, int *i)
 	t_cmd	*new;
 	t_cmd	*tmp_cmds;
 	int		len;
+	int		j;
 
 	len = *i;
 	tmp_cmds = vars->cmds;
@@ -292,20 +303,21 @@ char *ft_split_pipe(t_exec *vars, int *i)
 	//	exit(1);
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	if (vars->str[len] == ' ')
-			len--;
-	tmp_cmds->cmd = ft_substr(vars->str, 0, len);
+	//if (vars->str[len] == ' ')
+	//		len--;
+	//tmp_cmds->cmd = ft_substr(vars->str, 0, len);
 	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
 	if (vars->str[*i])
 	{
 		new = ft_create_cmds();
 		tmp_cmds->next = new;
 	}
-
+	j = -1;
 	printf("2\n");
 	printf("str_0= %s\n", vars->str);
 	printf("str_2= %s\n", tmp);
-	printf("str_cmd= %s\n", vars->cmds->cmd);
+	while (++j < vars->cmds->cmd_num)
+		printf("str_cmd= %s\n", vars->cmds->cmd[j]);
 	//vars->cmds = tmp_cmds;
 	*i = -1;
 	vars->st++;
@@ -314,8 +326,9 @@ char *ft_split_pipe(t_exec *vars, int *i)
 
 int parser(t_exec *vars)
 {
-	int	i;
+	int		i;
 	t_cmd	*tmp_cmds;
+	int		j;
 
 	vars->cmds = ft_create_cmds();
 	i = -1;
@@ -323,21 +336,21 @@ int parser(t_exec *vars)
 	{
 		if (vars->str[i] == '\'')
 			vars->str = ft_squote(vars->str, &i);
-		if (vars->str[i] == '\\')
+		else if (vars->str[i] == '\\')
 			vars->str = ft_bslesh(vars->str, &i);
-		if (vars->str[i] == '\"')
+		else if (vars->str[i] == '\"')
 			vars->str = ft_dquote(vars->str, &i, vars->envp);
-		if (vars->str[i] == '$')
+		else if (vars->str[i] == '$')
 			vars->str = ft_dollar(vars->str, &i, vars->envp);
-		if (vars->str[i] == ' ')
-			vars->str = ft_space(vars->str, &i);
-		if (vars->str[i] == '\t')
-			vars->str = ft_tab(vars->str, &i);
-		if (vars->str[i] == '>')
+		else if (vars->str[i] == ' ')
+			vars->str = ft_space(vars, &i);
+		else if (vars->str[i] == '\t')
+			vars->str = ft_tab(vars, &i);
+		else if (vars->str[i] == '>')
 			vars->str = ft_forward_redir(vars, &i);
-		if (vars->str[i] == '<')
+		else if (vars->str[i] == '<')
 			continue ;
-		if (vars->str[i] == '|')
+		else if (vars->str[i] == '|')
 			vars->str = ft_split_pipe(vars, &i);
 	}
 	vars->str = ft_split_pipe(vars, &i);
@@ -347,9 +360,11 @@ int parser(t_exec *vars)
 	//ft_split_pipes(vars);
 	i = -1;
 	tmp_cmds = vars->cmds;
+	j = -1;
 	while (tmp_cmds)
 	{
-		printf("pipes[%d]= %s\n", ++i, tmp_cmds->cmd);
+		while (++j < tmp_cmds->cmd_num)
+		printf("pipes[%d]= %s\n", ++i, tmp_cmds->cmd[j]);
 		tmp_cmds = tmp_cmds->next;
 	}
 

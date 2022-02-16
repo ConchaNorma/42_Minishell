@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/15 20:06:35 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/16 22:34:45 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_redir{
 
 typedef struct s_cmd{
 	t_redir			*v_rdr;
-	char			*cmd;
+	int				cmd_num;
+	char			**cmd;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -77,5 +78,6 @@ char	*ft_dquote(char *str, int *i, char **envp);
 char	*ft_squote(char *str, int *i);
 char	*ft_bslesh(char *str, int *i);
 char	*ft_dollar(char *str, int *i, char **envp);
+void	ft_create_cmdmas(t_exec *vars, char *new_str);
 
 #endif

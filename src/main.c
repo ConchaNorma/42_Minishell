@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/15 20:09:35 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/16 19:55:19 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	main(int argc, char **argv, char **envp)
 	t_exec vars;
 	t_cmd	*tmp_cmds;
 	t_redir	*tmp_redir;
+	int		i;
+
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
@@ -63,7 +65,9 @@ int	main(int argc, char **argv, char **envp)
 		while (tmp_cmds)
 		{
 			printf("12\n");
-			printf("pipes[%d]= %s\n", 1, tmp_cmds->cmd);
+			i = -1;
+			while (++i < tmp_cmds->cmd_num)
+				printf("pipes[%d-%d]= %s\n", 1, i, tmp_cmds->cmd[i]);
 			if (tmp_cmds->v_rdr){
 				tmp_redir = vars.cmds->v_rdr;
 				while(tmp_redir){
@@ -84,9 +88,11 @@ int	main(int argc, char **argv, char **envp)
 		break ; //Убрать, когда будет написан код, слушающий ввод строки
 	}
 	printf("1");
+	i = -1;
 	while (vars.cmds)
 	{
-		printf("pipes= %s\n", vars.cmds->cmd);
+		while (++i < tmp_cmds->cmd_num)
+			printf("pipes= %s\n", vars.cmds->cmd[i]);
 		vars.cmds = vars.cmds->next;
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
