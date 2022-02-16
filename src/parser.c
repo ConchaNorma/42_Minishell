@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/16 09:36:28 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/16 16:06:06 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,6 @@ char *ft_file_parser(t_exec *vars, int *i)
 			printf("str= %s\n", vars->str);
 		}
 	}
-	//}
 	tmp = NULL;
 	tmp = ft_substr(vars->str, j, *i - j);
 	return (tmp);
@@ -246,9 +245,33 @@ t_cmd	*ft_create_cmds(void)
 	if (!tmp)
 		exit (1);
 	tmp->v_rdr = NULL;
+	tmp->cmd_num = 1;
 	tmp->cmd = NULL;
 	tmp->next = NULL;
 	return (tmp);
+}
+
+void	ft_create_cmdmas(t_exec *vars)
+{
+	t_cmd	*tmp_cmds;
+	char	**tmp;
+	int		i;
+
+	i = 0;
+	tmp_cmds = vars->cmds;
+	while (tmp_cmds->next)
+		tmp_cmds = tmp_cmds->next;
+	if (tmp_cmds->cmd == NULL)
+		tmp_cmds->cmd = (char **)malloc(sizeof(char *) * cmd_num);
+	else
+	{
+		tmp = (char **)malloc(sizeof(char *) * ++cmd_num);
+		while (i < cmd_num - 1)
+
+	}
+
+	printf("massive of cmd for execve\n");
+
 }
 
 char *ft_split_pipe(t_exec *vars, int *i)
@@ -264,7 +287,7 @@ char *ft_split_pipe(t_exec *vars, int *i)
 	//	exit(1);
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	while (vars->str[len] == ' ')
+	if (vars->str[len] == ' ')
 			len--;
 	tmp_cmds->cmd = ft_substr(vars->str, 0, len);
 	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
