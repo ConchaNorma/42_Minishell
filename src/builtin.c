@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/16 20:01:48 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/16 20:23:59 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,31 @@ static void builtin_env(char **envp)
 }
 /*
 static int builtin_exit(void);
-static int builtin_echo(void);
+*/
+static void builtin_echo(char **cmd)
+{
+	int i;
+	int nl;
+
+	i = 1;
+	nl = 0;
+	while (cmd[i])
+	{
+		if (nl != -1 && !nl && cmd[i][0] == '-' && ft_strchr(cmd[i], 'n'))
+			nl = 1;
+		if (cmd[i][0] != '-')
+			nl = -1;
+		if (nl == -1)
+		{
+			write(1, cmd[i], ft_strlen(cmd[i]));
+			write(1, " ", 1);
+		}
+		i++;
+	}
+	if (nl != 1)
+		write(1, "\n", 1);
+}
+/*
 static int builtin_unset(void);
 static int builtin_export(void);
 */
@@ -149,12 +173,12 @@ int builtin_check(char **cmd, char **envp)
 		if (!ft_memcmp(cmd[0], "echo", len_cmd))
 			;
 		if (!ft_memcmp(cmd[0], "exit", len_cmd))
-			;
+			; //Дописать
 	}
 	else if (len_cmd == 3)
 	{
 		if (!ft_memcmp(cmd[0], "env", len_cmd))
-			;
+			builtin_env(envp);
 		if (!ft_memcmp(cmd[0], "pwd", len_cmd))
 			builtin_pwd(0);
 	}
