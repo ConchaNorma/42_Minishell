@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/16 16:06:06 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/16 18:08:11 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,27 +103,30 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	return (tmp);
 }
 
-char	*ft_space(char *str, int *i)
+//char	*ft_space(char *str, int *i)
+char	*ft_space(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
 
 	j = *i;
-	tmp = ft_strdup(str);
+	tmp = ft_strdup(vars->str);
 	if (*i == 0)
 	{
-		while (str[++j] == ' ')
+		while (vars->str[++j] == ' ')
 			;
-		tmp = ft_substr(str, j, ft_strlen(str) - j);
+		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	}
 	else
 	{
-		while (str[++j])
+		while (vars->str[++j])
 		{
-			if (str[j] != ' ' || !str[j])
+			if (vars->str[j] != ' ' || !vars->str[j])
 				break ;
-			tmp = ft_strjoin(ft_substr(str, 0, *i), \
-				ft_substr(str, j, ft_strlen(str) - *i - 1));
+			//tmp = ft_strjoin(ft_substr(str, 0, *i), \
+			//	ft_substr(str, j, ft_strlen(str) - *i - 1));
+			ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+			tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
 		}
 	}
 	return (tmp);
@@ -251,7 +254,7 @@ t_cmd	*ft_create_cmds(void)
 	return (tmp);
 }
 
-void	ft_create_cmdmas(t_exec *vars)
+void	ft_create_cmdmas(t_exec *vars, char *new_str)
 {
 	t_cmd	*tmp_cmds;
 	char	**tmp;
@@ -262,16 +265,18 @@ void	ft_create_cmdmas(t_exec *vars)
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
 	if (tmp_cmds->cmd == NULL)
-		tmp_cmds->cmd = (char **)malloc(sizeof(char *) * cmd_num);
+		tmp_cmds->cmd = (char **)malloc(sizeof(char *) * tmp_cmds->cmd_num);
 	else
 	{
 		tmp = (char **)malloc(sizeof(char *) * ++cmd_num);
 		while (i < cmd_num - 1)
-
+			tmp[i] = tmp_cmds->cmd[i];
+		free (tmp_cmds->cmd);
+		tmp_cmd->cmd = tmp;
 	}
+	tmp[i] = ft_strdup(new_str);
 
 	printf("massive of cmd for execve\n");
-
 }
 
 char *ft_split_pipe(t_exec *vars, int *i)
