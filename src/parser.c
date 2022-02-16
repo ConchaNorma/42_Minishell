@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/16 09:35:38 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/16 09:36:28 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,55 +141,6 @@ char	*ft_tab(char *str, int *i)
 	}
 	return (ft_space(str, i));
 }
-
-/* functions for working with massives. massives changed to lists
-
-static void	ft_split_pipes_sup(t_cmd **pipes, char **tmp)
-{
-	int		len;
-	int		start;
-	int		i;
-
-	i = -1;
-	len = 0;
-	start = 0;
-	i = -1;
-	while (tmp[++i])
-	{
-		start = 0;
-		pipes[i] = (t_cmd *)malloc(sizeof(t_cmd));
-		len = ft_strlen(tmp[i]);
-		while (tmp[i][start] == ' ')
-			start++;
-		while (tmp[i][len - 1] == ' ')
-			len--;
-		pipes[i]->cmd = ft_substr(tmp[i], start, len - start);
-	}
-}
-
-static void ft_split_pipes(t_exec *vars)
-{
-	char	**tmp;
-	int		i;
-	int		pipe_count;
-
-	i = -1;
-	pipe_count = 1;
-	while (vars->str[++i])
-		if (vars->str[i] == '|')
-			pipe_count++;
-	vars->st = pipe_count;
-	tmp = (char **)malloc(pipe_count * sizeof(char *));
-	tmp = ft_split(vars->str, '|');
-	vars->cmds = (t_cmd **)malloc((pipe_count + 1) * sizeof(t_cmd *));
-	vars->cmds[pipe_count] = NULL;
-	ft_split_pipes_sup(vars->cmds, tmp);
-	i = -1;
-	while (tmp[++i])
-		free (tmp[i]);
-	free (tmp);
-}
-*/
 
 char *ft_file_parser(t_exec *vars, int *i)
 {
