@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/15 22:25:49 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/16 09:35:38 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,35 +191,37 @@ static void ft_split_pipes(t_exec *vars)
 }
 */
 
-char *ft_file_parser(char *str, int *i, char **envp)
+char *ft_file_parser(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
 
-	if (str[*i] == '>' || str[*i] == '<')
+	if (vars->str[*i] == '>' || vars->str[*i] == '<')
 		++(*i);
-	while (str[*i] == ' ' || str[*i] == '\t')
+	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
-	//while (1)
-	//{
-		while (ft_isalnum(str[*i]) || str[*i] == '[' || str[*i] == ']'\
-			|| str[*i] == '{' || str[*i] == '}' || str[*i] == '%' || str[*i] == '@'\
-			|| str[*i] == '!' || str[*i] == '.' || str[*i] == '~' || str[*i] == '='\
-			|| str[*i] == '+' || str[*i] == '-' || str[*i] == '_' || str[*i] == '#'\
-			|| str[*i] == '^' || str[*i] == '\"' || str[*i] == '\'')
-		{
-				printf("str= %s\n", str);
-				printf("str= %c\n", str[*i]);
-				if (str[*i] == '\"')
-					str = ft_dquote(str, i, envp);
-				if (str[*i] == '\'')
-					str = ft_squote(str, i);
-				++(*i);
+	while (ft_isalnum(vars->str[*i]) || vars->str[*i] == '[' || vars->str[*i] == ']'\
+		|| vars->str[*i] == '{' || vars->str[*i] == '}' || vars->str[*i] == '%' || vars->str[*i] == '@'\
+		|| vars->str[*i] == '!' || vars->str[*i] == '.' || vars->str[*i] == '~' || vars->str[*i] == '='\
+		|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
+		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'')
+	{
+		printf("str= %s\n", vars->str);
+		printf("str= %c\n", vars->str[*i]);
+		if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
+			++(*i);
+		else {
+			if (vars->str[*i] == '\"')
+				vars->str = ft_dquote(vars->str, i, vars->envp);
+			if (vars->str[*i] == '\'')
+				vars->str = ft_squote(vars->str, i);
+			printf("str= %s\n", vars->str);
 		}
+	}
 	//}
 	tmp = NULL;
-	tmp = ft_substr(str, j, *i - j);
+	tmp = ft_substr(vars->str, j, *i - j);
 	return (tmp);
 }
 
@@ -274,7 +276,8 @@ char	*ft_forward_redir(t_exec *vars, int *i)
 	if (vars->str[++(*i)] == '>')
 		tmp_redir->type = APN;
 	j = *i;
-	tmp_redir->file = ft_file_parser(vars->str, &j, vars->envp);
+	tmp_redir->file = ft_file_parser(vars, &j);
+	printf("str= %s\n", vars->str);
 	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
 		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
 	printf("tmp_redir->type= %u\n", tmp_redir->type);
