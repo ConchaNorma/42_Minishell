@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/15 22:01:56 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/16 19:58:13 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int builtin_cd(char *dir, char **envp)
 {
 	char	*path;
 	char	*tmp;
-	//char	*tmp2;
+	char	*tmp2;
 	int		i;
 	int		len;
 
@@ -52,7 +52,7 @@ int builtin_cd(char *dir, char **envp)
 			i++;
 		}
 	}
-/*	if (dir)
+	if (dir)
 	{
 		if (dir[0] == '/')
 		{
@@ -110,48 +110,22 @@ int builtin_cd(char *dir, char **envp)
 			}
 		}
 	}
-	printf("path = %s\n", path);
+	//printf("path = %s\n", path);
 	chdir(path);	//дописать обработку ошибок
-	printf("pwd = %s\n", builtin_pwd(1));
-	free(path);*/
-
-	if (dir)
-	{
-		if (dir[0] == '/')
-		{
-			free(path);
-			path = ft_strjoin(NULL, dir);
-		}
-		else
-		{
-			tmp = ft_strjoin(path, "/");
-			free(path);
-			path = tmp;
-			if (dir[0] == '~')
-			{
-				if(dir[1] && dir[1] == '/')
-				{
-					tmp = ft_strjoin(path, &dir[2]);
-					free(path);
-					path = tmp;
-				}
-			}
-			else
-			{
-				tmp = ft_strjoin(path, dir);
-				free(path);
-				path = tmp;
-			}
-		}
-	}
-	printf("path = %s\n", path);
-	chdir(path);	//дописать обработку ошибок
-	printf("pwd = %s\n", builtin_pwd(1));
+	//printf("pwd = %s\n", builtin_pwd(1));
 	free(path);
 	return (0);
 }
+
+static void builtin_env(char **envp)
+{
+	int i;
+
+	i = 0;
+	while (envp[i])
+		ft_putstr_fd(envp[i++], 1);
+}
 /*
-static int builtin_env(void);
 static int builtin_exit(void);
 static int builtin_echo(void);
 static int builtin_unset(void);
