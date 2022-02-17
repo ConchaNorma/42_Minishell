@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/13 19:31:33 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/17 20:10:52 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ static int redir_heredoc(t_redir *v_rdr)
 
 int redirection_fd(t_redir *v_rdr)
 {
+	//дописать в редиректах открытие файла по пути типа /--/--/filename
 	while (v_rdr)
 	{
 		if (v_rdr->type == OUT)

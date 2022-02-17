@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/08 18:46:05 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/17 21:33:56 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,3 +74,4 @@ char	*get_path(char **envp, char *cmd)
 			return (cmd);
 	return (NULL);
 }
+
