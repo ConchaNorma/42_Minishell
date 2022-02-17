@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/17 19:21:18 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/17 21:30:27 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ t_redir	*ft_redir_sup(t_cmd *tmp_cmds)
 	return (tmp_redir);
 }
 
-char	*ft_forward_redir(t_exec *vars, int *i)
+char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 {
 	int		j;
 	t_cmd	*tmp_cmds;
@@ -234,11 +234,13 @@ char	*ft_forward_redir(t_exec *vars, int *i)
 	tmp_redir->type = OUT;
 	if (vars->str[++(*i)] == '>')
 		tmp_redir->type = APN;
+	tmp_redir->fd = fd;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);
 /*	printf("str= %s\n", vars->str);*/
-	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
+/*	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
 		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
+*/	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 /*	printf("tmp_redir->type= %u\n", tmp_redir->type);
 	printf("tmp_redir->file= %s\n", tmp_redir->file);
 	printf("tmp= %s\n", tmp);*/
@@ -246,7 +248,7 @@ char	*ft_forward_redir(t_exec *vars, int *i)
 	return (tmp);
 }
 
-char	*ft_backward_redir(t_exec *vars, int *i)
+char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 {
 	int		j;
 	t_cmd	*tmp_cmds;
@@ -260,11 +262,13 @@ char	*ft_backward_redir(t_exec *vars, int *i)
 	tmp_redir->type = INP;
 	if (vars->str[++(*i)] == '<')
 		tmp_redir->type = HRD;
+	tmp_redir->fd = fd;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);
 /*	printf("str= %s\n", vars->str);*/
-	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
+/*	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
 		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
+*/	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 /*	printf("tmp_redir->type= %u\n", tmp_redir->type);
 	printf("tmp_redir->file= %s\n", tmp_redir->file);
 	printf("tmp= %s\n", tmp);*/
@@ -357,6 +361,31 @@ char *ft_split_pipe(t_exec *vars, int *i)
 	return (tmp);
 }
 
+char	*ft_digit(t_exec *vars, int *i)
+{
+	int		j;
+	int		end_digit;
+	char	*tmp;
+	int		fd;
+
+	j = *i;
+	tmp = ft_strdup(vars->str);
+	while (ft_isdigit(vars->str[++j]))
+		;
+	end_digit = j;
+	while (vars->str[j] == ' ')
+		j++;
+	fd = ft_atoi(ft_substr(vars->str, *i, end_digit));
+	if (vars->str[j] == '>')
+		tmp = ft_forward_redir(vars, &j, fd);
+	else if (vars->str[j] == '<')
+		tmp = ft_backward_redir(vars, &j, fd);
+	else
+		return (tmp);
+	*i = -1;
+	return (tmp);
+}
+
 int parser(t_exec *vars)
 {
 	int		i;
@@ -380,11 +409,13 @@ int parser(t_exec *vars)
 		else if (vars->str[i] == '\t')
 			vars->str = ft_tab(vars, &i);
 		else if (vars->str[i] == '>')
-			vars->str = ft_forward_redir(vars, &i);
+			vars->str = ft_forward_redir(vars, &i, 1);
 		else if (vars->str[i] == '<')
-			vars->str = ft_backward_redir(vars, &i);
+			vars->str = ft_backward_redir(vars, &i, 0);
 		else if (vars->str[i] == '|')
 			vars->str = ft_split_pipe(vars, &i);
+		else if (ft_isdigit(vars->str[i]))
+			vars->str = ft_digit(vars, &i);
 	}
 	vars->str = ft_space(vars, &i);
 	//vars->str = ft_split_pipe(vars, &i);
