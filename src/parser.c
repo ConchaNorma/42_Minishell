@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/17 01:23:10 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/17 19:21:18 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,8 @@ char *ft_file_parser(t_exec *vars, int *i)
 		|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
 		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'')
 	{
-		printf("str= %s\n", vars->str);
-		printf("str= %c\n", vars->str[*i]);
+/*		printf("str= %s\n", vars->str);
+		printf("str= %c\n", vars->str[*i]);*/
 		if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
 			++(*i);
 		else {
@@ -176,7 +176,7 @@ char *ft_file_parser(t_exec *vars, int *i)
 				vars->str = ft_dquote(vars->str, i, vars->envp);
 			if (vars->str[*i] == '\'')
 				vars->str = ft_squote(vars->str, i);
-			printf("str= %s\n", vars->str);
+/*			printf("str= %s\n", vars->str);*/
 		}
 	}
 	tmp = NULL;
@@ -236,12 +236,12 @@ char	*ft_forward_redir(t_exec *vars, int *i)
 		tmp_redir->type = APN;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);
-	printf("str= %s\n", vars->str);
+/*	printf("str= %s\n", vars->str);*/
 	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
 		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
-	printf("tmp_redir->type= %u\n", tmp_redir->type);
+/*	printf("tmp_redir->type= %u\n", tmp_redir->type);
 	printf("tmp_redir->file= %s\n", tmp_redir->file);
-	printf("tmp= %s\n", tmp);
+	printf("tmp= %s\n", tmp);*/
 	*i = -1;
 	return (tmp);
 }
@@ -262,12 +262,12 @@ char	*ft_backward_redir(t_exec *vars, int *i)
 		tmp_redir->type = HRD;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);
-	printf("str= %s\n", vars->str);
+/*	printf("str= %s\n", vars->str);*/
 	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
 		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
-	printf("tmp_redir->type= %u\n", tmp_redir->type);
+/*	printf("tmp_redir->type= %u\n", tmp_redir->type);
 	printf("tmp_redir->file= %s\n", tmp_redir->file);
-	printf("tmp= %s\n", tmp);
+	printf("tmp= %s\n", tmp);*/
 	*i = -1;
 	return (tmp);
 }
@@ -311,8 +311,8 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str)
 	//tmp_cmds->cmd[i] = (char *)malloc(sizeof(char) * ft_strlen(new_str));
 	tmp_cmds->cmd[i] = ft_strdup(new_str);
 
-	printf("massive of cmd for execve\n");
-	//return (0);
+/*	printf("massive of cmd for execve\n");
+*/	//return (0);
 }
 
 char *ft_split_pipe(t_exec *vars, int *i)
@@ -321,8 +321,8 @@ char *ft_split_pipe(t_exec *vars, int *i)
 	t_cmd	*new;
 	t_cmd	*tmp_cmds;
 	int		len;
-	int		j;
-
+/*	int		j;
+*/
 	len = *i;
 	tmp_cmds = vars->cmds;
 	//if (vars->str[*i + 1] == '|')
@@ -338,6 +338,7 @@ char *ft_split_pipe(t_exec *vars, int *i)
 		new = ft_create_cmds();
 		tmp_cmds->next = new;
 	}
+/*
 	j = -1;
 	printf("2\n");
 	printf("str_0= %s\n", vars->str);
@@ -349,6 +350,7 @@ char *ft_split_pipe(t_exec *vars, int *i)
 			printf("str_cmd= %s\n", tmp_cmds->cmd[j]);
 		tmp_cmds = tmp_cmds->next;
 	}
+*/
 	//vars->cmds = tmp_cmds;
 	*i = -1;
 	vars->st++;
@@ -358,9 +360,9 @@ char *ft_split_pipe(t_exec *vars, int *i)
 int parser(t_exec *vars)
 {
 	int		i;
-	t_cmd	*tmp_cmds;
+/*	t_cmd	*tmp_cmds;
 	int		j;
-
+*/
 	vars->cmds = ft_create_cmds();
 	i = -1;
 	while (vars->str[++i])
@@ -386,12 +388,12 @@ int parser(t_exec *vars)
 	}
 	vars->str = ft_space(vars, &i);
 	//vars->str = ft_split_pipe(vars, &i);
-	printf("str_res= %s\n", vars->str);
+/*	printf("str_res= %s\n", vars->str);*/
 
 	//vars->cmds = ft_split_pipes(vars->str);
 	//ft_split_pipes(vars);
 	i = -1;
-	tmp_cmds = vars->cmds;
+/*	tmp_cmds = vars->cmds;
 	j = -1;
 	while (tmp_cmds)
 	{
@@ -399,7 +401,7 @@ int parser(t_exec *vars)
 			printf("pipes[%d]= %s\n", ++i, tmp_cmds->cmd[j]);
 		tmp_cmds = tmp_cmds->next;
 	}
-
+*/
 	return (0);
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
 	//склеить по переносу "\"
