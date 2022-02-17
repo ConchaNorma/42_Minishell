@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/16 22:34:45 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/17 19:51:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ typedef struct s_exec
 	char	*str;
 	t_cmd	*cmds;
 	pid_t	pid;
+	t_list	*lvar;
 	int		fd[2];
 	int		st;
-	//char	**exe;
 	char	*path;
 
 }	t_exec;
