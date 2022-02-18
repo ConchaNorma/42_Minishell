@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/17 21:30:27 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/18 19:12:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,17 +291,38 @@ t_cmd	*ft_create_cmds(void)
 	return (tmp);
 }
 
-void	ft_create_cmdmas(t_exec *vars, char *new_str)
+char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 {
-	t_cmd	*tmp_cmds;
 	char	**tmp;
 	int		i;
 
-	i = 0;
+	if (str_mas == NULL)
+		str_mas = (char **)malloc(sizeof(char *) * str_num);
+	else
+	{
+		tmp = (char **)malloc(sizeof(char *) * ++(str_num));
+		i = -1;
+		while (++i < str_num - 1)
+			tmp[i] = str_mas[i];
+		free (str_mas);
+		str_mas = tmp;
+	}
+	str_mas[i] = ft_strdup(new_str);
+	return (str_mas);
+}
+
+void	ft_create_cmdmas(t_exec *vars, char *new_str)
+{
+	t_cmd	*tmp_cmds;
+	//char	**tmp;
+	//int		i;
+
+	//i = 0;
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	if (tmp_cmds->cmd == NULL)
+	tmp_cmds->cmd = ft_str_newline(tmp_cmds->cmd, new_str, 1);
+/*	if (tmp_cmds->cmd == NULL)
 		tmp_cmds->cmd = (char **)malloc(sizeof(char *) * tmp_cmds->cmd_num);
 	else
 	{
@@ -314,7 +335,7 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str)
 	}
 	//tmp_cmds->cmd[i] = (char *)malloc(sizeof(char) * ft_strlen(new_str));
 	tmp_cmds->cmd[i] = ft_strdup(new_str);
-
+*/
 /*	printf("massive of cmd for execve\n");
 */	//return (0);
 }
@@ -384,6 +405,77 @@ char	*ft_digit(t_exec *vars, int *i)
 		return (tmp);
 	*i = -1;
 	return (tmp);
+}
+
+void 	ft_export(t_exec *vars)
+{
+	int		i;
+	int		j;
+	t_cmd	*tmp_cmds;
+
+	tmp_cmds = vars->cmds;
+	while (tmp_cmds)
+	{
+		i = -1;
+		while (++i < tmp_cmds->cmd_num)
+		{
+			if (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export")))
+			{
+				j = i;
+				while (++j < tmp_cmds->cmd_num)
+				{
+					if (ft_strrchr(tmp_cmds->cmd[j], '='))
+						ft_addenv(tmp_cmds->cmd[j]);
+				}
+			}
+		}
+
+		tmp_cmds = tmp_cmds->next;
+	}
+}
+
+int	ft_checkstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_strrchr(str, '='))
+		return (1);
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (1);
+	while (str[i] != '=')
+		if (str[++i] == ' ')
+			return (1)
+	return (0);
+}
+
+void 	ft_export_search(t_exec *vars)
+{
+	int		i;
+	int		j;
+	t_cmd	*tmp_cmds;
+
+	tmp_cmds = vars->cmds;
+	while (tmp_cmds)
+	{
+		i = -1;
+		while (++i < tmp_cmds->cmd_num)
+		{
+			if (ft_checkstr(tmp_cmds->cmd[i]))
+				continue ;
+			else if (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export")))
+			{
+				j = i;
+				while (++j < tmp_cmds->cmd_num)
+				{
+					if (ft_strrchr(tmp_cmds->cmd[j], '='))
+						ft_addenv(tmp_cmds->cmd[j]);
+				}
+			}
+		}
+
+		tmp_cmds = tmp_cmds->next;
+	}
 }
 
 int parser(t_exec *vars)
