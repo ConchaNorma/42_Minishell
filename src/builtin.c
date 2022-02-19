@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 12:45:58 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/19 12:50:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ static void builtin_echo(char **cmd)
 
 //static int builtin_unset(void);
 
-static void builtin_export(char ***envp, char *var)
+void builtin_export(t_exec *vars, char *var)
 {
 	char **tmp;
 
-	tmp = arr_add_one_str(envp, var);	//дописать проверку на ошибку, возможно также проверка строки на корректность записи переменной
-	ft_frmtrx(envp);
-	envp = tmp;
+	tmp = arr_add_one_str(vars->envp, var);	//дописать проверку на ошибку, возможно также проверка строки на корректность записи переменной
+	ft_frmtrx(vars->envp);
+	vars->envp = tmp;
 }
 
 int builtin_check(char **cmd, t_exec *vars)
@@ -82,7 +82,7 @@ int builtin_check(char **cmd, t_exec *vars)
 
 	len_cmd = ft_strlen(cmd[0]);
 	if (len_cmd == 6 && !ft_memcmp(cmd[0], "export", len_cmd))
-		builtin_export(&vars->envp, cmd[1]);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
+		builtin_export(vars, cmd[1]);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
 	else if (len_cmd == 5 && !ft_memcmp(cmd[0], "unset", len_cmd))
 		;	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
 	else if (len_cmd == 4)
@@ -95,12 +95,12 @@ int builtin_check(char **cmd, t_exec *vars)
 	else if (len_cmd == 3)
 	{
 		if (!ft_memcmp(cmd[0], "env", len_cmd))
-			builtin_env(envp);
+			builtin_env(vars->envp);
 		if (!ft_memcmp(cmd[0], "pwd", len_cmd))
 			builtin_pwd(0);
 	}
 	else if (len_cmd == 2 && !ft_memcmp(cmd[0], "cd", len_cmd))
-		builtin_cd(cmd[1], envp);
+		builtin_cd(cmd[1], vars->envp);
 	return (0);
 }
 

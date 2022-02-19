@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/19 12:10:15 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/19 12:50:41 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ int		redirection_fd(t_redir *v_rdr);
 //int		parser(t_exec *vars);
 int		executer(t_exec *vars);
 
-int		builtin_check(char **cmd, char **envp);
+int		builtin_check(char **cmd, t_exec *vars);
+void	builtin_export(t_exec *vars, char *var);
 char	*builtin_pwd(int sgn);
 int		builtin_cd(char *dir, char **envp);
 char	**arr_add_one_str(char **arr, char *str);
