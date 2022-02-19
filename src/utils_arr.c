@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 21:33:13 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 12:22:12 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/19 12:40:59 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,23 @@ char	**arr_add_one_str(char **arr, char *str)
 	char	**tmp;
 	int		i;
 
-	if (!str)
-		return (NULL);
 	i = 0;
 	while (arr && arr[i])
 		i++;
-	i++;
+	if (str)
+		i++;
 	tmp = malloc(sizeof(char *) * (i + 1));
 	if (!tmp)
 		return (NULL);
 	tmp[i--] = NULL;
-	tmp[i--] = ft_strdup(str);
-	if (!tmp[i+1])
+	if (str)
 	{
-		free(tmp);
-		return (NULL);
+		tmp[i--] = ft_strdup(str);
+		if (!tmp[i+1])
+		{
+			free(tmp);
+			return (NULL);
+		}
 	}
 	return (arr_copy_or_free_to(arr, tmp));
 }

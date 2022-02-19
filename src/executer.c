@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/15 20:33:52 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/19 12:45:16 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int call_parent(t_exec *vars)
 	redirection_fd(tmp->v_rdr);
 	//vars->exe = ft_split(tmp->cmd, ' ');
 	//здесь сделать проверку на built-in и их выполнение. В случае, если это не они, выполнять то, что ниже
-	builtin_check(tmp->cmd, vars->envp);
+	builtin_check(tmp->cmd, vars);
 	vars->path = get_path(vars->envp, tmp->cmd[0]);
 	if (!vars->path)
 	{
