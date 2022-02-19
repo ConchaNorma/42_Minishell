@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 12:50:09 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/19 14:43:16 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,6 @@ static void builtin_echo(char **cmd)
 }
 
 //static int builtin_unset(void);
-
-void builtin_export(t_exec *vars, char *var)
-{
-	char **tmp;
-
-	tmp = arr_add_one_str(vars->envp, var);	//дописать проверку на ошибку, возможно также проверка строки на корректность записи переменной
-	ft_frmtrx(vars->envp);
-	vars->envp = tmp;
-}
 
 int builtin_check(char **cmd, t_exec *vars)
 {

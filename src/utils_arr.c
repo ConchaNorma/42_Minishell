@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 21:33:13 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 12:40:59 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/19 14:42:59 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	**arr_add_one_str(char **arr, char *str)
 	}
 	return (arr_copy_or_free_to(arr, tmp));
 }
+
+
 /*
 char	**del_str_from_arr_unset(char **arr, char *str)
 {
