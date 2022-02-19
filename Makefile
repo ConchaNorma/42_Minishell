@@ -6,7 +6,7 @@
 #    By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/02/17 21:48:42 by aarnell          ###   ########.fr        #
+#    Updated: 2022/02/19 12:12:52 by aarnell          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME 		=	minishell
 SRC_DIR		=	./src/
 
 SRC_FILES	=	main.c				executer.c	\
-				redirection.c	builtin.c	utils.c \
+				redirection.c	builtin.c	builtin_cd.c	utils.c \
 				utils_arr.c
 
 
