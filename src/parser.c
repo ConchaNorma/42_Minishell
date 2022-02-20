@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 19:44:33 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/20 22:22:05 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,19 @@ char	*ft_bslesh(char *str, int *i)
 {
 	char	*tmp;
 	char	*tmp2;
+	char	*tmp3;
 
-	tmp = ft_substr(str, 0, *i);
+	tmp3 = ft_substr(str, 0, *i);
 	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
-	tmp = ft_strjoin(tmp, tmp2);
+	tmp = ft_strjoin(tmp3, tmp2);
+	free(tmp3);
+	free(tmp2);
 	(*i)++;
 	return (tmp);
 }
 
-char	*ft_dquote(char *str, int *i, char **envp)
+char	*ft_dquote_sup(char *str, int *i, char **envp)
 {
-	int		j;
-	char	*tmp;
-	char	*tmp2;
-	char	*tmp3;
-
-	j = *i;
 	while (str[++(*i)])
 	{
 		if (str[*i] =='\\' && (str[*i + 1] == '\"' || str[*i + 1] == '`'
@@ -42,10 +39,36 @@ char	*ft_dquote(char *str, int *i, char **envp)
 		if (str[*i] == '\"')
 			break ;
 	}
+	return (str);
+}
+
+char	*ft_dquote(char *str, int *i, char **envp)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+
+	j = *i;
+	str = ft_dquote_sup(str, i, envp);
+/*	while (str[++(*i)])
+	{
+		if (str[*i] =='\\' && (str[*i + 1] == '\"' || str[*i + 1] == '`'
+				|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
+			str = ft_bslesh(str, i);
+		if (str[*i] == '$')
+			ft_dollar(str, i, envp);
+		if (str[*i] == '\"')
+			break ;
+	}
+*/
 	tmp = ft_substr(str, 0, j);
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
-	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
-	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	tmp3 = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
+	tmp = ft_strjoin(tmp3, tmp2);
 	*i -= 2;
 	free (tmp2);
 	free (tmp3);
@@ -58,6 +81,7 @@ char	*ft_squote(char *str, int *i)
 	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
+	char	*tmp4;
 
 	j = *i;
 	while (str[++(*i)])
@@ -68,7 +92,12 @@ char	*ft_squote(char *str, int *i)
 	tmp = ft_substr(str, 0, j);
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
-	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
+	tmp4 = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	tmp = ft_strjoin(tmp4, tmp3);
+	free(tmp3);
+	free(tmp4);
 	*i -= 2;
 	return (tmp);
 }
