@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/17 19:25:31 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/20 17:55:33 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	main(int argc, char **argv, char **envp)
 	while (tmp_cmds)
 	{
 		i = -1;
+		printf("cmd_num= %d\n", tmp_cmds->cmd_num);
 		while (++i < tmp_cmds->cmd_num)
 			printf("pipes= %s\n", tmp_cmds->cmd[i]);
 		if (tmp_cmds->v_rdr)

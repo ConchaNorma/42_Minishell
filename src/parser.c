@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 16:52:32 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/20 18:14:45 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_dquote(char *str, int *i, char **envp)
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
 	tmp = ft_strjoin(ft_strjoin(tmp, tmp2), tmp3);
-	--(*i);
+	*i -= 2;
 	free (tmp2);
 	free (tmp3);
 	return (tmp);
@@ -220,6 +220,7 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
+	vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = OUT;
 	if (vars->str[++(*i)] == '>')
@@ -248,6 +249,7 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
+	vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = INP;
 	if (vars->str[++(*i)] == '<')
@@ -275,7 +277,7 @@ t_cmd	*ft_create_cmds(void)
 	if (!tmp)
 		exit (1);
 	tmp->v_rdr = NULL;
-	tmp->cmd_num = 1;
+	tmp->cmd_num = 0;
 	tmp->cmd = NULL;
 	tmp->next = NULL;
 	return (tmp);
@@ -291,7 +293,7 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 		str_mas = (char **)malloc(sizeof(char *) * str_num);
 	else
 	{
-		tmp = (char **)malloc(sizeof(char *) * ++(str_num));
+		tmp = (char **)malloc(sizeof(char *) * str_num);
 		i = -1;
 		while (++i < str_num - 1)
 			tmp[i] = str_mas[i];
@@ -299,6 +301,7 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 		str_mas = tmp;
 	}
 	str_mas[i] = ft_strdup(new_str);
+	printf("%s\n", str_mas[i]);
 	return (str_mas);
 }
 
@@ -309,7 +312,7 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	tmp_cmds->cmd = ft_str_newline(tmp_cmds->cmd, new_str, 1);
+	tmp_cmds->cmd = ft_str_newline(tmp_cmds->cmd, new_str, ++(tmp_cmds->cmd_num));
 }
 
 char *ft_split_pipe(t_exec *vars, int *i)
