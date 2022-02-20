@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 20:14:37 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/20 21:00:33 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,27 @@ char	*get_path(char **envp, char *cmd)
 	return (NULL);
 }
 
-int srch_var_in_envp(char **envp, char *var)
+int srch_var_in_envp(char **envp, char *var_name)
 {
-	char *tmp;
-	int i;
+	char	*tmp;
+	int		i;
 
-	tmp = ft_strjoin(var, "=");
+	tmp = ft_strjoin(var_name, "=");
 	if (!tmp)
 		return (-1);
 	i = ft_str_in_arrstr(envp, tmp, ft_strlen(tmp));
 	free(tmp);
 	return (i);
+}
+
+char *get_varname(char *var_str, int with_eq)
+{
+	char *t_str;
+	int len;
+
+	t_str = ft_strchr(var_str, '=');
+	if(!t_str)
+		return (NULL);
+	len = t_str - var_str + with_eq;
+	return(ft_substr(var_str, 0, len));
 }

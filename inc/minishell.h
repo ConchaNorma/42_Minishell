@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/20 20:15:05 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/20 21:00:46 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ void	ft_exit(int err, char *str);
 char	*get_path(char **envp, char *cmd);
 int		redirection_fd(t_redir *v_rdr);
 
-int		srch_var_in_envp(char **envp, char *var);
+char	*get_varname(char *var_str, int with_eq);
+int		srch_var_in_envp(char **envp, char *var_name);
+
 
 //int		parser(t_exec *vars);
 int		executer(t_exec *vars);
