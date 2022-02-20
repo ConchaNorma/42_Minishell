@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 14:41:28 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/20 16:52:32 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,6 @@ char	*ft_space(t_exec *vars, int *i)
 		while (vars->str[++j] == ' ')
 			;
 		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
-		//if (vars->cmds->cmd_num == 1)
-		//{
-			*i = -1;
-			return (tmp);
-		//}
 	}
 	else
 	{
@@ -128,12 +123,10 @@ char	*ft_space(t_exec *vars, int *i)
 		{
 			if (vars->str[j] != ' ' || !vars->str[j])
 				break ;
-			//tmp = ft_strjoin(ft_substr(str, 0, *i), \
-			//	ft_substr(str, j, ft_strlen(str) - *i - 1));
 		}
+		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
 	}
-	ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
-	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
 	*i = -1;
 	return (tmp);
 }
@@ -167,8 +160,6 @@ char *ft_file_parser(t_exec *vars, int *i)
 		|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
 		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'')
 	{
-/*		printf("str= %s\n", vars->str);
-		printf("str= %c\n", vars->str[*i]);*/
 		if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
 			++(*i);
 		else {
@@ -176,7 +167,6 @@ char *ft_file_parser(t_exec *vars, int *i)
 				vars->str = ft_dquote(vars->str, i, vars->envp);
 			if (vars->str[*i] == '\'')
 				vars->str = ft_squote(vars->str, i);
-/*			printf("str= %s\n", vars->str);*/
 		}
 	}
 	tmp = NULL;
@@ -296,6 +286,7 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 	char	**tmp;
 	int		i;
 
+	i = 0;
 	if (str_mas == NULL)
 		str_mas = (char **)malloc(sizeof(char *) * str_num);
 	else
@@ -314,30 +305,11 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 void	ft_create_cmdmas(t_exec *vars, char *new_str)
 {
 	t_cmd	*tmp_cmds;
-	//char	**tmp;
-	//int		i;
 
-	//i = 0;
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
 	tmp_cmds->cmd = ft_str_newline(tmp_cmds->cmd, new_str, 1);
-/*	if (tmp_cmds->cmd == NULL)
-		tmp_cmds->cmd = (char **)malloc(sizeof(char *) * tmp_cmds->cmd_num);
-	else
-	{
-		tmp = (char **)malloc(sizeof(char *) * ++(tmp_cmds->cmd_num));
-		i = -1;
-		while (++i < tmp_cmds->cmd_num - 1)
-			tmp[i] = tmp_cmds->cmd[i];
-		free (tmp_cmds->cmd);
-		tmp_cmds->cmd = tmp;
-	}
-	//tmp_cmds->cmd[i] = (char *)malloc(sizeof(char) * ft_strlen(new_str));
-	tmp_cmds->cmd[i] = ft_strdup(new_str);
-*/
-/*	printf("massive of cmd for execve\n");
-*/	//return (0);
 }
 
 char *ft_split_pipe(t_exec *vars, int *i)
@@ -346,37 +318,19 @@ char *ft_split_pipe(t_exec *vars, int *i)
 	t_cmd	*new;
 	t_cmd	*tmp_cmds;
 	int		len;
-/*	int		j;
-*/
+
 	len = *i;
 	tmp_cmds = vars->cmds;
 	//if (vars->str[*i + 1] == '|')
 	//	exit(1);
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	//if (vars->str[len] == ' ')
-	//		len--;
-	//tmp_cmds->cmd = ft_substr(vars->str, 0, len);
 	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
 	if (vars->str[*i])
 	{
 		new = ft_create_cmds();
 		tmp_cmds->next = new;
 	}
-/*
-	j = -1;
-	printf("2\n");
-	printf("str_0= %s\n", vars->str);
-	printf("str_2= %s\n", tmp);
-	tmp_cmds = vars->cmds;
-	while (tmp_cmds->next)
-	{
-		while (++j < tmp_cmds->cmd_num)
-			printf("str_cmd= %s\n", tmp_cmds->cmd[j]);
-		tmp_cmds = tmp_cmds->next;
-	}
-*/
-	//vars->cmds = tmp_cmds;
 	*i = -1;
 	vars->st++;
 	return (tmp);
@@ -405,92 +359,6 @@ char	*ft_digit(t_exec *vars, int *i)
 		return (tmp);
 	*i = -1;
 	return (tmp);
-}
-
-void 	ft_export(t_exec *vars)
-{
-	int		i;
-	int		j;
-	t_cmd	*tmp_cmds;
-
-	tmp_cmds = vars->cmds;
-	while (tmp_cmds)
-	{
-		i = -1;
-		while (++i < tmp_cmds->cmd_num)
-		{
-			if (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export")))
-			{
-				j = i;
-				while (++j < tmp_cmds->cmd_num)
-				{
-					if (ft_strrchr(tmp_cmds->cmd[j], '='))
-						ft_addenv(tmp_cmds->cmd[j]);
-				}
-			}
-		}
-
-		tmp_cmds = tmp_cmds->next;
-	}
-}
-
-int	ft_checkstr(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!ft_strrchr(str, '='))
-		return (1);
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-		return (1);
-	while (str[i] != '=')
-		if (str[++i] == ' ')
-			return (1)
-	return (0);
-}
-
-void 	ft_export_search(t_exec *vars)
-{
-	int		i;
-	int		j;
-	t_cmd	*tmp_cmds;
-
-	tmp_cmds = vars->cmds;
-	while (tmp_cmds)
-	{
-		i = 0;
-		while (i < tmp_cmds->cmd_num && ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export"))
-		{
-			if (ft_checkstr(tmp_cmds->cmd[i]))
-				return (1);
-			++i;
-		}
-		if (i == tmp_cmds->cmd_num)
-			return (1);
-		while (++i < tmp_cmds->cmd_num)
-		[
-			if (ft_checkstr(tmp_cmds->cmd[i]))
-			{
-				printf("minishell: export: `%s': not a valid identifier\n", tmp_cmds->cmd[i]);
-				i++;
-			}
-		]
-			while (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export"))
-			if (ft_checkstr(tmp_cmds->cmd[i]))
-				continue ;
-			else if (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export")))
-			{
-				j = i;
-				while (++j < tmp_cmds->cmd_num)
-				{
-					if (ft_strrchr(tmp_cmds->cmd[j], '='))
-						ft_addenv(tmp_cmds->cmd[j]);
-				}
-			}
-		}
-
-		tmp_cmds = tmp_cmds->next;
-	}
 }
 
 int parser(t_exec *vars)
