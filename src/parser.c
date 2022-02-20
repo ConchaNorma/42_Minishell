@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 00:01:18 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/21 01:36:43 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
+	char	*tmp4;
 
 	j = *i;
 	while (str[j + 1] && (str[j + 1] == '_' || ft_isalnum(str[j + 1])))
@@ -105,7 +106,15 @@ char	*ft_dollar(char *str, int *i, char **envp)
 		return (str);
 	tmp = ft_substr(str, *i + 1, j - *i);
 	tmp2 = ft_strjoin(tmp, "=");
-	free(tmp);
+	//free(tmp);
+
+/*	j = ft_str_in_arrstr(envp, tmp2, ft_strlen(tmp2));
+	if (j >= 0)
+		tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
+				ft_strlen(envp[j]) - ft_strlen(tmp2));
+	else
+		tmp3 = ft_strdup("");
+*/
 	tmp3 = ft_strdup("");
 	j = -1;
 	while (envp[++j])
@@ -115,10 +124,17 @@ char	*ft_dollar(char *str, int *i, char **envp)
 			tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
 				ft_strlen(envp[j]) - ft_strlen(tmp2));
 	}
-	tmp2 = ft_substr(str, 0, *i);
-	tmp = ft_strjoin(ft_strjoin(tmp2, tmp3), ft_substr(str, \
-			*i + ft_strlen(tmp) + 1, ft_strlen(str) - (*i + ft_strlen(tmp))));
-	*i += (1 + ft_strlen(tmp3));
+	tmp4 = ft_substr(str, 0, *i);
+	free(tmp2);
+	tmp2 = ft_strjoin(tmp4, tmp3);
+	free(tmp4);
+	tmp4 = ft_substr(str, *i + ft_strlen(tmp) + 1, ft_strlen(str) - (*i + ft_strlen(tmp)));
+	tmp = ft_strjoin(tmp2, tmp4);
+	free(tmp2);
+	free(tmp4);
+	*i = -1;
+	//*i += (1 + ft_strlen(tmp3));
+	free(tmp3);
 	return (tmp);
 }
 
