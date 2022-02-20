@@ -6,7 +6,7 @@
 #    By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/02/19 15:04:40 by aarnell          ###   ########.fr        #
+#    Updated: 2022/02/20 14:42:39 by aarnell          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC_FILES	=	main.c			\
 				executer.c		\
 				redirection.c	\
 				builtin.c		builtin_cd.c	builtin_export.c \
-				utils.c			utils_arr.c
+				utils.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 

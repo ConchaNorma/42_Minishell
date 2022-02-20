@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 14:43:16 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/19 15:26:03 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ static void builtin_env(char **envp)
 		i++;
 	}
 }
+
 /*
 static int builtin_exit(void);
 */
+
 static void builtin_echo(char **cmd)
 {
 	int i;
@@ -64,8 +66,6 @@ static void builtin_echo(char **cmd)
 	if (nl != 1)
 		write(1, "\n", 1);
 }
-
-//static int builtin_unset(void);
 
 int builtin_check(char **cmd, t_exec *vars)
 {

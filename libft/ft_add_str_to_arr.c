@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_add_str_to_arr.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/31 22:18:43 by aarnell           #+#    #+#             */
-/*   Updated: 2021/08/31 22:18:44 by aarnell          ###   ########.fr       */
+/*   Created: 2022/02/20 14:21:45 by aarnell           #+#    #+#             */
+/*   Updated: 2022/02/20 14:22:40 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+char	**ft_add_str_to_arr(char **arr, char *str)
 {
-	size_t	t;
+	char	**tmp;
+	int		i;
 
-	t = 0;
-	if (dst == NULL && src == NULL)
+	i = 0;
+	while (arr && arr[i])
+		i++;
+	if (str)
+		i++;
+	tmp = malloc(sizeof(char *) * (i + 1));
+	if (!tmp)
 		return (NULL);
-	if ((unsigned char *) &dst[0] > (unsigned char *) &src[0])
+	tmp[i--] = NULL;
+	if (str)
 	{
-		while (len-- > 0)
-			((unsigned char *)dst)[len] = ((unsigned char *)src)[len];
-		return (dst);
+		tmp[i--] = ft_strdup(str);
+		if (!tmp[i+1])
+		{
+			free(tmp);
+			return (NULL);
+		}
 	}
-	while (t < len)
-	{
-		((unsigned char *)dst)[t] = ((unsigned char *)src)[t];
-		t++;
-	}
-	return (dst);
+	return (ft_arr_strdup(arr, tmp));
 }

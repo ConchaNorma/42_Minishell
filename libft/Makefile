@@ -19,17 +19,18 @@ SRS		= 	ft_memset.c			ft_bzero.c		ft_memcpy.c		\
 			ft_putnbr_fd.c		ft_frmtrx.c		ft_lstnew.c		\
 			ft_lstadd_front.c	ft_lstclear.c	ft_lstsize.c	\
 			ft_lstdelone.c		ft_lstiter.c	ft_lstlast.c	\
-			ft_lstadd_back.c	ft_lstmap.c
+			ft_lstadd_back.c	ft_lstmap.c		ft_arr_strdup.c	\
+			ft_add_str_to_arr.c
 
 OBJS	=	$(SRS:.c=.o)
 
 all : 		$(NAME)
 
-%.o :		%.c $(HD)
-			@gcc $(FLAGS) -c $< -o $@
+%.o :		%.c
+			gcc $(FLAGS) -c $< -o $@ -I $(HD)
 
 $(NAME)	: 	$(OBJS) $(HD)
-			@ar rc $(NAME) $?
+			ar rc $(NAME) $?
 			ranlib $(NAME)
 
 clean :

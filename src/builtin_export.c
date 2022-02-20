@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:41:33 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 14:59:00 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/20 14:42:01 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ int builtin_export(t_exec *vars, char *var)
 	char **tmp;
 	int res;
 
-	res = find_repl_val_var_in_arr(arr, var);
+	res = find_repl_val_var_in_arr(vars->envp, var);
 	if (!res)
 	{
-		tmp = arr_add_one_str(vars->envp, var);	//дописать проверку на ошибку, возможно также проверка строки на корректность записи переменной
+		tmp = ft_add_str_to_arr(vars->envp, var);	//дописать проверку на ошибку, возможно также проверка строки на корректность записи переменной
 		ft_frmtrx(vars->envp);
 		vars->envp = tmp;
 		res = 0;
