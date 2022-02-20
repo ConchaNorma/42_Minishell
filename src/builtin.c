@@ -6,15 +6,15 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 15:26:03 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/20 21:21:46 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char *builtin_pwd(int sgn)
+char	*builtin_pwd(int sgn)
 {
-	char *path;
+	char	*path;
 
 	path = getcwd(NULL, 0);
 	if(!sgn)
@@ -26,9 +26,9 @@ char *builtin_pwd(int sgn)
 	return (path);
 }
 
-static void builtin_env(char **envp)
+static void	builtin_env(char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
@@ -43,10 +43,10 @@ static void builtin_env(char **envp)
 static int builtin_exit(void);
 */
 
-static void builtin_echo(char **cmd)
+static void	builtin_echo(char **cmd)
 {
-	int i;
-	int nl;
+	int	i;
+	int	nl;
 
 	i = 1;
 	nl = 0;
@@ -69,13 +69,15 @@ static void builtin_echo(char **cmd)
 
 int builtin_check(char **cmd, t_exec *vars)
 {
-	int len_cmd;
+	int	len_cmd;
 
 	len_cmd = ft_strlen(cmd[0]);
 	if (len_cmd == 6 && !ft_memcmp(cmd[0], "export", len_cmd))
+		//для экспорта может быть несколько значений
 		builtin_export(vars, cmd[1]);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
 	else if (len_cmd == 5 && !ft_memcmp(cmd[0], "unset", len_cmd))
-		;	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
+		//для ансет может быть несколько значений
+		builtin_unset(vars, cmd[1]);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
 	else if (len_cmd == 4)
 	{
 		if (!ft_memcmp(cmd[0], "echo", len_cmd))
