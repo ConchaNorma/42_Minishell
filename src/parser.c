@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 22:22:05 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/21 00:01:18 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,6 @@ char	*ft_dquote(char *str, int *i, char **envp)
 
 	j = *i;
 	str = ft_dquote_sup(str, i, envp);
-/*	while (str[++(*i)])
-	{
-		if (str[*i] =='\\' && (str[*i + 1] == '\"' || str[*i + 1] == '`'
-				|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
-			str = ft_bslesh(str, i);
-		if (str[*i] == '$')
-			ft_dollar(str, i, envp);
-		if (str[*i] == '\"')
-			break ;
-	}
-*/
 	tmp = ft_substr(str, 0, j);
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_strjoin(tmp, tmp2);
@@ -116,6 +105,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 		return (str);
 	tmp = ft_substr(str, *i + 1, j - *i);
 	tmp2 = ft_strjoin(tmp, "=");
+	free(tmp);
 	tmp3 = ft_strdup("");
 	j = -1;
 	while (envp[++j])
