@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/18 19:12:20 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/20 14:21:19 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,9 +458,15 @@ void 	ft_export_search(t_exec *vars)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds)
 	{
-		i = -1;
-		while (++i < tmp_cmds->cmd_num)
+		i = 0;
+		while (i < tmp_cmds->cmd_num && ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export"))
 		{
+			if (ft_checkstr(tmp_cmds->cmd[i]))
+				return (1);
+			++i;
+		}
+
+			while (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export"))
 			if (ft_checkstr(tmp_cmds->cmd[i]))
 				continue ;
 			else if (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export")))
