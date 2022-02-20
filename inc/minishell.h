@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/20 21:00:46 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/20 21:16:58 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char	*get_path(char **envp, char *cmd);
 int		redirection_fd(t_redir *v_rdr);
 
 char	*get_varname(char *var_str, int with_eq);
+char	*get_varvalue(char *var_str)
 int		srch_var_in_envp(char **envp, char *var_name);
 
 

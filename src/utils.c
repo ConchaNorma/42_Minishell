@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 21:00:33 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/20 21:16:37 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,22 @@ int srch_var_in_envp(char **envp, char *var_name)
 
 char *get_varname(char *var_str, int with_eq)
 {
-	char *t_str;
-	int len;
+	char	*eq;
+	int		len;
 
-	t_str = ft_strchr(var_str, '=');
-	if(!t_str)
+	eq = ft_strchr(var_str, '=');
+	if(!eq)
 		return (NULL);
-	len = t_str - var_str + with_eq;
+	len = eq - var_str + with_eq;
 	return(ft_substr(var_str, 0, len));
+}
+
+char *get_varvalue(char *var_str)
+{
+	char	*eq;
+
+	eq = ft_strchr(var_str, '=');
+	if(!eq)
+		return (NULL);
+	return(eq + 1);
 }
