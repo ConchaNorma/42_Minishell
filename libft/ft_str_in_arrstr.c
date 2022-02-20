@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   ft_str_in_arrstr.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 15:22:05 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 20:15:31 by aarnell          ###   ########.fr       */
+/*   Created: 2022/02/20 19:58:14 by aarnell           #+#    #+#             */
+/*   Updated: 2022/02/20 20:01:48 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft.h"
 
-int	builtin_unset(t_exec *vars, char *var)
+size_t	ft_str_in_arrstr(char **arr, char *str, size_t len_s)
 {
-	char *t_str;
-	char *d_str;
-	int cnt;
+	int		i;
+	size_t	l_s;
+	size_t	l_as;
 
-
-	if(!t_str)
+	if (!str)
 		return (-1);
-	return (0);
+	i = 0;
+	l_s = ft_strlen(str);
+	if (len_s < l_s)
+		return (-1);
+	while (arr[i])
+	{
+		l_as = ft_strlen(arr[i]);
+		if (l_as < l_s)
+			continue ;
+		if (l_as > len_s)
+			l_as = len_s;
+		if (ft_strnstr(arr[i], str, l_as))
+			return (i);
+		i++;
+	}
+	return (-1);
 }

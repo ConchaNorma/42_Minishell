@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   ft_arrcpy_strdup.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 15:22:05 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 20:15:31 by aarnell          ###   ########.fr       */
+/*   Created: 2022/02/20 14:06:31 by aarnell           #+#    #+#             */
+/*   Updated: 2022/02/20 17:42:13 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft.h"
 
-int	builtin_unset(t_exec *vars, char *var)
+char	**ft_arrcpy_strdup(char **from, char **to)
 {
-	char *t_str;
-	char *d_str;
-	int cnt;
+	int	i;
 
-
-	if(!t_str)
-		return (-1);
-	return (0);
+	i = 0;
+	while (from && from[i])
+	{
+		to[i] = ft_strdup(from[i]);
+		if (!to[i])
+		{
+			ft_frmtrx(to);
+			free(to);
+			return (NULL);
+		}
+		i++;
+	}
+	return (to);
 }

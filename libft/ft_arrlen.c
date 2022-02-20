@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   ft_arrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 15:22:05 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 20:15:31 by aarnell          ###   ########.fr       */
+/*   Created: 2022/02/20 17:14:20 by aarnell           #+#    #+#             */
+/*   Updated: 2022/02/20 18:11:03 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft.h"
 
-int	builtin_unset(t_exec *vars, char *var)
+size_t	ft_arrlen(void **arr)
 {
-	char *t_str;
-	char *d_str;
-	int cnt;
+	size_t	i;
 
-
-	if(!t_str)
-		return (-1);
-	return (0);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }
