@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 14:21:19 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/20 14:41:28 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -465,7 +465,16 @@ void 	ft_export_search(t_exec *vars)
 				return (1);
 			++i;
 		}
-
+		if (i == tmp_cmds->cmd_num)
+			return (1);
+		while (++i < tmp_cmds->cmd_num)
+		[
+			if (ft_checkstr(tmp_cmds->cmd[i]))
+			{
+				printf("minishell: export: `%s': not a valid identifier\n", tmp_cmds->cmd[i]);
+				i++;
+			}
+		]
 			while (!ft_strncmp(tmp_cmds->cmd[i], "export", ft_strlen("export"))
 			if (ft_checkstr(tmp_cmds->cmd[i]))
 				continue ;
