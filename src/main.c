@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/20 17:55:33 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/20 20:31:58 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	main(int argc, char **argv, char **envp)
 		printf("%s\n", vars.str);
 
 		//Здесь будет парсер
+		if (preparser(&vars))
+			return (1);
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 /*		printf("vars.str1= %s\n", vars.str);*/
 /*		tmp_cmds = vars.cmds;

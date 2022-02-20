@@ -6,7 +6,7 @@
 #    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/02/10 22:04:05 by cnorma           ###   ########.fr        #
+#    Updated: 2022/02/20 20:27:41 by cnorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME 		=	minishell
 
 SRC_DIR		=	./src/
 
-SRC_FILES	=	main.c		parser.c
+SRC_FILES	=	main.c	parser.c	preparser.c
 #executer.c	\
 
 
