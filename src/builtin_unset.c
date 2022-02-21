@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/31 22:18:43 by aarnell           #+#    #+#             */
-/*   Updated: 2021/08/31 22:18:44 by aarnell          ###   ########.fr       */
+/*   Created: 2022/02/19 15:22:05 by aarnell           #+#    #+#             */
+/*   Updated: 2022/02/20 20:39:25 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../inc/minishell.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+int	builtin_unset(t_exec *vars, char *var)
 {
-	size_t	t;
+	int		pos;
+	char	**res;
 
-	t = 0;
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	if ((unsigned char *) &dst[0] > (unsigned char *) &src[0])
-	{
-		while (len-- > 0)
-			((unsigned char *)dst)[len] = ((unsigned char *)src)[len];
-		return (dst);
-	}
-	while (t < len)
-	{
-		((unsigned char *)dst)[t] = ((unsigned char *)src)[t];
-		t++;
-	}
-	return (dst);
+	pos = srch_var_in_envp(vars->envp, var);
+	if (pos == -1)
+		return (-1);
+	res = ft_del_str_from_arr(vars->envp, vars->envp[pos]);
+	if (!res)
+		return (-1);
+	ft_frmtrx(vars->envp);
+	vars->envp = res;
+	return (pos);
 }

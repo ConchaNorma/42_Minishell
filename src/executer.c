@@ -3,86 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/10 22:04:37 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/21 20:59:59 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*search_path(char *s_path, char *cmd)
-{
-	char	*res;
-	char	*res2;
-	char	**path;
-	int		j;
-
-	j = 0;
-	path = ft_split(s_path, ':');
-	while (path[j])
-	{
-		res = ft_strjoin(path[j], "/");
-		res2 = ft_strjoin(res, cmd);
-		if (access(res2, 0) == 0)
-		{
-			free(res);
-			ft_frmtrx(path);
-			return (res2);
-		}
-		free(res);
-		free(res2);
-		j++;
-	}
-	if (path)
-		ft_frmtrx(path);
-	return (NULL);
-}
-
-static char	*get_path(char **envp, char *cmd)
-{
-	int		i;
-	char	*rs;
-
-	i = 0;
-	while (envp[i] && cmd[0] != '/' && cmd[0] != '.')
-	{
-		if (ft_strnstr(envp[i], "PATH=", 5))
-		{
-			rs = search_path(envp[i] + 5, cmd);
-			if (rs)
-				return (rs);
-		}
-		i++;
-	}
-	if (cmd[0] == '/' || cmd[0] == '.')
-		if (access(cmd, 0) == 0)
-			return (cmd);
-	return (NULL);
-}
-
 static int call_parent(t_exec *vars)
 {
-	vars->st--;
-	//здесь сделай функцию работы с редиректами
-	vars->cmd = ft_split(vars->cmds[vars->st]->cmd, ' ');
-	vars->path = get_path(vars->envp, vars->cmd[0]);
+	t_cmd *tmp;
+
+	tmp = vars->cmds;
+	//vars->st--;
+	while (--vars->st)
+		tmp = tmp->next;
+	//здесь сделать обработку редиректов
+	redirection_fd(tmp->v_rdr);
+	//vars->exe = ft_split(tmp->cmd, ' ');
+	//здесь сделать проверку на built-in и их выполнение. В случае, если это не они, выполнять то, что ниже
+	builtin_check(tmp->cmd, vars);
+	vars->path = get_path(vars->envp, tmp->cmd[0]);
 	if (!vars->path)
 	{
-		ft_frmtrx(vars->cmd);
+		ft_frmtrx(tmp->cmd);		//как сделать очистку в некоторой общей структуре
+		//сделать очистку списков и замолоченных структур
 		//здесь подумать на счет выхода
-		//ft_exit(0, "The path to execute the parent command was not found.");
+		ft_exit(0, "The path to execute the parent command was not found.");
 	}
-	if (execve(vars->path, vars->cmd, vars->envp) == -1)
+	if (execve(vars->path, tmp->cmd, vars->envp) == -1)
 	{
 		free(vars->path);
-		ft_frmtrx(vars->cmd);
+		ft_frmtrx(tmp->cmd);
+		//сделать очистку списков и замолоченных структур
 		//здесь подумать на счет выхода
-		//ft_exit(errno, NULL);
+		ft_exit(errno, NULL);
 	}
 	free(vars->path);
-	ft_frmtrx(vars->cmd);
+	ft_frmtrx(tmp->cmd);
+	//сделать очистку списков и замолоченных структур
+	//закрыть и удалить временнй файл heredoc
 	close(vars->fd[0]);
 	return (0);
 }

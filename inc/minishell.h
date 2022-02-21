@@ -3,23 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/20 20:29:27 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/21 21:05:18 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>					//для вывода кода ошибок из errno
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
-# include <fcntl.h>
+# include <fcntl.h>					//для переменных внутри функции open()
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+
+# define TMP_FILE "here_doc"
 
 // Здесь будут структуры переменных для создания списков и деревьев
 typedef enum e_tkn{
@@ -68,9 +71,6 @@ typedef struct s_exec
 
 }	t_exec;
 
-typedef struct s_pipeline{
-	char	*cmd;
-}	t_pipeline;
 
 int		parser(t_exec *vars);
 int		executer(t_exec *vars);
@@ -80,5 +80,20 @@ char	*ft_bslesh(char *str, int *i);
 char	*ft_dollar(char *str, int *i, char **envp);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 int		preparser(t_exec *vars);
+void	ft_exit(int err, char *str);
+char	*get_path(char **envp, char *cmd);
+int		redirection_fd(t_redir *v_rdr);
+
+char	*get_varname(char *var_str, int with_eq);
+char	*get_varvalue(char *var_str);
+int		srch_var_in_envp(char **envp, char *var_name);
+
+int		builtin_check(char **cmd, t_exec *vars);
+int		builtin_export(t_exec *vars, char *var);
+int		builtin_unset(t_exec *vars, char *var);
+char	*builtin_pwd(int sgn);
+int		builtin_cd(char *dir, char **envp);
+
+
 
 #endif

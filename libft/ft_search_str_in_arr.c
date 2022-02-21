@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_search_str_in_arr.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/31 22:18:43 by aarnell           #+#    #+#             */
-/*   Updated: 2021/08/31 22:18:44 by aarnell          ###   ########.fr       */
+/*   Created: 2022/02/20 16:46:04 by aarnell           #+#    #+#             */
+/*   Updated: 2022/02/20 17:07:33 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+int	ft_search_str_in_arr(char **arr, char *str)
 {
-	size_t	t;
+	int		i;
+	size_t	len;
 
-	t = 0;
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	if ((unsigned char *) &dst[0] > (unsigned char *) &src[0])
+	if (!str || !arr)
+		return (-1);
+	i = 0;
+	len = ft_strlen(str);
+	while (arr[i])
 	{
-		while (len-- > 0)
-			((unsigned char *)dst)[len] = ((unsigned char *)src)[len];
-		return (dst);
+		if (ft_strlen(arr[i]) == len && ft_strnstr(arr[i], str, len))
+			return (i);
+		i++;
 	}
-	while (t < len)
-	{
-		((unsigned char *)dst)[t] = ((unsigned char *)src)[t];
-		t++;
-	}
-	return (dst);
+	return (-1);
 }

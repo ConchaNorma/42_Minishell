@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
+#    By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/02/20 20:27:41 by cnorma           ###   ########.fr        #
+#    Updated: 2022/02/21 21:13:10 by aarnell          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,10 @@ NAME 		=	minishell
 
 SRC_DIR		=	./src/
 
-SRC_FILES	=	main.c	parser.c	preparser.c
-#executer.c	\
-
+SRC_FILES	=	main.c			preparser.c 		parser.c	\
+				executer.c		redirection.c		builtin.c	\
+				builtin_cd.c	builtin_export.c	utils.c		\
+				builtin_unset.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 

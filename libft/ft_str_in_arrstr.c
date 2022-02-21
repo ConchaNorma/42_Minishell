@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_str_in_arrstr.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/31 22:18:43 by aarnell           #+#    #+#             */
-/*   Updated: 2021/08/31 22:18:44 by aarnell          ###   ########.fr       */
+/*   Created: 2022/02/20 19:58:14 by aarnell           #+#    #+#             */
+/*   Updated: 2022/02/20 20:01:48 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+size_t	ft_str_in_arrstr(char **arr, char *str, size_t len_s)
 {
-	size_t	t;
+	int		i;
+	size_t	l_s;
+	size_t	l_as;
 
-	t = 0;
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	if ((unsigned char *) &dst[0] > (unsigned char *) &src[0])
+	if (!str)
+		return (-1);
+	i = 0;
+	l_s = ft_strlen(str);
+	if (len_s < l_s)
+		return (-1);
+	while (arr[i])
 	{
-		while (len-- > 0)
-			((unsigned char *)dst)[len] = ((unsigned char *)src)[len];
-		return (dst);
+		l_as = ft_strlen(arr[i]);
+		if (l_as < l_s)
+			continue ;
+		if (l_as > len_s)
+			l_as = len_s;
+		if (ft_strnstr(arr[i], str, l_as))
+			return (i);
+		i++;
 	}
-	while (t < len)
-	{
-		((unsigned char *)dst)[t] = ((unsigned char *)src)[t];
-		t++;
-	}
-	return (dst);
+	return (-1);
 }
