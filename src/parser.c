@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 22:09:23 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/21 22:33:45 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 	{
 		tmp = (char **)malloc(sizeof(char *) * str_num);
 		i = -1;
-		while (++i < str_num - 1)
+		while (++i < str_num - 2)
 			tmp[i] = str_mas[i];
 		free (str_mas);
 		str_mas = tmp;

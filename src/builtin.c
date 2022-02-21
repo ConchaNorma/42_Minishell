@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 21:21:46 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/21 22:42:08 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*builtin_pwd(int sgn)
 	return (path);
 }
 
-static void	builtin_env(char **envp)
+void	builtin_env(char **envp)
 {
 	int	i;
 
