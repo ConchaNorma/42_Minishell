@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 20:42:57 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/21 22:09:23 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,7 @@ t_cmd	*ft_create_cmds(void)
 	if (!tmp)
 		exit (1);
 	tmp->v_rdr = NULL;
-	tmp->cmd_num = 0;
+	tmp->cmd_num = 1;
 	tmp->cmd = NULL;
 	tmp->next = NULL;
 	return (tmp);
@@ -340,6 +340,7 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 		str_mas = tmp;
 	}
 	str_mas[i] = ft_strdup(new_str);
+	str_mas[i + 1] = NULL;
 	//printf("%s\n", str_mas[i]);
 	return (str_mas);
 }
