@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 01:36:43 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/21 20:42:57 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	char	*tmp4;
 
 	j = *i;
+	tmp3 = NULL;
 	while (str[j + 1] && (str[j + 1] == '_' || ft_isalnum(str[j + 1])))
 		j++;
 	if (j == *i)
@@ -115,7 +116,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	else
 		tmp3 = ft_strdup("");
 */
-	tmp3 = ft_strdup("");
+	//tmp3 = ft_strdup("");
 	j = -1;
 	while (envp[++j])
 	{
@@ -124,28 +125,29 @@ char	*ft_dollar(char *str, int *i, char **envp)
 			tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
 				ft_strlen(envp[j]) - ft_strlen(tmp2));
 	}
+	if (!tmp3)
+		tmp3 = ft_strdup("");
 	tmp4 = ft_substr(str, 0, *i);
 	free(tmp2);
 	tmp2 = ft_strjoin(tmp4, tmp3);
+	free(tmp3);
 	free(tmp4);
 	tmp4 = ft_substr(str, *i + ft_strlen(tmp) + 1, ft_strlen(str) - (*i + ft_strlen(tmp)));
+	free(tmp);
 	tmp = ft_strjoin(tmp2, tmp4);
 	free(tmp2);
 	free(tmp4);
 	*i = -1;
 	//*i += (1 + ft_strlen(tmp3));
-	free(tmp3);
 	return (tmp);
 }
 
-//char	*ft_space(char *str, int *i)
 char	*ft_space(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
 
 	j = *i;
-	//tmp = ft_strdup(vars->str);
 	if (*i == 0)
 	{
 		while (vars->str[++j] == ' ')
@@ -193,10 +195,12 @@ char *ft_file_parser(t_exec *vars, int *i)
 		|| vars->str[*i] == '{' || vars->str[*i] == '}' || vars->str[*i] == '%' || vars->str[*i] == '@'\
 		|| vars->str[*i] == '!' || vars->str[*i] == '.' || vars->str[*i] == '~' || vars->str[*i] == '='\
 		|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
-		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'')
+		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'' || vars->str[*i] == '$')
 	{
 		if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
 			++(*i);
+		else if (vars->str[*i] != '$')
+			vars->str = ft_dollar(vars->str, i, vars->envp);
 		else {
 			if (vars->str[*i] == '\"')
 				vars->str = ft_dquote(vars->str, i, vars->envp);
@@ -336,7 +340,7 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 		str_mas = tmp;
 	}
 	str_mas[i] = ft_strdup(new_str);
-	printf("%s\n", str_mas[i]);
+	//printf("%s\n", str_mas[i]);
 	return (str_mas);
 }
 
