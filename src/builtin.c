@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 19:20:51 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/22 19:30:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,30 +69,30 @@ static void	builtin_echo(char **cmd)
 
 int builtin_check(char **cmd, t_exec *vars)
 {
-	int	len_cmd;
+	int	ln;
 
-	len_cmd = ft_strlen(cmd[0]);
-	if (len_cmd == 6 && !ft_memcmp(cmd[0], "export", len_cmd))
+	ln = ft_strlen(cmd[0]);
+	if (ln == 6 && !ft_memcmp(cmd[0], "export", ln))
 		//для экспорта может быть несколько значений
 		builtin_export(vars, cmd);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
-	else if (len_cmd == 5 && !ft_memcmp(cmd[0], "unset", len_cmd))
+	else if (ln == 5 && !ft_memcmp(cmd[0], "unset", ln))
 		//для ансет может быть несколько значений
 		builtin_unset(vars, cmd[1]);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
-	else if (len_cmd == 4)
+	else if (ln == 4)
 	{
-		if (!ft_memcmp(cmd[0], "echo", len_cmd))
+		if (!ft_memcmp(cmd[0], "echo", ln))
 			builtin_echo(cmd);
-		if (!ft_memcmp(cmd[0], "exit", len_cmd))
+		if (!ft_memcmp(cmd[0], "exit", ln))
 			; //Дописать
 	}
-	else if (len_cmd == 3)
+	else if (ln == 3)
 	{
-		if (!ft_memcmp(cmd[0], "env", len_cmd))
+		if (!ft_memcmp(cmd[0], "env", ln))
 			builtin_env(vars->envp);
-		if (!ft_memcmp(cmd[0], "pwd", len_cmd))
+		if (!ft_memcmp(cmd[0], "pwd", ln))
 			builtin_pwd(0);
 	}
-	else if (len_cmd == 2 && !ft_memcmp(cmd[0], "cd", len_cmd))
+	else if (ln == 2 && !ft_memcmp(cmd[0], "cd", ln))
 		builtin_cd(cmd[1], vars->envp);
 	return (0);
 }
