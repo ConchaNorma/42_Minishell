@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/22 07:56:41 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/22 08:01:36 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	t_exec vars;
-	// t_cmd	*tmp_cmds;
-	// t_redir	*tmp_redir;
-	//  int		i;
+	t_cmd	*tmp_cmds;
+	t_redir	*tmp_redir;
+	int		i;
 
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
@@ -44,7 +44,8 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 /*		printf("vars.str1= %s\n", vars.str);*/
-/*		tmp_cmds = vars.cmds;
+
+		tmp_cmds = vars.cmds;
 		while (tmp_cmds)
 		{
 			printf("12\n");
@@ -63,7 +64,8 @@ int	main(int argc, char **argv, char **envp)
 			}
 			tmp_cmds = tmp_cmds->next;
 		}
-*/		free(vars.str);
+
+		free(vars.str);
 
 		//Здесь будет экзекютер
 		//executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
@@ -72,26 +74,27 @@ int	main(int argc, char **argv, char **envp)
 		//break ; //Убрать, когда будет написан код, слушающий ввод строки
 	}
 /*	printf("1");*/
-	// tmp_cmds = vars.cmds;
-	// while (tmp_cmds)
-	// {
-	// 	i = -1;
-	// 	printf("cmd_num= %d\n", tmp_cmds->cmd_num);
-	// 	while (++i < tmp_cmds->cmd_num)
-	// 		printf("pipes= %s\n", tmp_cmds->cmd[i]);
-	// 	if (tmp_cmds->v_rdr)
-	// 	{
-	// 		tmp_redir = tmp_cmds->v_rdr;
-	// 		while(tmp_redir){
-	// 			printf("13\n");
-	// 			printf("vars.cmds->v_rdr->type= %u\n", tmp_redir->type);
-	// 			printf("vars.cmds->v_rdr->fd= %d\n", tmp_redir->fd);
-	// 			printf("vars.cmds->v_rdr->file= %s\n", tmp_redir->file);
-	// 			tmp_redir = tmp_redir->next;
-	// 		}
-	// 	}
-	// 	tmp_cmds = tmp_cmds->next;
-	// }
+/*	 tmp_cmds = vars.cmds;
+	 while (tmp_cmds)
+	 {
+	 	i = -1;
+	 	printf("cmd_num= %d\n", tmp_cmds->cmd_num);
+	 	while (++i < tmp_cmds->cmd_num)
+	 		printf("pipes= %s\n", tmp_cmds->cmd[i]);
+	 	if (tmp_cmds->v_rdr)
+	 	{
+	 		tmp_redir = tmp_cmds->v_rdr;
+	 		while(tmp_redir){
+	 			printf("13\n");
+	 			printf("vars.cmds->v_rdr->type= %u\n", tmp_redir->type);
+	 			printf("vars.cmds->v_rdr->fd= %d\n", tmp_redir->fd);
+	 			printf("vars.cmds->v_rdr->file= %s\n", tmp_redir->file);
+	 			tmp_redir = tmp_redir->next;
+	 		}
+	 	}
+	 	tmp_cmds = tmp_cmds->next;
+	 }
+*/
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	return (0);
 }

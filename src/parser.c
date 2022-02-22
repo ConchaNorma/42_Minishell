@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 22:33:45 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/22 08:22:13 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,10 +197,12 @@ char *ft_file_parser(t_exec *vars, int *i)
 		|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
 		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'' || vars->str[*i] == '$')
 	{
-		if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
-			++(*i);
-		else if (vars->str[*i] != '$')
+		if (vars->str[*i] == '$') {
 			vars->str = ft_dollar(vars->str, i, vars->envp);
+			++(*i);
+		}
+		else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
+			++(*i);
 		else {
 			if (vars->str[*i] == '\"')
 				vars->str = ft_dquote(vars->str, i, vars->envp);
