@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 19:47:26 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/22 20:07:04 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,24 +71,17 @@ int builtin_check(char **cmd, t_exec *vars)
 
 	ln = ft_strlen(cmd[0]);
 	if (ln == 6 && !ft_memcmp(cmd[0], "export", ln))
-		return(builtin_export(vars, cmd));	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
+		return(builtin_export(vars, cmd));	//возможно стоит дописать эту часть на случай 'v=123 export vv=234'
 	else if (ln == 5 && !ft_memcmp(cmd[0], "unset", ln))
-		//для ансет может быть несколько значений
-		return(builtin_unset(vars, cmd[1]));	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
-	else if (ln == 4)
-	{
-		if (!ft_memcmp(cmd[0], "echo", ln))
-			return(builtin_echo(cmd));
-		if (!ft_memcmp(cmd[0], "exit", ln))
-			; //Дописать
-	}
-	else if (ln == 3)
-	{
-		if (!ft_memcmp(cmd[0], "env", ln))
-			return(builtin_env(vars->envp));
-		if (!ft_memcmp(cmd[0], "pwd", ln))
-			return(builtin_pwd());
-	}
+		return(builtin_unset(vars, cmd));
+	else if (ln == 4 && !ft_memcmp(cmd[0], "echo", ln))
+		return(builtin_echo(cmd));
+	else if (ln == 4 && !ft_memcmp(cmd[0], "exit", ln))
+		; //Дописать
+	else if (ln == 3 && !ft_memcmp(cmd[0], "env", ln))
+		return(builtin_env(vars->envp));
+	else if (ln == 3 && !ft_memcmp(cmd[0], "pwd", ln))
+		return(builtin_pwd());
 	else if (ln == 2 && !ft_memcmp(cmd[0], "cd", ln))
 		return(builtin_cd(cmd[1], vars->envp));
 	return (0);
