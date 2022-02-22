@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/22 19:20:40 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/22 19:43:49 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ int		srch_var_in_envp(char **envp, char *var_name);
 int		builtin_check(char **cmd, t_exec *vars);
 int		builtin_export(t_exec *vars, char **cmd);
 int		builtin_unset(t_exec *vars, char *var);
-char	*builtin_pwd(int sgn);
+int		builtin_pwd(void);
 int		builtin_cd(char *dir, char **envp);
-void	builtin_env(char **envp);
+int		builtin_env(char **envp);
 
 
 

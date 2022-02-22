@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:41:33 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 19:20:20 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/22 19:34:14 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,5 @@ int builtin_export(t_exec *vars, char **cmd)
 		}
 		i++;
 	}
-	return (0);
+	return (1);
 }

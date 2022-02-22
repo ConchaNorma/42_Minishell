@@ -6,27 +6,23 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 19:30:09 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/22 19:44:50 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*builtin_pwd(int sgn)
+int	builtin_pwd(void)
 {
 	char	*path;
 
-	path = getcwd(NULL, 0);
-	if(!sgn)
-	{
-		write(1, path, ft_strlen(path));
-		free(path);
-		path = NULL;
-	}
-	return (path);
+	path = getcwd(NULL, 0); //возможно нужна проверка на ошибку
+	write(1, path, ft_strlen(path));
+	free(path);
+	return (1);
 }
 
-void	builtin_env(char **envp)
+int	builtin_env(char **envp)
 {
 	int	i;
 
@@ -37,13 +33,14 @@ void	builtin_env(char **envp)
 		write(1, "\n", 1);
 		i++;
 	}
+	return (1);
 }
 
 /*
 static int builtin_exit(void);
 */
 
-static void	builtin_echo(char **cmd)
+static int	builtin_echo(char **cmd)
 {
 	int	i;
 	int	nl;
@@ -65,6 +62,7 @@ static void	builtin_echo(char **cmd)
 	}
 	if (nl != 1)
 		write(1, "\n", 1);
+	return (1);
 }
 
 int builtin_check(char **cmd, t_exec *vars)
