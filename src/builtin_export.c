@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:41:33 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 21:12:21 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/22 19:20:20 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,27 @@ static int find_repl_val_var_in_envp(char **envp, char *var)
 	return (pos);
 }
 
-int builtin_export(t_exec *vars, char *var)
+int builtin_export(t_exec *vars, char **cmd)
 {
 	char	**tmp;
-	int		res;
+	int		i;
+	int		s;
 
-	res = find_repl_val_var_in_envp(vars->envp, var);
-	if (!res)
+	i = 0;
+	s = 0;
+	while(cmd[i])
 	{
-		tmp = ft_add_str_to_arr(vars->envp, var);	//возможно нужна проверка строки на корректность записи переменной
-		if (!tmp)
-			return (-1);
-		ft_frmtrx(vars->envp);
-		vars->envp = tmp;
-		res = 0;
-		while (vars->envp && vars->envp[res] && vars->envp[res + 1])
-			res++;
+		if (s == 0 && !ft_memcmp(cmd[i], "export", 6))
+			s = 1;
+		else if (s == 1 && !find_repl_val_var_in_envp(vars->envp, cmd[i]))
+		{
+			tmp = ft_add_str_to_arr(vars->envp, cmd[i]);	//возможно нужна проверка строки на корректность записи переменной
+			if (!tmp)
+				return (-1);
+			ft_frmtrx(vars->envp);
+			vars->envp = tmp;
+		}
+		i++;
 	}
-	return (res);
+	return (0);
 }
