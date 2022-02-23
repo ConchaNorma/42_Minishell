@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/23 17:55:53 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/23 23:12:48 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	main(int argc, char **argv, char **envp)
 		vars.str = readline("minishell>$ ");
 		if (!vars.str)
 			continue ;
+		else
+			add_history(vars.str);
 		//printf("%s\n", vars.str);
 
 		//Здесь будет парсер
