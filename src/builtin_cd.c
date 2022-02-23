@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:09:20 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 19:42:07 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/23 17:18:41 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int builtin_cd(char *dir, char **envp)
 	path = getcwd(NULL, 0); //возможно нужна проверка на ошибку
 	tmp = NULL;
 	i = 0;
-	len = ft_strlen(dir);
-	if (!dir || !len || dir[0] == '~')
+	if (!dir || dir[0] == '~')
 	{
 		while (envp[i])
 		{
@@ -40,6 +39,7 @@ int builtin_cd(char *dir, char **envp)
 	}
 	if (dir)
 	{
+		len = ft_strlen(dir);
 		if (dir[0] == '/')
 		{
 			free(path);

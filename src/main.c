@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/22 23:07:14 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/23 17:55:53 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	main(int argc, char **argv, char **envp)
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
 		vars.str = NULL;
 		vars.str = readline("minishell>$ ");
+		if (!vars.str)
+			continue ;
 		//printf("%s\n", vars.str);
 
 		//Здесь будет парсер
