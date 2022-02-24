@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/24 20:12:47 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/24 21:20:55 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,27 @@ char	*ft_tab(t_exec *vars, int *i)
 	return (ft_space(vars, i));
 }
 
+void	*ft_file_parser_check_str(t_exec *vars, int *i)
+{
+	if (vars->str[*i] == '$')
+	{
+		vars->str = ft_dollar(vars->str, i, vars->envp);
+		++(*i);
+	}
+	else if (vars->str[*i] == '\\')
+		vars->str = ft_bslesh(vars->str, i);
+	else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
+		++(*i);
+	else
+	{
+		if (vars->str[*i] == '\"')
+			vars->str = ft_dquote(vars->str, i, vars->envp);
+		if (vars->str[*i] == '\'')
+			vars->str = ft_squote(vars->str, i);
+	}
+	return (0);
+}
+
 char *ft_file_parser(t_exec *vars, int *i)
 {
 	int		j;
@@ -190,37 +211,11 @@ char *ft_file_parser(t_exec *vars, int *i)
 	char	*str_tmp;
 
 	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\";
-
-	//if (vars->str[*i] == '>' || vars->str[*i] == '<')
-	//	++(*i);
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
-	//while (ft_isalnum(vars->str[*i]) || vars->str[*i] == '[' || vars->str[*i] == ']'\
-	//	|| vars->str[*i] == '{' || vars->str[*i] == '}' || vars->str[*i] == '%' || vars->str[*i] == '@'\
-	//	|| vars->str[*i] == '!' || vars->str[*i] == '.' || vars->str[*i] == '~' || vars->str[*i] == '='\
-	//	|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
-	//	|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'' || vars->str[*i] == '$')
-	while (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i]))
-	{
-		printf("vars->str[%d]= %c\n", *i, vars->str[*i]);
-		if (vars->str[*i] == '$') {
-			vars->str = ft_dollar(vars->str, i, vars->envp);
-			++(*i);
-		}
-		else if (vars->str[*i] == '\\'){
-			vars->str = ft_bslesh(vars->str, i);
-			//--(*i);
-		}
-		else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
-			++(*i);
-		else {
-			if (vars->str[*i] == '\"')
-				vars->str = ft_dquote(vars->str, i, vars->envp);
-			if (vars->str[*i] == '\'')
-				vars->str = ft_squote(vars->str, i);
-		}
-	}
+	while (vars->str[*i] && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))
+		ft_file_parser_check_str(vars, i);
 	tmp = NULL;
 	tmp = ft_substr(vars->str, j, *i - j);
 	return (tmp);
