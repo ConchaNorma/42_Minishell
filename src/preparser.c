@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/20 21:18:41 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/24 08:56:13 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	ft_preparser_dquote(char *str)
 	while (str[++i])
 	{
 		if (str[i] == '\"')
-			num++;
+			if (!i || str[i - 1] != '\\')
+				num++;
 	}
 	if (num % 2)
 		return (1);
@@ -38,9 +39,12 @@ int	ft_preparser_squote(char *str)
 	num = 0;
 	while (str[++i])
 	{
-		if (str[i] == '\'')
-			num++;
+		if (str[i] == '\''){
+			if (!i || str[i - 1] != '\\')
+				num++;
+		}
 	}
+	printf("num squote= %d\n", num);
 	if (num % 2)
 		return (1);
 	return (0);

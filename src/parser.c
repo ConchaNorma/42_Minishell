@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 08:22:13 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/24 08:56:26 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_bslesh(char *str, int *i)
 	tmp = ft_strjoin(tmp3, tmp2);
 	free(tmp3);
 	free(tmp2);
-	(*i)++;
+	//(*i)++;
 	return (tmp);
 }
 
@@ -109,14 +109,15 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	tmp2 = ft_strjoin(tmp, "=");
 	//free(tmp);
 
-/*	j = ft_str_in_arrstr(envp, tmp2, ft_strlen(tmp2));
+	j = ft_str_in_arrstr(envp, tmp2, ft_strlen(tmp2));
 	if (j >= 0)
 		tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
 				ft_strlen(envp[j]) - ft_strlen(tmp2));
 	else
 		tmp3 = ft_strdup("");
-*/
+
 	//tmp3 = ft_strdup("");
+/*
 	j = -1;
 	while (envp[++j])
 	{
@@ -127,6 +128,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	}
 	if (!tmp3)
 		tmp3 = ft_strdup("");
+*/
 	tmp4 = ft_substr(str, 0, *i);
 	free(tmp2);
 	tmp2 = ft_strjoin(tmp4, tmp3);
@@ -185,21 +187,30 @@ char *ft_file_parser(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
+	char	*str_tmp;
 
-	if (vars->str[*i] == '>' || vars->str[*i] == '<')
-		++(*i);
+	str_tmp = "{}[]%@.~=+-_#^\"'$:\\";
+
+	//if (vars->str[*i] == '>' || vars->str[*i] == '<')
+	//	++(*i);
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
-	while (ft_isalnum(vars->str[*i]) || vars->str[*i] == '[' || vars->str[*i] == ']'\
-		|| vars->str[*i] == '{' || vars->str[*i] == '}' || vars->str[*i] == '%' || vars->str[*i] == '@'\
-		|| vars->str[*i] == '!' || vars->str[*i] == '.' || vars->str[*i] == '~' || vars->str[*i] == '='\
-		|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
-		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'' || vars->str[*i] == '$')
+	//while (ft_isalnum(vars->str[*i]) || vars->str[*i] == '[' || vars->str[*i] == ']'\
+	//	|| vars->str[*i] == '{' || vars->str[*i] == '}' || vars->str[*i] == '%' || vars->str[*i] == '@'\
+	//	|| vars->str[*i] == '!' || vars->str[*i] == '.' || vars->str[*i] == '~' || vars->str[*i] == '='\
+	//	|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
+	//	|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'' || vars->str[*i] == '$')
+	while (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i]))
 	{
+		printf("vars->str[%d]= %c\n", *i, vars->str[*i]);
 		if (vars->str[*i] == '$') {
 			vars->str = ft_dollar(vars->str, i, vars->envp);
 			++(*i);
+		}
+		else if (vars->str[*i] == '\\'){
+			vars->str = ft_bslesh(vars->str, i);
+			--(*i);
 		}
 		else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
 			++(*i);
