@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/24 08:56:26 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/24 20:12:47 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_bslesh(char *str, int *i)
 	tmp = ft_strjoin(tmp3, tmp2);
 	free(tmp3);
 	free(tmp2);
-	//(*i)++;
+	(*i)++;
 	return (tmp);
 }
 
@@ -189,7 +189,7 @@ char *ft_file_parser(t_exec *vars, int *i)
 	char	*tmp;
 	char	*str_tmp;
 
-	str_tmp = "{}[]%@.~=+-_#^\"'$:\\";
+	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\";
 
 	//if (vars->str[*i] == '>' || vars->str[*i] == '<')
 	//	++(*i);
@@ -210,7 +210,7 @@ char *ft_file_parser(t_exec *vars, int *i)
 		}
 		else if (vars->str[*i] == '\\'){
 			vars->str = ft_bslesh(vars->str, i);
-			--(*i);
+			//--(*i);
 		}
 		else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
 			++(*i);
