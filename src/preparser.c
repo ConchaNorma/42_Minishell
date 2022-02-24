@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/24 08:56:13 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/24 21:04:59 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,34 @@ int	ft_preparser_pipe_semicolon(char *str)
 	return (0);
 }
 
+int	ft_preparser_redir(char *str)
+{
+	int	i;
+	int	num_f;
+	int	num_b;
+
+	i = -1;
+	num_f = 0;
+	num_b = 0;
+	while (str[++i])
+	{
+		if (str[i] == '>')
+			num_f++;
+		if (str[i] == '<')
+			num_b++;
+		if (str[i] == ' ')
+			continue ;
+		if (str[i] != '>' && str[i] != '<' && str[i] != ' ')
+		{
+			num_f = 0;
+			num_b = 0;
+		}
+		if (num_f > 2 || num_b > 2 || (num_f + num_b) >= 2)
+			return (1);
+	}
+	return (0);
+}
+
 int preparser(t_exec *vars)
 {
 	if (ft_preparser_dquote(vars->str))
@@ -197,8 +225,11 @@ int preparser(t_exec *vars)
 		return (printf("minishell: syntax error near unexpected token `|\'\n"));
 	if (ft_preparser_pipe_semicolon(vars->str))
 		return (printf("minishell: syntax error near unexpected token `;\'\n"));
+	if (ft_preparser_redir(vars->str))
+		return (printf(\
+			"minishell: syntax error near unexpected token `> or `<\'\n"));
 	return (0);
 }
 
-/* \- в конце, ||, |;, ;|, ; - в начале, | - в начале и в конце, ;;,
+/* \- в конце, ||, |;, ;|, ; - в начале, | - в начале и в конце, ;;, >>>, <<<
 */
