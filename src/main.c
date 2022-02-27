@@ -6,11 +6,28 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/23 17:01:31 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/27 17:54:42 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+char	*ft_readline(void)
+{
+	char	*str;
+
+	str = readline("minishell>$ ");
+	if (!str)
+	{
+		printf(" exit\n");
+		exit(-1);
+	}
+	else if (*str == '\0')
+		free(str);
+	else
+		add_history(str);
+	return (str);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -32,11 +49,15 @@ int	main(int argc, char **argv, char **envp)
 	//либо сделать структуру с указателями памяти для очистки, fd'шниками дл закрытия, и функцию гарбэйдж-коллектора
 
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
+	//ft_signals();
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
+		ft_signals();
 		vars.str = NULL;
-		vars.str = readline("minishell>$ ");
+		//vars.str = readline("minishell>$ ");
+		vars.str = ft_readline();
+		ft_signal_ctrl_d(vars.str);
 		//printf("%s\n", vars.str);
 
 		//Здесь будет парсер
@@ -64,7 +85,8 @@ int	main(int argc, char **argv, char **envp)
 			}
 			tmp_cmds = tmp_cmds->next;
 		}
-
+		printf("2222\n");
+		write(1, "  \b\b\n", 5);
 		free(vars.str);
 
 		//Здесь будет экзекютер

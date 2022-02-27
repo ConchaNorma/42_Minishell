@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/21 22:39:23 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/02/27 17:45:11 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+# include <signal.h>
 
 # define TMP_FILE "here_doc"
 
@@ -95,6 +96,10 @@ char	*builtin_pwd(int sgn);
 int		builtin_cd(char *dir, char **envp);
 void	builtin_env(char **envp);
 
+void	signal_handler(int signal);
+void	ft_signals(void);
+void	ft_signal_ctrl_d(char *str);
 
+char	*ft_readline(void);
 
 #endif

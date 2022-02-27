@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/02/21 21:13:10 by aarnell          ###   ########.fr        #
+#    Updated: 2022/02/27 16:22:15 by cnorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRC_DIR		=	./src/
 SRC_FILES	=	main.c			preparser.c 		parser.c	\
 				executer.c		redirection.c		builtin.c	\
 				builtin_cd.c	builtin_export.c	utils.c		\
-				builtin_unset.c
+				builtin_unset.c \
+				signals.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 
