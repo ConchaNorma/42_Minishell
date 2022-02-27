@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/24 21:20:55 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/02/25 08:01:00 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_bslesh(char *str, int *i)
 	tmp = ft_strjoin(tmp3, tmp2);
 	free(tmp3);
 	free(tmp2);
-	(*i)++;
+	//(*i)++;
 	return (tmp);
 }
 
