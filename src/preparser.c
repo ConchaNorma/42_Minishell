@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/25 19:46:27 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/02 23:36:11 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int	ft_preparser_redir(char *str)
 			num_f = 0;
 			num_b = 0;
 		}
-		if (num_f > 2 || num_b > 2 || (num_f + num_b) >= 2)
+		if (num_f > 2 || num_b > 2 || (num_f + num_b) > 2)
 			return (1);
 	}
 	return (0);

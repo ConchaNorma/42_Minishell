@@ -6,11 +6,23 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/27 17:54:42 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/03 08:04:39 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	switch_echoctl(char on)
+{
+	struct termios	ts;
+
+	tcgetattr(STDIN_FILENO, &ts);
+	if (on)
+		ts.c_lflag |= ECHOCTL;
+	else
+		ts.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &ts);
+}
 
 char	*ft_readline(void)
 {
@@ -43,6 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	// i = -1;
 	// while (vars.envp[++i])
 	//  	printf("vars.envp[%d] = %s\n", i, vars.envp[i]);
+	switch_echoctl(0);
 	vars.st = 1;
 	//дописать заполнение указателей структуры нулями, а также в структурах, где аллоцируется память
 	//а затем написать функцию очистки структур с проходом по указателям
@@ -50,14 +63,18 @@ int	main(int argc, char **argv, char **envp)
 
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
 	//ft_signals();
+	//ft_signals();
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
-		ft_signals();
+		//ft_signals();
 		vars.str = NULL;
 		//vars.str = readline("minishell>$ ");
 		vars.str = ft_readline();
-		ft_signal_ctrl_d(vars.str);
+		//signal(SIGINT, &signal_handler);
+		//signal(SIGQUIT, SIG_IGN);
+		//if (!vars.str)
+		//	ft_signal_ctrl_d(&vars);
 		//printf("%s\n", vars.str);
 
 		//Здесь будет парсер

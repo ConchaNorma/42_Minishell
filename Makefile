@@ -6,12 +6,15 @@
 #    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/02/27 16:22:15 by cnorma           ###   ########.fr        #
+#    Updated: 2022/03/02 07:46:18 by cnorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_LIB		=	./libft
 LIBFT		=	libft.a
+
+SRC_RL		=	./readline
+RL			=	readline history
 
 NAME 		=	minishell
 
@@ -39,11 +42,12 @@ FLAGS		=	-Wall -Wextra -Werror -g
 all:			$(OBJ_DIR) $(NAME)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADER)
-				$(CC) $(FLAGS) -c $< -o $@ -I inc/
+				$(CC) $(FLAGS) -c $< -o $@ -I inc/ -I${SRC_RL}
 
 $(NAME):		$(OBJ) $(HEADER)
 				@$(MAKE) -C $(SRC_LIB)
-				$(CC) $(FLAGS) $(OBJ) $(SRC_LIB)/$(LIBFT) -lreadline -o $(NAME)
+				@$(MAKE) static -C ${SRC_RL}
+				$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(SRC_LIB)/$(LIBFT) -L${SRC_RL} ${addprefix -l,${RL}} -ltermcap
 
 $(OBJ_DIR):
 				@mkdir -p $@
@@ -51,6 +55,7 @@ $(OBJ_DIR):
 clean:
 				$(MAKE) clean -C $(SRC_LIB)
 				@rm -rf $(OBJ) $(OBJ_DIR)
+				@make clean -C ${SRC_RL}
 
 fclean:			clean
 				@rm -f $(NAME) $(SRC_LIB)/$(LIBFT)
