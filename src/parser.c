@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/03 19:29:26 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/03 19:31:42 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	vars->str = ft_space(vars, i);
+	//vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = OUT;
 	if (vars->str[++(*i)] == '>')
