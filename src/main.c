@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/03 08:04:39 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/03 21:49:08 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,29 @@ void	switch_echoctl(char on)
 
 char	*ft_readline(void)
 {
-	char	*str;
+	char	*input;
 
-	str = readline("minishell>$ ");
-	if (!str)
+	input = readline("minishell>$ ");
+	if (!input)
 	{
 		printf(" exit\n");
 		exit(-1);
 	}
-	else if (*str == '\0')
-		free(str);
+	else if (*input == '\0')
+		free(input);
 	else
-		add_history(str);
-	return (str);
+		add_history(input);
+	return (input);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	t_exec vars;
+	t_exec	vars;
 	t_cmd	*tmp_cmds;
 	t_redir	*tmp_redir;
 	int		i;
 
+	(void)argv;
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	// while (vars.envp[++i])
 	//  	printf("vars.envp[%d] = %s\n", i, vars.envp[i]);
 	switch_echoctl(0);
-	vars.st = 1;
+	//vars.st = 1;
 	//дописать заполнение указателей структуры нулями, а также в структурах, где аллоцируется память
 	//а затем написать функцию очистки структур с проходом по указателям
 	//либо сделать структуру с указателями памяти для очистки, fd'шниками дл закрытия, и функцию гарбэйдж-коллектора
@@ -67,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
-		//ft_signals();
+		ft_signals();
 		vars.str = NULL;
 		//vars.str = readline("minishell>$ ");
 		vars.str = ft_readline();
@@ -75,11 +75,24 @@ int	main(int argc, char **argv, char **envp)
 		//signal(SIGQUIT, SIG_IGN);
 		//if (!vars.str)
 		//	ft_signal_ctrl_d(&vars);
+
+		//if (!vars.str)
+		//{
+		//	ft_putstr_fd("\033[11C", 1);
+		//	ft_putstr_fd("\x1bM\x1b[`exit\n", 1);
+		//	//write(1, "exit", 4);
+		//	//ft_putstr_fd("exit\n", 0);
+		//	free(vars.str);
+		//	return(1);
+		//}
+		if (!vars.str)
+			continue;
 		//printf("%s\n", vars.str);
 
 		//Здесь будет парсер
 		if (preparser(&vars))
 			return (1);
+		vars.st = 1;
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 /*		printf("vars.str1= %s\n", vars.str);*/
 
