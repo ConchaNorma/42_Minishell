@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   preparser.c                                        :+:      :+:    :+:   */
+/*   preparser_test.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/04 20:48:50 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/04 22:42:39 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,14 @@ int	ft_preparser_dquote(char *str)
 	return (0);
 }
 
-int	ft_preparser_squote(char *str)
+int	ft_preparser_squote(char *str, int *i)
 {
-	int	i;
-	int	num;
-
-	i = -1;
-	num = 0;
-	while (str[++i])
+	while (str[++(*i)])
 	{
-		if (str[i] == '\'' && (!i || str[i - 1] != '\\'))
-		{
-			num++;
-			while (str[++i])
-			{
-				if (str[i] == '\'')
-				{
-					num++;
-					break ;
-				}
-			}
-		}
+		if (str[*i] == '\'')
+			return (0);
 	}
-	//printf("num squote= %d\n", num);
-	if (num % 2)
-		return (1);
-	return (0);
+	return (1);
 }
 
 int	ft_preparser_semicolon_sup(char *str)
@@ -71,7 +53,7 @@ int	ft_preparser_semicolon_sup(char *str)
 		return (1);
 	return (0);
 }
-
+/*
 int	ft_preparser_semicolon(char *str)
 {
 	int	i;
@@ -85,6 +67,33 @@ int	ft_preparser_semicolon(char *str)
 		return (1);
 	while (*str)
 	{
+		if (*str == '\'')
+			while()
+		if (*str == ';')
+		{
+			if (ft_preparser_semicolon_sup(str + 1))
+				return (1);
+		}
+		str++;
+	}
+	return (0);
+}
+*/
+int	ft_preparser_semicolon(char *str)
+{
+	int	i;
+	int	num;
+
+	i = 0;
+	num = 0;
+	while (str[i] == ' ')
+		i++;
+	if (str[i] == ';')
+		return (1);
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			while(str[i])
 		if (*str == ';')
 		{
 			if (ft_preparser_semicolon_sup(str + 1))
@@ -217,8 +226,21 @@ int	ft_preparser_redir(char *str)
 
 int preparser(t_exec *vars)
 {
-	if (ft_preparser_dquote(vars->str))
-		return (printf("minishell: syntax error near unexpected token `\"\'\n"));
+	char	*prepars;
+	int		i;
+
+	prepars = ft_strdup(vars->str);
+	printf("prepars= %s", prepars);
+	i = -1;
+	while (prepars[++i])
+	{
+		if (prepars[i] == '\'')
+			if (ft_preparser_squote(prepars, &i))
+				return (printf("minishell: syntax error near unexpected token `\'\'\n"));
+		else if (prepars[i] == '\\')
+			ft_preparser_bslesh(prepars, &i);
+	//if (ft_preparser_dquote(vars->str))
+	//	return (printf("minishell: syntax error near unexpected token `\"\'\n"));
 	if (ft_preparser_squote(vars->str))
 		return (printf("minishell: syntax error near unexpected token `\'\'\n"));
 	if (ft_preparser_semicolon_sup(vars->str))
@@ -238,6 +260,38 @@ int preparser(t_exec *vars)
 			"minishell: syntax error near unexpected token `> or `<\'\n"));
 	return (0);
 }
+
+int parser(t_exec *vars)
+{
+	int		i;
+/*	t_cmd	*tmp_cmds;
+	int		j;
+*/
+	vars->cmds = ft_create_cmds();
+	i = -1;
+	while (vars->str[++i])
+	{
+		if (vars->str[i] == '\'')
+			vars->str = ft_squote(vars->str, &i);
+		else if (vars->str[i] == '\\')
+			vars->str = ft_bslesh(vars->str, &i);
+		else if (vars->str[i] == '\"')
+			vars->str = ft_dquote(vars->str, &i, vars->envp);
+		else if (vars->str[i] == '$')
+			vars->str = ft_dollar(vars->str, &i, vars->envp);
+		else if (vars->str[i] == ' ')
+			vars->str = ft_space(vars, &i);
+		else if (vars->str[i] == '\t')
+			vars->str = ft_tab(vars, &i);
+		else if (vars->str[i] == '>')
+			vars->str = ft_forward_redir(vars, &i, 1);
+		else if (vars->str[i] == '<')
+			vars->str = ft_backward_redir(vars, &i, 0);
+		else if (vars->str[i] == '|')
+			vars->str = ft_split_pipe(vars, &i);
+		else if (ft_isdigit(vars->str[i]))
+			vars->str = ft_digit(vars, &i);
+	}
 
 /* \- в конце, ||, |;, ;|, ; - в начале, | - в начале и в конце, ;;, >>>, <<<
 */
