@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/23 17:10:10 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/04 22:26:49 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	builtin_pwd(void)
 
 	path = getcwd(NULL, 0); //возможно нужна проверка на ошибку
 	write(1, path, ft_strlen(path));
+	write(1, "\n", 1);
 	free(path);
 	return (1);
 }

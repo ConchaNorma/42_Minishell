@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 21:19:08 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/04 22:23:52 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ static int call_child(t_exec *vars)
 
 int executer(t_exec *vars)
 {
+	int fd[2];
+
+	fd[0] = dup(0);
+	fd[1] = dup(1);
 	if(vars->st > 1)
 	{
 		pipe(vars->fd);
@@ -83,5 +87,8 @@ int executer(t_exec *vars)
 			waitpid(vars->pid, NULL, WUNTRACED);
 		}
 	}
-	return (call_parent(vars));
+	call_parent(vars);
+	dup2(fd[0], 0);
+	dup2(fd[1], 1);
+	return (0);
 }

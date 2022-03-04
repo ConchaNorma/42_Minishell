@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   preparser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/03 19:31:59 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/04 21:43:39 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_preparser_squote(char *str)
 			}
 		}
 	}
-	printf("num squote= %d\n", num);
+	//printf("num squote= %d\n", num);
 	if (num % 2)
 		return (1);
 	return (0);
