@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 22:33:45 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/03 21:14:18 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_bslesh(char *str, int *i)
 	tmp = ft_strjoin(tmp3, tmp2);
 	free(tmp3);
 	free(tmp2);
-	(*i)++;
+	//(*i)++;
 	return (tmp);
 }
 
@@ -109,14 +109,15 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	tmp2 = ft_strjoin(tmp, "=");
 	//free(tmp);
 
-/*	j = ft_str_in_arrstr(envp, tmp2, ft_strlen(tmp2));
+	j = ft_str_in_arrstr(envp, tmp2, ft_strlen(tmp2));
 	if (j >= 0)
 		tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
 				ft_strlen(envp[j]) - ft_strlen(tmp2));
 	else
 		tmp3 = ft_strdup("");
-*/
+
 	//tmp3 = ft_strdup("");
+/*
 	j = -1;
 	while (envp[++j])
 	{
@@ -127,6 +128,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	}
 	if (!tmp3)
 		tmp3 = ft_strdup("");
+*/
 	tmp4 = ft_substr(str, 0, *i);
 	free(tmp2);
 	tmp2 = ft_strjoin(tmp4, tmp3);
@@ -181,33 +183,39 @@ char	*ft_tab(t_exec *vars, int *i)
 	return (ft_space(vars, i));
 }
 
+void	*ft_file_parser_check_str(t_exec *vars, int *i)
+{
+	if (vars->str[*i] == '$')
+	{
+		vars->str = ft_dollar(vars->str, i, vars->envp);
+		++(*i);
+	}
+	else if (vars->str[*i] == '\\')
+		vars->str = ft_bslesh(vars->str, i);
+	else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
+		++(*i);
+	else
+	{
+		if (vars->str[*i] == '\"')
+			vars->str = ft_dquote(vars->str, i, vars->envp);
+		if (vars->str[*i] == '\'')
+			vars->str = ft_squote(vars->str, i);
+	}
+	return (0);
+}
+
 char *ft_file_parser(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
+	char	*str_tmp;
 
-	if (vars->str[*i] == '>' || vars->str[*i] == '<')
-		++(*i);
+	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\";
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
-	while (ft_isalnum(vars->str[*i]) || vars->str[*i] == '[' || vars->str[*i] == ']'\
-		|| vars->str[*i] == '{' || vars->str[*i] == '}' || vars->str[*i] == '%' || vars->str[*i] == '@'\
-		|| vars->str[*i] == '!' || vars->str[*i] == '.' || vars->str[*i] == '~' || vars->str[*i] == '='\
-		|| vars->str[*i] == '+' || vars->str[*i] == '-' || vars->str[*i] == '_' || vars->str[*i] == '#'\
-		|| vars->str[*i] == '^' || vars->str[*i] == '\"' || vars->str[*i] == '\'' || vars->str[*i] == '$')
-	{
-		if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
-			++(*i);
-		else if (vars->str[*i] != '$')
-			vars->str = ft_dollar(vars->str, i, vars->envp);
-		else {
-			if (vars->str[*i] == '\"')
-				vars->str = ft_dquote(vars->str, i, vars->envp);
-			if (vars->str[*i] == '\'')
-				vars->str = ft_squote(vars->str, i);
-		}
-	}
+	while (vars->str[*i] && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))
+		ft_file_parser_check_str(vars, i);
 	tmp = NULL;
 	tmp = ft_substr(vars->str, j, *i - j);
 	return (tmp);
@@ -259,11 +267,17 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	vars->str = ft_space(vars, i);
+	if (*i > 0) {
+		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+		tmp = ft_substr(vars->str, *i, ft_strlen(vars->str) - *i - 1);
+	}
+	//vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = OUT;
-	if (vars->str[++(*i)] == '>')
+	if (vars->str[++(*i)] == '>') {
 		tmp_redir->type = APN;
+		++(*i);
+	}
 	tmp_redir->fd = fd;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);

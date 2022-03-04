@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/22 19:51:14 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/04 21:34:52 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>					//для переменных внутри функции open()
-# include <readline/readline.h>
-# include <readline/history.h>
+
+# include "../readline/readline.h"
+# include "../readline/history.h"
 # include "../libft/libft.h"
+# include <signal.h>
+# include <termios.h>
 
 # define TMP_FILE "here_doc"
 
@@ -95,6 +98,10 @@ int		builtin_pwd(void);
 int		builtin_cd(char *dir, char **envp);
 int		builtin_env(char **envp);
 
+void	signal_handler(int signal);
+void	ft_signals(void);
+void	ft_signal_ctrl_d(t_exec *vars);
 
+char	*ft_readline(void);
 
 #endif
