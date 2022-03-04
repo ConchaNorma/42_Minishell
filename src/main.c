@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/02/23 23:12:48 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/02 19:01:33 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,29 @@ int	main(int argc, char **argv, char **envp)
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
-		vars.str = NULL;
-		vars.str = readline("minishell>$ ");
+
+		//rl_on_new_line();
+		vars.str = readline("minishell> ");
+/*
 		if (!vars.str)
-			continue ;
+		{
+			printf("ebaniy_v_rot: %s\n", vars.str);
+			break ;
+		}
 		else
+		{
 			add_history(vars.str);
-		//printf("%s\n", vars.str);
+			//rl_on_new_line();
+			//rl_redisplay();
+		}*/
+		printf("%s\n", vars.str);
 
 		//Здесь будет парсер
 		if (preparser(&vars))
 			return (1);
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 		free(vars.str);
-
+		vars.str = NULL;
 		//Здесь будет экзекютер
 		executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 		//builtin_env(vars.envp);
