@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/04 21:34:52 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/05 21:09:36 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ typedef struct s_exec
 	pid_t	pid;
 	t_list	*lvar;
 	int		fd[2];
+	int		tfd[3];
 	int		st;
 	char	*path;
-
 }	t_exec;
 
 
