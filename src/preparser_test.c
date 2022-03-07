@@ -6,31 +6,31 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/04 22:42:39 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/07 12:39:45 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	ft_preparser_dquote(char *str)
+int	*ft_preparser_bslesh(char *str, int *i)
 {
-	int	i;
-	int	num;
-
-	i = -1;
-	num = 0;
-	while (str[++i])
-	{
-		if (str[i] == '\"')
-			if (!i || str[i - 1] != '\\')
-				num++;
-	}
-	if (num % 2)
-		return (1);
+	if (str[*i + 1] && (str[*i + 1] == '\"' || str[*i + 1] == '`'
+		|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
+		++(*i);
 	return (0);
 }
 
-int	ft_preparser_squote(char *str, int *i)
+int	ft_preparser_dquote(char *str, int *i)
+{
+	while (str[++i])
+	{
+		if (str[i] == '\"')
+			return (0);
+	}
+	return (1);
+}
+
+int	*ft_preparser_squote(char *str, int *i)
 {
 	while (str[++(*i)])
 	{
@@ -40,69 +40,97 @@ int	ft_preparser_squote(char *str, int *i)
 	return (1);
 }
 
-int	ft_preparser_semicolon_sup(char *str)
-{
-	int	i;
-	int	num;
 
-	i = -1;
-	num = 0;
-	while (str[++i] == ' ')
-		;
-	if (str[i] == ';')
-		return (1);
+//int	ft_preparser_semicolon_sup(char *str)
+//{
+//	int	i;
+//	int	num;
+
+//	i = -1;
+//	num = 0;
+//	while (str[++i] == ' ')
+//		;
+//	if (str[i] == ';')
+//		return (1);
+//	return (0);
+//}
+
+int	ft_preparser_semicolon(char *str, int *i)
+{
+	int	j;
+
+	j = *i + 1;
+	while (str[j] == ' ' && str[j])
+		j++;
+	if (str[j] == ';' && j - 1 == *i)
+		return (printf("minishell: syntax error near unexpected token `;;\'\n"));
+	else if (j - 1 > *i && str[j] == ';' && str[j + 1] == ';')
+		return (printf("minishell: syntax error near unexpected token `;;\'\n"));
+	else if (j - 1 > *i && str[j] == ';' && str[j + 1] != ';')
+		return (printf("minishell: syntax error near unexpected token `;\'\n"));
+	else if (j - 1 > *i && str[j] == '|' && str[j + 1] == '|')
+		return (printf("minishell: syntax error near unexpected token `||\'\n"));
+	else if (j - 1 > *i && str[j] == '|' && str[j + 1] != '|')
+		return (printf("minishell: syntax error near unexpected token `|\'\n"));
+	*i == j;
 	return (0);
 }
-/*
-int	ft_preparser_semicolon(char *str)
-{
-	int	i;
-	int	num;
 
-	i = -1;
-	num = 0;
-	while (*str == ' ')
-		str++;
-	if (*str == ';')
-		return (1);
-	while (*str)
-	{
-		if (*str == '\'')
-			while()
-		if (*str == ';')
-		{
-			if (ft_preparser_semicolon_sup(str + 1))
-				return (1);
-		}
-		str++;
-	}
+int	ft_preparser_pipe(char *str, int *i)
+{
+	int	j;
+
+	j = *i + 1;
+	while (str[j] == ' ' && str[j])
+		j++;
+	if (str[j] == '|' && j - 1 == *i)
+		return (printf("minishell: syntax error near unexpected token `||\'\n"));
+	else if (j - 1 > *i && str[j] == ';' && str[j + 1] == ';')
+		return (printf("minishell: syntax error near unexpected token `;;\'\n"));
+	else if (j - 1 > *i && str[j] == ';' && str[j + 1] != ';')
+		return (printf("minishell: syntax error near unexpected token `;\'\n"));
+	else if (j - 1 > *i && str[j] == '|' && str[j + 1] == '|')
+		return (printf("minishell: syntax error near unexpected token `||\'\n"));
+	else if (j - 1 > *i && str[j] == '|' && str[j + 1] != '|')
+		return (printf("minishell: syntax error near unexpected token `|\'\n"));
+	*i == j;
 	return (0);
 }
-*/
-int	ft_preparser_semicolon(char *str)
-{
-	int	i;
-	int	num;
 
-	i = 0;
-	num = 0;
-	while (str[i] == ' ')
-		i++;
-	if (str[i] == ';')
-		return (1);
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			while(str[i])
-		if (*str == ';')
-		{
-			if (ft_preparser_semicolon_sup(str + 1))
-				return (1);
-		}
-		str++;
-	}
+int	ft_preparser_redir(char *str, int *i)
+{
+	int	j;
+
+	j = *i + 1;
+	while (str[j] == ' ' && str[j])
+		j++;
+	if (str[j] == '>' && str[j + 1] == '>')
+		return (printf("minishell: syntax error near unexpected token `>>\'\n"));
+	else if (j - 1 > *i && str[j] == '>' && str[j + 1] != '>')
+		return (printf("minishell: syntax error near unexpected token `>\'\n"));
+	else if (j - 1 > *i && str[j] == '>' && str[j + 1] == '>')
+		return (printf("minishell: syntax error near unexpected token `||\'\n"));
+	else if (j - 1 > *i && str[j] == '|' && str[j + 1] != '|')
+		return (printf("minishell: syntax error near unexpected token `|\'\n"));
+	*i == j;
 	return (0);
 }
+
+int	ft_preparser_str_begin(char *str, int *i)
+{
+	int	j;
+
+	j = *i;
+	while (str[j] == ' ')
+		j++;
+	if (str[j] == ';')
+		return (printf("minishell: syntax error near unexpected token `;\'\n"));
+	if (str[j] == '|')
+		return (printf("minishell: syntax error near unexpected token `;\'\n"));
+	*i = j;
+	return (0);
+}
+
 
 int	ft_preparser_dsemicolon(char *str)
 {
@@ -239,8 +267,20 @@ int preparser(t_exec *vars)
 				return (printf("minishell: syntax error near unexpected token `\'\'\n"));
 		else if (prepars[i] == '\\')
 			ft_preparser_bslesh(prepars, &i);
-	//if (ft_preparser_dquote(vars->str))
-	//	return (printf("minishell: syntax error near unexpected token `\"\'\n"));
+		else if (prepars[i] == '\"')
+			if (ft_preparser_dquote(prepars, &i))
+				return (printf("minishell: syntax error near unexpected token `\"\'\n"));
+		else if (i == 0)
+			if (ft_preparser_str_begin(prepars, &i))
+				return (1);
+		else if (prepars[i] == ';')
+			if (ft_preparser_semicolon(prepars, &i))
+				return (1);
+		else if (prepars[i] == ';')
+			if (ft_preparser_pipe(prepars, &i))
+				return (1);
+
+			vars->str = ft_dquote(vars->str, &i, vars->envp);
 	if (ft_preparser_squote(vars->str))
 		return (printf("minishell: syntax error near unexpected token `\'\'\n"));
 	if (ft_preparser_semicolon_sup(vars->str))
