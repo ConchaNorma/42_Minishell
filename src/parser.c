@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/03 21:14:18 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/07 16:45:36 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ char *ft_file_parser(t_exec *vars, int *i)
 	char	*tmp;
 	char	*str_tmp;
 
-	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\";
+	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\>";
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
