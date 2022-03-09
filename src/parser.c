@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/07 16:45:36 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/09 08:10:11 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,12 @@ char	*ft_dquote_sup(char *str, int *i, char **envp)
 	{
 		if (str[*i] =='\\' && (str[*i + 1] == '\"' || str[*i + 1] == '`'
 				|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
+		{
 			str = ft_bslesh(str, i);
+			++(*i);
+		}
 		if (str[*i] == '$')
-			ft_dollar(str, i, envp);
+			str = ft_dollar(str, i, envp);
 		if (str[*i] == '\"')
 			break ;
 	}
@@ -139,7 +142,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	tmp = ft_strjoin(tmp2, tmp4);
 	free(tmp2);
 	free(tmp4);
-	*i = -1;
+	//*i = -1;
 	//*i += (1 + ft_strlen(tmp3));
 	return (tmp);
 }
