@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/07 16:31:14 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/09 22:14:06 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,14 @@ int	main(int argc, char **argv, char **envp)
 		tmp_cmds = vars.cmds;
 		while (tmp_cmds)
 		{
-			printf("12\n");
+			//printf("12\n");
 			i = -1;
 			while (++i < tmp_cmds->cmd_num)
 				printf("pipes[%d-%d]= %s\n", 1, i, tmp_cmds->cmd[i]);
 			if (tmp_cmds->v_rdr){
 				tmp_redir = tmp_cmds->v_rdr;
 				while(tmp_redir){
-					printf("13\n");
+					//printf("13\n");
 					printf("vars.cmds->v_rdr->type= %u\n", tmp_redir->type);
 					printf("vars.cmds->v_rdr->fd= %d\n", tmp_redir->fd);
 					printf("vars.cmds->v_rdr->file= %s\n", tmp_redir->file);
@@ -115,8 +115,8 @@ int	main(int argc, char **argv, char **envp)
 			}
 			tmp_cmds = tmp_cmds->next;
 		}
-		printf("2222\n");
-		write(1, "  \b\b\n", 5);
+		printf("finish parser\n");
+		//write(1, "  \b\b\n", 5);
 		free(vars.str);
 
 		//Здесь будет экзекютер
