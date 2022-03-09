@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   preparser_test.c                                   :+:      :+:    :+:   */
+/*   preparser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/09 20:04:41 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/09 21:28:25 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int	ft_preparser_str_end(char *str, int *i)
 		while (str[++j])
 		{
 			if (str[j] != ' ')
-				break ;
+				return (0);
 		}
 		return (printf("minishell: syntax error near unexpected token `%c\'\n", \
 				str[*i]));
