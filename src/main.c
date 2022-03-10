@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/09 20:32:22 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/10 20:52:26 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,14 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
+
 	// vars.tfd[0] = -1;
 	// vars.tfd[1] = -1;
 	// vars.tfd[2] = -1;
 
 	// i = -1;
-	// while (vars.envp[++i])
+	//// while (vars.envp[++i])
+	//while (++i < 33)
 	//  	printf("vars.envp[%d] = %s\n", i, vars.envp[i]);
 	switch_echoctl(0);
 	//vars.st = 1;
@@ -109,7 +111,7 @@ int	main(int argc, char **argv, char **envp)
 		//Здесь будет экзекютер
 		executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 		//builtin_env(vars.envp);
-		// printf("11\n");
+		 printf("11\n");
 		//break ; //Убрать, когда будет написан код, слушающий ввод строки
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
