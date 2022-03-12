@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/12 20:31:59 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/12 23:05:54 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ typedef struct s_exec
 	t_cmd	*cmds;
 	pid_t	pid;
 	t_list	*lvar;
-	int		fd[2];
+	int		ofd[2];
+	int		pfd[2];
 	int		tfd[2];
 	t_cmd	*tm_cmd;
 	int		st;
