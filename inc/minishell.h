@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/05 21:09:36 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/12 20:31:59 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ typedef struct s_exec
 	pid_t	pid;
 	t_list	*lvar;
 	int		fd[2];
-	int		tfd[3];
+	int		tfd[2];
+	t_cmd	*tm_cmd;
 	int		st;
 	char	*path;
 }	t_exec;
@@ -91,7 +92,7 @@ char	*get_varname(char *var_str, int with_eq);
 char	*get_varvalue(char *var_str);
 int		srch_var_in_envp(char **envp, char *var_name);
 
-int		builtin_check(char **cmd, t_exec *vars);
+int		builtin_check(t_exec *vars);
 int		builtin_export(t_exec *vars, char **cmd);
 int		builtin_unset(t_exec *vars, char **cmd);
 int		builtin_pwd(void);

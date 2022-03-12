@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/04 22:26:49 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/12 20:28:34 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,13 @@ static int	builtin_echo(char **cmd)
 	return (1);
 }
 
-int builtin_check(char **cmd, t_exec *vars)
+//int builtin_check(char **cmd, t_exec *vars)
+int builtin_check(t_exec *vars)
 {
 	int	ln;
+	char **cmd;
 
+	cmd = vars->tm_cmd->cmd;
 	ln = ft_strlen(cmd[0]);
 	if (ln == 6 && !ft_memcmp(cmd[0], "export", ln))
 		return(builtin_export(vars, cmd));	//возможно стоит дописать эту часть на случай 'v=123 export vv=234'
