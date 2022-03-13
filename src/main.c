@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/13 15:49:51 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/13 20:14:15 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
 		ft_signals();
-		vars.str = NULL;
 		vars.str = ft_readline();
-
 		if (!vars.str || !ft_strlen(vars.str))
-			continue;
+			continue ;
 
 		//Здесь будет парсер
 		if (preparser(&vars))
@@ -86,12 +84,13 @@ int	main(int argc, char **argv, char **envp)
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 
 		free(vars.str);
-
+		vars.str = NULL;
 		//Здесь будет экзекютер
 		executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 		//builtin_env(vars.envp);
 		// printf("11\n");
 		//break ; //Убрать, когда будет написан код, слушающий ввод строки
+		//clean_base_struct(&vars, 0);
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	//добавить изменине SHLVL

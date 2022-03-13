@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/12 23:05:54 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/13 20:04:17 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,7 @@ void	ft_signals(void);
 void	ft_signal_ctrl_d(t_exec *vars);
 
 char	*ft_readline(void);
+
+void	clean_base_struct(t_exec *vars, int exit);
 
 #endif

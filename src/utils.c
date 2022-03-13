@@ -6,24 +6,11 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 21:16:37 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/13 16:25:00 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	ft_exit(int err, char *str)
-{
-	if (str)
-	{
-		write(2, "ERROR: ", 7);
-		write(2, str, ft_strlen(str));
-		write(2, "\n", 2);
-	}
-	else
-		perror("ERROR");
-	exit(err);
-}
 
 static char	*search_path(char *s_path, char *cmd)
 {

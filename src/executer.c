@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/12 23:39:40 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/13 20:08:13 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int call_child(t_exec *vars)
 			//сделать очистку списков и замолоченных структур
 			//здесь подумать на счет выхода
 			ft_exit(0, "The path to execute the parent command was not found.");		//ошибка должна как в баше
+			//при ошибке минишел не должен вылетать
 		}
 		if (execve(vars->path, vars->tm_cmd->cmd, vars->envp) == -1)
 		{
@@ -78,6 +79,7 @@ static int call_parent(t_exec *vars)
 	vars->tfd[1] = vars->pfd[1];
 	if(waitpid(vars->pid, &status, WUNTRACED) == -1)
 		ft_exit(errno, NULL);		//дописать норм выход с очисткой и выводом ошибки, как в баш
+		//тут выхода не будет, программа уйдет на след. итерацию
 	//if (status == SIGINT || status == SIGQUIT)
 	//сделать обработку сигналов от дочерних процессов
 	return (0);
