@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/12 23:13:16 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/13 15:49:51 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ int	main(int argc, char **argv, char **envp)
 	// int		i;
 
 	(void)argv;
+	//инициализировать структуру или найти, где она инициализируется далее.
+	//Возможно, инциализацию стоит сделать в начале бесконечного цикла ниже.
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
-	// vars.tfd[0] = -1;
-	// vars.tfd[1] = -1;
-	// vars.tfd[2] = -1;
+	//увеличить переменную SHLVL
 
 	// i = -1;
 	// while (vars.envp[++i])
@@ -85,27 +85,6 @@ int	main(int argc, char **argv, char **envp)
 		vars.st = 1;
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 
-		// tmp_cmds = vars.cmds;
-		// while (tmp_cmds)
-		// {
-		// printf("12\n");
-		// 	i = -1;
-		// 	while (++i < tmp_cmds->cmd_num)
-		// 		printf("pipes[%d-%d]= %s\n", 1, i, tmp_cmds->cmd[i]);
-		// 	if (tmp_cmds->v_rdr){
-		// 		tmp_redir = tmp_cmds->v_rdr;
-		// 		while(tmp_redir){
-		// 			printf("13\n");
-		// 			printf("vars.cmds->v_rdr->type= %u\n", tmp_redir->type);
-		// 			printf("vars.cmds->v_rdr->fd= %d\n", tmp_redir->fd);
-		// 			printf("vars.cmds->v_rdr->file= %s\n", tmp_redir->file);
-		// 			tmp_redir = tmp_redir->next;
-		// 		}
-		// 	}
-		// 	tmp_cmds = tmp_cmds->next;
-		// }
-		// printf("2222\n");
-		// write(1, "  \b\b\n", 5);
 		free(vars.str);
 
 		//Здесь будет экзекютер
