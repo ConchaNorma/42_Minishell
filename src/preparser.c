@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/15 21:08:16 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/15 21:12:31 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	ft_preparser_quote_bslesh(char *str, int *i)
 	if (str[*i] == '\\')
 	{
 		if (str[*i + 1] && (str[*i + 1] == '\"' || str[*i + 1] == '`'
-			|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
-		++(*i);
+				|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
+			++(*i);
 		return (0);
 	}
 	while (str[++(*i)])
@@ -29,11 +29,11 @@ int	ft_preparser_quote_bslesh(char *str, int *i)
 		if (str[j] == '\"' && str[*i] =='\\' \
 			&& (str[*i + 1] == '\"' || str[*i + 1] == '\\'))
 			++(*i);
-		else if ((str[j] == '\"' && str[*i] == '\"')\
+		else if ((str[j] == '\"' && str[*i] == '\"') \
 				|| (str[j] == '\'' && str[*i] == '\''))
 			return (0);
 	}
-	return (printf("minishell: syntax error near unexpected token `%c\'\n",\
+	return (printf("minishell: syntax error near unexpected token `%c\'\n", \
 			str[j]));
 }
 
@@ -103,7 +103,8 @@ int	ft_preparser_str_beg_end(char *str, int *i)
 		while (str[j] == ' ')
 			j++;
 		if (str[j] == ';' || str[j] == '|')
-			return (printf("minishell: syntax error near unexpected token `%c\'\n",\
+			return \
+				(printf("minishell: syntax error near unexpected token `%c\'\n", \
 					str[j]));
 		*i = j;
 	}
@@ -120,7 +121,7 @@ int	ft_preparser_str_beg_end(char *str, int *i)
 	return (0);
 }
 
-int preparser(t_exec *vars)
+int	preparser(t_exec *vars)
 {
 	char	*prepars;
 	int		i;
@@ -131,14 +132,16 @@ int preparser(t_exec *vars)
 	{
 		if (ft_preparser_str_beg_end(prepars, &i))
 			return (1);
-		if ((prepars[i] == '\'' ||  prepars[i] == '\"')\
+		if ((prepars[i] == '\'' || prepars[i] == '\"') \
 			&& ft_preparser_quote_bslesh(prepars, &i))
 			return (1);
 		else if (prepars[i] == '\\')
 			ft_preparser_quote_bslesh(prepars, &i);
-		else if ((prepars[i] == ';' || prepars[i] == '|') && ft_preparser_semi_pipe(prepars, &i))
+		else if ((prepars[i] == ';' || prepars[i] == '|') \
+				&& ft_preparser_semi_pipe(prepars, &i))
 			return (1);
-		else if ((prepars[i] == '>' || prepars[i] == '<') && ft_preparser_redir(prepars, &i))
+		else if ((prepars[i] == '>' || prepars[i] == '<') \
+				&& ft_preparser_redir(prepars, &i))
 			return (1);
 	}
 	printf("finish preparsing\n");
