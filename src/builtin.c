@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/12 20:28:34 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/15 21:54:54 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,13 @@ int	builtin_env(char **envp)
 	return (1);
 }
 
-/*
-static int builtin_exit(void);
-*/
+static void builtin_exit(t_exec *vars)
+{
+	if (vars->st == 1)
+		ft_putstr_fd("exit\n", 2);
+	clean_base_struct(vars, 1);
+	exit(0);
+}
 
 static int	builtin_echo(char **cmd)
 {
@@ -66,8 +70,7 @@ static int	builtin_echo(char **cmd)
 	return (1);
 }
 
-//int builtin_check(char **cmd, t_exec *vars)
-int builtin_check(t_exec *vars)
+int builtin_check_exec(t_exec *vars)
 {
 	int	ln;
 	char **cmd;
@@ -81,7 +84,7 @@ int builtin_check(t_exec *vars)
 	else if (ln == 4 && !ft_memcmp(cmd[0], "echo", ln))
 		return(builtin_echo(cmd));
 	else if (ln == 4 && !ft_memcmp(cmd[0], "exit", ln))
-		; //Дописать
+		builtin_exit(vars);
 	else if (ln == 3 && !ft_memcmp(cmd[0], "env", ln))
 		return(builtin_env(vars->envp));
 	else if (ln == 3 && !ft_memcmp(cmd[0], "pwd", ln))

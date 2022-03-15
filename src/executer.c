@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/15 21:05:28 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/15 21:12:49 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int call_child(t_exec *vars)
 {
 	redir_base(vars); //дописать проверку
 	redirection_fd(vars->tm_cmd->v_rdr); //дописать обработку ошибок
-	if (!builtin_check(vars))	//прописать обработку ошибок и выход внутр и самих билтин
+	if (!builtin_check_exec(vars))	//прописать обработку ошибок и выход внутр и самих билтин
 	{
 		vars->path = get_path(vars->envp, vars->tm_cmd->cmd[0]);
 		if (!vars->path)
@@ -74,8 +74,23 @@ static int call_parent(t_exec *vars)
 	if(waitpid(vars->pid, &status, WUNTRACED) == -1)
 		ft_exit(errno, NULL);		//дописать норм выход с очисткой и выводом ошибки, как в баш
 		//тут выхода не будет, программа уйдет на след. итерацию
-	//if (status == SIGINT || status == SIGQUIT)
 	//сделать обработку сигналов от дочерних процессов
+	// if (status == SIGINT || status == SIGQUIT)
+	// 	signal_handler(status);
+	// if (WIFEXITED(status))
+	// 	g_status = WEXITSTATUS(status);
+	return (0);
+}
+
+static int exec_cmd(t_exec *vars)
+{
+	if (vars->tm_cmd->next && pipe(vars->pfd) == -1)
+		ft_exit(errno, NULL);	//дописать нормальный выход с очисткой и выводом ошибки
+	vars->pid = fork();		//дописать проверку на ошибку
+	if (!vars->pid)
+		call_child(vars);	//обработка ошибок?
+	else
+		call_parent(vars);	//обработка ошибок?
 	return (0);
 }
 
@@ -86,18 +101,9 @@ int executer(t_exec *vars)
 	vars->tm_cmd = vars->cmds;
 	while (vars->tm_cmd)
 	{
-		if (vars->st == 1 && builtin_check(vars))
+		if (vars->st == 1 && builtin_check_exec(vars))
 			break ;
-		else
-		{
-			if (vars->tm_cmd->next && pipe(vars->pfd) == -1)
-				ft_exit(errno, NULL);	//дописать нормальный выход с очисткой и выводом ошибки
-			vars->pid = fork();		//дописать проверку на ошибку
-			if (!vars->pid)
-				call_child(vars);	//обработка ошибок?
-			else
-				call_parent(vars);	//обработка ошибок?
-		}
+		exec_cmd(vars);
 		vars->tm_cmd = vars->tm_cmd->next;
 	}
 	dup2(vars->ofd[0], 0);
