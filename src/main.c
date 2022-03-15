@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/13 20:14:15 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/15 19:28:11 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
+	//начать с нуля
 	//увеличить переменную SHLVL
+	//возможно при повторном запуске минишел, передать ей в переменную текущее envp или SHLVL
 
 	// i = -1;
 	// while (vars.envp[++i])
