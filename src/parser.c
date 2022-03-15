@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/09 08:10:11 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/15 22:05:46 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	*ft_bslesh(char *str, int *i)
 	tmp = ft_strjoin(tmp3, tmp2);
 	free(tmp3);
 	free(tmp2);
-	//(*i)++;
 	return (tmp);
 }
 
@@ -110,28 +109,12 @@ char	*ft_dollar(char *str, int *i, char **envp)
 		return (str);
 	tmp = ft_substr(str, *i + 1, j - *i);
 	tmp2 = ft_strjoin(tmp, "=");
-	//free(tmp);
-
 	j = ft_str_in_arrstr(envp, tmp2, ft_strlen(tmp2));
 	if (j >= 0)
 		tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
 				ft_strlen(envp[j]) - ft_strlen(tmp2));
 	else
 		tmp3 = ft_strdup("");
-
-	//tmp3 = ft_strdup("");
-/*
-	j = -1;
-	while (envp[++j])
-	{
-		if (!ft_strncmp(tmp2, ft_substr(envp[j], 0, ft_strlen(tmp2)), \
-			ft_strlen(tmp2)))
-			tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
-				ft_strlen(envp[j]) - ft_strlen(tmp2));
-	}
-	if (!tmp3)
-		tmp3 = ft_strdup("");
-*/
 	tmp4 = ft_substr(str, 0, *i);
 	free(tmp2);
 	tmp2 = ft_strjoin(tmp4, tmp3);
@@ -142,8 +125,6 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	tmp = ft_strjoin(tmp2, tmp4);
 	free(tmp2);
 	free(tmp4);
-	//*i = -1;
-	//*i += (1 + ft_strlen(tmp3));
 	return (tmp);
 }
 
@@ -424,9 +405,6 @@ char	*ft_digit(t_exec *vars, int *i)
 int parser(t_exec *vars)
 {
 	int		i;
-/*	t_cmd	*tmp_cmds;
-	int		j;
-*/
 	vars->cmds = ft_create_cmds();
 	i = -1;
 	while (vars->str[++i])
@@ -453,21 +431,7 @@ int parser(t_exec *vars)
 			vars->str = ft_digit(vars, &i);
 	}
 	vars->str = ft_space(vars, &i);
-	//vars->str = ft_split_pipe(vars, &i);
-/*	printf("str_res= %s\n", vars->str);*/
-
-	//vars->cmds = ft_split_pipes(vars->str);
-	//ft_split_pipes(vars);
 	i = -1;
-/*	tmp_cmds = vars->cmds;
-	j = -1;
-	while (tmp_cmds)
-	{
-		while (++j < tmp_cmds->cmd_num)
-			printf("pipes[%d]= %s\n", ++i, tmp_cmds->cmd[j]);
-		tmp_cmds = tmp_cmds->next;
-	}
-*/
 	return (0);
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
 	//склеить по переносу "\"
