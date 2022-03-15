@@ -20,6 +20,24 @@ int	*ft_preparser_bslesh(char *str, int *i)
 	return (0);
 }
 
+int	ft_preparser_quote(char *str, int *i)
+{
+	int	j;
+
+	j = *i;
+	while (str[++(*i)])
+	{
+		if (str[j] == '\"' && str[*i] =='\\' \
+			&& (str[*i + 1] == '\"' || str[*i + 1] == '\\'))
+			++(*i);
+		else if ((str[j] == '\"' && str[*i] == '\"')\
+				|| (str[j] == '\'' && str[*i] == '\''))
+			return (0);
+	}
+	return (printf("minishell: syntax error near unexpected token `%c\'\n",\
+			str[j]));
+}
+/*
 int	ft_preparser_dquote(char *str, int *i)
 {
 	while (str[++(*i)])
@@ -41,7 +59,7 @@ int	ft_preparser_squote(char *str, int *i)
 	}
 	return (printf("minishell: syntax error near unexpected token `\'\'\n"));
 }
-
+*/
 int	ft_preparser_semicolon(char *str, int *i)
 {
 	int	j;
@@ -130,6 +148,33 @@ int	ft_preparser_redir_backward(char *str, int *i)
 	return (0);
 }
 
+int	ft_preparser_str_beg_end(char *str, int *i)
+{
+	int	j;
+
+	j = *i;
+	if (*i == 0)
+	{
+		while (str[j] == ' ')
+			j++;
+		if (str[j] == ';' || str[j] == '|')
+			return (printf("minishell: syntax error near unexpected token `%c\'\n",\
+					str[j]));
+		*i = j;
+	}
+	else if (str[j] == '|')
+	{
+		while (str[++j])
+		{
+			if (str[j] != ' ')
+				return (0);
+		}
+		return (printf("minishell: syntax error near unexpected token `%c\'\n", \
+				str[*i]));
+	}
+	return (0);
+}
+/*
 int	ft_preparser_str_end(char *str, int *i)
 {
 	int	j;
@@ -162,7 +207,7 @@ int	ft_preparser_str_begin(char *str, int *i)
 	*i = j;
 	return (0);
 }
-
+*/
 int preparser(t_exec *vars)
 {
 	char	*prepars;
@@ -172,16 +217,17 @@ int preparser(t_exec *vars)
 	i = -1;
 	while (prepars[++i])
 	{
-		if (ft_preparser_str_end(prepars, &i))
+		if (ft_preparser_str_beg_end(prepars, &i))
 			return (1);
-		if (prepars[i] == '\'' && ft_preparser_squote(prepars, &i))
+		if ((prepars[i] == '\'' ||  prepars[i] == '\"')\
+			&& ft_preparser_quote(prepars, &i))
 			return (1);
 		else if (prepars[i] == '\\')
 			ft_preparser_bslesh(prepars, &i);
-		else if (prepars[i] == '\"' && ft_preparser_dquote(prepars, &i))
-			return (1);
-		else if (i == 0 && ft_preparser_str_begin(prepars, &i))
-			return (1);
+		//else if (prepars[i] == '\"' && ft_preparser_dquote(prepars, &i))
+		//	return (1);
+		//else if (i == 0 && ft_preparser_str_begin(prepars, &i))
+		//	return (1);
 		else if (prepars[i] == ';' && ft_preparser_semicolon(prepars, &i))
 			return (1);
 		else if (prepars[i] == '|' && ft_preparser_pipe(prepars, &i))
