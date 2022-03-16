@@ -1,0 +1,15 @@
+total 768
+drwxr-xr-x   14 aarnell  4221     476 Mar 16 21:20 .
+drwxr-xr-x   15 aarnell  4221     510 Mar  2 18:40 ..
+drwxr-xr-x   15 aarnell  4221     510 Mar 15 22:08 .git
+-rw-r--r--    1 aarnell  4221     520 Feb 21 20:54 .gitignore
+drwxr-xr-x    4 aarnell  4221     136 Feb  5 13:16 .vscode
+-rw-r--r--    1 aarnell  4221    1948 Mar 13 16:26 Makefile
+-rw-r--r--    1 aarnell  4221   10665 Feb  7 19:30 README.md
+-rw-------    1 aarnell  4221       0 Mar 16 21:20 file!.txt
+drwxr-xr-x    3 aarnell  4221     102 Mar  9 21:15 inc
+drwxr-xr-x  111 aarnell  4221    3774 Mar 16 19:24 libft
+-rwxr-xr-x    1 aarnell  4221  371580 Mar 16 21:18 minishell
+drwxr-xr-x   14 aarnell  4221     476 Mar 16 21:18 obj
+drwxr-xr-x  125 aarnell  4221    4250 Mar 16 19:24 readline
+drwxr-xr-x   15 aarnell  4221     510 Mar 13 16:24 src

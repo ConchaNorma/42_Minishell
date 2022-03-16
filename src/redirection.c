@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/17 20:10:52 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/16 20:58:41 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,60 @@ static int redir_apn(t_redir *v_rdr)
 	return (0);
 }
 
+// static int redir_heredoc(t_redir *v_rdr)
+// {
+// 	char *str;
+// 	size_t len;
+// 	int fd;
+
+// 	fd = open(TMP_FILE, O_RDWR | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
+// 	//прописать обработку ошибок
+// 	str = readline(">$ ");
+// 	//цикл
+// 	while (str)
+// 	{
+// 		//проверяем, не конец ли (если конец, чистим временную строку и завершаем цикл)
+// 		len = ft_strlen(str);
+// 		if(len < ft_strlen(v_rdr->file))
+// 			len = ft_strlen(v_rdr->file);
+// 		if(!ft_memcmp(str, v_rdr->file, len))
+// 		{
+// 			free(str);
+// 			break ;
+// 		}
+// 		//пишем сроку в stdin
+// 		write(fd, str, ft_strlen(str));
+// 		write(fd, "\n", 1);
+// 		//чистим строку
+// 		free(str);
+// 		//ридлайном считываем новую строку во временный указатель
+// 		str = readline(">$ ");
+// 	}
+// 	write(fd, "\0", 1); //нужно ли это для обозначения конца файла
+// 	dup2(fd, 0);	//прописать обработку ошибок
+// 	return (0);		//нужно ли здесь где-то обработчик ошибокю если нет,
+// }
+
 static int redir_heredoc(t_redir *v_rdr)
 {
 	char *str;
 	size_t len;
-	int fd;
+	int fd[2];
+	char *res;
+	char *tmp;
 
-	fd = open(TMP_FILE, O_RDWR | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
+	//fd = open(TMP_FILE, O_RDWR | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
 	//прописать обработку ошибок
-	str = readline(">$ ");
+	if (pipe(fd) == -1)
+		;	//прописать вывод ошибки
+	//str = readline(">$ ");
 	//цикл
-	while (str)
+	res = NULL;
+	tmp = NULL;
+	while (1)
 	{
+		//ридлайном считываем новую строку во временный указатель
+		str = readline(">$ ");
 		//проверяем, не конец ли (если конец, чистим временную строку и завершаем цикл)
 		len = ft_strlen(str);
 		if(len < ft_strlen(v_rdr->file))
@@ -69,16 +111,30 @@ static int redir_heredoc(t_redir *v_rdr)
 			free(str);
 			break ;
 		}
-		//пишем сроку в stdin
-		write(fd, str, ft_strlen(str));
-		write(fd, "\n", 1);
-		//чистим строку
+		//пишем сроку на вход пайпа
+		// write(fd, str, ft_strlen(str));
+		// write(fd, "\n", 1);
+		//ft_putendl_fd(str, fd[1]);
+		tmp = ft_strjoin(res, str);
+		if (res)
+			free(res);
+		res = ft_strjoin(tmp, "\n");
+		free(tmp);
 		free(str);
-		//ридлайном считываем новую строку во временный указатель
-		str = readline(">$ ");
+		// rl_on_new_line();
+		// rl_replace_line("", 0);
+		// rl_redisplay();
 	}
-	write(fd, "\0", 1); //нужно ли это для обозначения конца файла
-	dup2(fd, 0);	//прописать обработку ошибок
+	//write(fd, "\0", 1); //нужно ли это для обозначения конца файла
+	//dup2(fd, 0);	//прописать обработку ошибок
+	len = 0;
+	while (res[len])
+		len++;
+	write(fd[1], res, len);
+	close(fd[1]);
+	if (dup2(fd[0], 0) == -1)
+		;	//прописать вывод ошибки
+	close(fd[0]);
 	return (0);		//нужно ли здесь где-то обработчик ошибокю если нет,
 }
 

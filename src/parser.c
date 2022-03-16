@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/03 21:14:18 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/16 21:18:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ char *ft_file_parser(t_exec *vars, int *i)
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
-	while (vars->str[*i] && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))
+	while (vars->str[*i] && vars->str[*i] != ' ') //(ft_isalnum(vars->str[*i])|| ft_strchr(str_tmp, vars->str[*i])))
 		ft_file_parser_check_str(vars, i);
 	tmp = NULL;
 	tmp = ft_substr(vars->str, j, *i - j);
@@ -306,7 +306,10 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = INP;
 	if (vars->str[++(*i)] == '<')
+	{
 		tmp_redir->type = HRD;
+		++(*i);
+	}
 	tmp_redir->fd = fd;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);

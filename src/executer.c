@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/15 21:12:49 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/16 22:06:35 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int redir_base(t_exec *vars)
 
 static int call_child(t_exec *vars)
 {
+	// vars->ofd[0] = dup(0);
+	// vars->ofd[1] = dup(1);
 	redir_base(vars); //дописать проверку
 	redirection_fd(vars->tm_cmd->v_rdr); //дописать обработку ошибок
 	if (!builtin_check_exec(vars))	//прописать обработку ошибок и выход внутр и самих билтин
@@ -56,6 +58,10 @@ static int call_child(t_exec *vars)
 	}
 	//сделать очистку списков и замолоченных структур
 	//закрыть и удалить временнй файл heredoc
+	// dup2(vars->ofd[0], 0);
+	// dup2(vars->ofd[1], 1);
+	// close(vars->ofd[0]);
+	// close(vars->ofd[1]);
 	exit(0);	//здесь дописать нормальный выход с очисткой
 	return (0);
 }
@@ -85,7 +91,11 @@ static int call_parent(t_exec *vars)
 static int exec_cmd(t_exec *vars)
 {
 	if (vars->tm_cmd->next && pipe(vars->pfd) == -1)
-		ft_exit(errno, NULL);	//дописать нормальный выход с очисткой и выводом ошибки
+	{
+		//ft_exit(errno, NULL);	//дописать нормальный выход с очисткой и выводом ошибки
+		perror("ERROR");
+		return (1);
+	}
 	vars->pid = fork();		//дописать проверку на ошибку
 	if (!vars->pid)
 		call_child(vars);	//обработка ошибок?
@@ -103,7 +113,8 @@ int executer(t_exec *vars)
 	{
 		if (vars->st == 1 && builtin_check_exec(vars))
 			break ;
-		exec_cmd(vars);
+		if(exec_cmd(vars))
+			return (1);
 		vars->tm_cmd = vars->tm_cmd->next;
 	}
 	dup2(vars->ofd[0], 0);
