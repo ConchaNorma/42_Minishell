@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/16 19:51:26 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/16 21:59:47 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,20 +157,7 @@ char	*ft_space(t_exec *vars, int *i)
 	*i = -1;
 	return (tmp);
 }
-/*
-char	*ft_tab(t_exec *vars, int *i)
-{
-	int		j;
 
-	j = *i;
-	while (vars->str[j] == '\t')
-	{
-		vars->str[j] = ' ';
-		j++;
-	}
-	return (ft_space(vars, i));
-}
-*/
 void	*ft_file_parser_check_str(t_exec *vars, int *i)
 {
 	if (vars->str[*i] == '$')
@@ -198,11 +185,12 @@ char *ft_file_parser(t_exec *vars, int *i)
 	char	*tmp;
 	char	*str_tmp;
 
-	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\>";
+	//str_tmp = "{}[]%@.~=+-_#^\"\'$:\\>";
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
-	while (vars->str[*i] && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))
+	//while (vars->str[*i] && vars->str[*i] != ' ') || (type != HRD && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))))
+	while (vars->str[*i] && vars->str[*i] != ' ')
 		ft_file_parser_check_str(vars, i);
 	tmp = NULL;
 	tmp = ft_substr(vars->str, j, *i - j);
@@ -259,7 +247,6 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
 		tmp = ft_substr(vars->str, *i, ft_strlen(vars->str) - *i - 1);
 	}
-	//vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = OUT;
 	if (vars->str[++(*i)] == '>') {
@@ -269,13 +256,7 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	tmp_redir->fd = fd;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);
-/*	printf("str= %s\n", vars->str);*/
-/*	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
-		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
-*/	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
-/*	printf("tmp_redir->type= %u\n", tmp_redir->type);
-	printf("tmp_redir->file= %s\n", tmp_redir->file);
-	printf("tmp= %s\n", tmp);*/
+	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	*i = -1;
 	return (tmp);
 }
@@ -293,18 +274,14 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = INP;
-	if (vars->str[++(*i)] == '<')
+	if (vars->str[++(*i)] == '<') {
 		tmp_redir->type = HRD;
+		++(*i);
+	}
 	tmp_redir->fd = fd;
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j);
-/*	printf("str= %s\n", vars->str);*/
-/*	tmp = ft_strjoin(ft_substr(vars->str, 0, *i - 1),\
-		ft_substr(vars->str, j, ft_strlen(vars->str) - j));
-*/	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
-/*	printf("tmp_redir->type= %u\n", tmp_redir->type);
-	printf("tmp_redir->file= %s\n", tmp_redir->file);
-	printf("tmp= %s\n", tmp);*/
+	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	*i = -1;
 	return (tmp);
 }
@@ -343,6 +320,7 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 	}
 	str_mas[i] = ft_strdup(new_str);
 	str_mas[i + 1] = NULL;
+	free(new_str);
 	return (str_mas);
 }
 
