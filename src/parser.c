@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/15 22:05:46 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/16 19:51:26 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ char	*ft_dollar(char *str, int *i, char **envp)
 		tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
 				ft_strlen(envp[j]) - ft_strlen(tmp2));
 	else
-		tmp3 = ft_strdup("");
+		return (str);
+		//tmp3 = ft_strdup("");
 	tmp4 = ft_substr(str, 0, *i);
 	free(tmp2);
 	tmp2 = ft_strjoin(tmp4, tmp3);
@@ -133,6 +134,9 @@ char	*ft_space(t_exec *vars, int *i)
 	int		j;
 	char	*tmp;
 
+	j = *i - 1;
+	while (vars->str[++j] == '\t')
+		vars->str[j] = ' ';
 	j = *i;
 	if (*i == 0)
 	{
@@ -153,7 +157,7 @@ char	*ft_space(t_exec *vars, int *i)
 	*i = -1;
 	return (tmp);
 }
-
+/*
 char	*ft_tab(t_exec *vars, int *i)
 {
 	int		j;
@@ -166,7 +170,7 @@ char	*ft_tab(t_exec *vars, int *i)
 	}
 	return (ft_space(vars, i));
 }
-
+*/
 void	*ft_file_parser_check_str(t_exec *vars, int *i)
 {
 	if (vars->str[*i] == '$')
@@ -339,7 +343,6 @@ char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 	}
 	str_mas[i] = ft_strdup(new_str);
 	str_mas[i + 1] = NULL;
-	//printf("%s\n", str_mas[i]);
 	return (str_mas);
 }
 
@@ -417,10 +420,10 @@ int parser(t_exec *vars)
 			vars->str = ft_dquote(vars->str, &i, vars->envp);
 		else if (vars->str[i] == '$')
 			vars->str = ft_dollar(vars->str, &i, vars->envp);
-		else if (vars->str[i] == ' ')
+		else if (vars->str[i] == ' ' || vars->str[i] == '\t')
 			vars->str = ft_space(vars, &i);
-		else if (vars->str[i] == '\t')
-			vars->str = ft_tab(vars, &i);
+		//else if (vars->str[i] == '\t')
+		//	vars->str = ft_tab(vars, &i);
 		else if (vars->str[i] == '>')
 			vars->str = ft_forward_redir(vars, &i, 1);
 		else if (vars->str[i] == '<')
