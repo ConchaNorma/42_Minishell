@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/16 19:36:03 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/17 20:28:47 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,37 +25,22 @@ void	ft_exit(int err, char *str)
 	exit(err);
 }
 
+int err_exit(t_exec *vars, int ext)
+{
+	perror("ERROR");	//вывод ошибки сделать идентично башу
+	clean_base_struct(vars, ext);
+	if (ext);
+		exit(errno);
+	return (1);
+}
+
 static void clean_lstcmd(t_exec *vars)
 {
-	// t_cmd	*l_cmd;
-	// t_redir	*l_rdr;
-
-	// версия 2
 	t_cmd	*c_cmd;
 	t_redir	*c_rdr;
 	t_cmd	*t_cmd;
 	t_redir	*t_rdr;
 
-	// while (vars->cmds)
-	// {
-	// 	l_cmd = vars->cmds;
-	// 	while (l_cmd->next)
-	// 		l_cmd = l_cmd->next;
-	// 	while (l_cmd->v_rdr)
-	// 	{
-	// 		l_rdr = l_cmd->v_rdr;
-	// 		while (l_rdr->next)
-	// 			l_rdr = l_rdr->next;
-	// 		if (l_rdr->file)
-	// 			free(l_rdr->file);
-	// 		free(l_rdr);
-	// 	}
-	// 	if (l_cmd->cmd)
-	// 		ft_frmtrx(l_cmd->cmd);
-	// 	free(l_cmd);
-	// }
-
-	//версия 2
 	if (vars->cmds)
 	{
 		c_cmd = vars->cmds;
@@ -82,7 +67,7 @@ static void clean_lstcmd(t_exec *vars)
 	}
 }
 
-void clean_base_struct(t_exec *vars, int exit)
+void clean_base_struct(t_exec *vars, int ext)
 {
 	//саму структуру не очищать, т.к. выделена на стеке, только очистить переменные внутри
 	//вероятно, вывод данных о ошибке стоит проводить до очистки, т.к. в переменных может быть нужная инфа
@@ -117,6 +102,6 @@ void clean_base_struct(t_exec *vars, int exit)
 
 	vars->st = -1;
 	//envp чистить в конце и только в случае выхода из программы
-	if (exit)
+	if (ext)
 		ft_frmtrx(vars->envp);
 }

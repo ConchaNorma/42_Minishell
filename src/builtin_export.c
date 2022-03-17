@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:41:33 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 19:34:14 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/17 21:40:45 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int builtin_export(t_exec *vars, char **cmd)
 		{
 			tmp = ft_add_str_to_arr(vars->envp, cmd[i]);	//возможно нужна проверка строки на корректность записи переменной
 			if (!tmp)
-				return (-1);
+				return (1);
 			ft_frmtrx(vars->envp);
 			vars->envp = tmp;
 		}
