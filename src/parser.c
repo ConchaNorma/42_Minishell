@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/16 21:59:47 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/17 08:18:50 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,32 +158,37 @@ char	*ft_space(t_exec *vars, int *i)
 	return (tmp);
 }
 
-void	*ft_file_parser_check_str(t_exec *vars, int *i)
+void	*ft_file_parser_check_str(t_exec *vars, int *i, t_rtp type)
 {
-	if (vars->str[*i] == '$')
+	if (vars->str[*i] == '$' && type != HRD)
 	{
 		vars->str = ft_dollar(vars->str, i, vars->envp);
-		++(*i);
+//		++(*i);
 	}
 	else if (vars->str[*i] == '\\')
 		vars->str = ft_bslesh(vars->str, i);
-	else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
-		++(*i);
-	else
-	{
-		if (vars->str[*i] == '\"')
-			vars->str = ft_dquote(vars->str, i, vars->envp);
-		if (vars->str[*i] == '\'')
-			vars->str = ft_squote(vars->str, i);
-	}
+	else if (vars->str[*i] == '\"')
+		vars->str = ft_dquote(vars->str, i, vars->envp);
+	else if (vars->str[*i] == '\'')
+		vars->str = ft_squote(vars->str, i);
+//	else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
+//		;
+////		++(*i);
+//	else
+//	{
+//		if (vars->str[*i] == '\"')
+//			vars->str = ft_dquote(vars->str, i, vars->envp);
+//		if (vars->str[*i] == '\'')
+//			vars->str = ft_squote(vars->str, i);
+//	}
 	return (0);
 }
 
-char *ft_file_parser(t_exec *vars, int *i)
+char *ft_file_parser(t_exec *vars, int *i, t_rtp type)
 {
 	int		j;
 	char	*tmp;
-	char	*str_tmp;
+	//char	*str_tmp;
 
 	//str_tmp = "{}[]%@.~=+-_#^\"\'$:\\>";
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
@@ -191,9 +196,13 @@ char *ft_file_parser(t_exec *vars, int *i)
 	j = *i;
 	//while (vars->str[*i] && vars->str[*i] != ' ') || (type != HRD && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))))
 	while (vars->str[*i] && vars->str[*i] != ' ')
-		ft_file_parser_check_str(vars, i);
+	{
+		ft_file_parser_check_str(vars, i, type);
+		(*i)++;
+	}
 	tmp = NULL;
 	tmp = ft_substr(vars->str, j, *i - j);
+	// проверить корректность имени файла, наличие (, ), !., |, /, <, ~, что-то еще
 	return (tmp);
 }
 
@@ -205,7 +214,7 @@ t_redir	*ft_create_redir(void)
 	tmp = (t_redir *)malloc(sizeof(t_redir));
 	if (!tmp)
 		exit (1);
-	//tmp->type = NULL;
+	tmp->type = 0;
 	tmp->fd = -1;
 	tmp->file = NULL;
 	tmp->next = NULL;
@@ -255,7 +264,7 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	}
 	tmp_redir->fd = fd;
 	j = *i;
-	tmp_redir->file = ft_file_parser(vars, &j);
+	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	*i = -1;
 	return (tmp);
@@ -280,7 +289,7 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	}
 	tmp_redir->fd = fd;
 	j = *i;
-	tmp_redir->file = ft_file_parser(vars, &j);
+	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	*i = -1;
 	return (tmp);
