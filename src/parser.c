@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/17 08:18:50 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/17 22:24:38 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,25 @@ void	*ft_file_parser_check_str(t_exec *vars, int *i, t_rtp type)
 	return (0);
 }
 
+/*
+char *ft_file_parser(t_exec *vars, int *i)
+{
+	int		j;
+	char	*tmp;
+	char	*str_tmp;
+
+	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\>";
+	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
+		++(*i);
+	j = *i;
+	while (vars->str[*i] && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))
+		ft_file_parser_check_str(vars, i);
+	tmp = NULL;
+	tmp = ft_substr(vars->str, j, *i - j);
+	return (tmp);
+}
+*/
+
 char *ft_file_parser(t_exec *vars, int *i, t_rtp type)
 {
 	int		j;
@@ -195,7 +214,8 @@ char *ft_file_parser(t_exec *vars, int *i, t_rtp type)
 		++(*i);
 	j = *i;
 	//while (vars->str[*i] && vars->str[*i] != ' ') || (type != HRD && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))))
-	while (vars->str[*i] && vars->str[*i] != ' ')
+	while (vars->str[*i] && vars->str[*i] != ' ' && vars->str[*i] != '|'\
+			&& vars->str[*i] != '>' && vars->str[*i] != '<')
 	{
 		ft_file_parser_check_str(vars, i, type);
 		(*i)++;
@@ -226,11 +246,13 @@ t_redir	*ft_redir_sup(t_cmd *tmp_cmds)
 	t_redir	*tmp_redir;
 	t_redir	*new;
 
-	if (!tmp_cmds->v_rdr){
+	if (!tmp_cmds->v_rdr)
+	{
 		tmp_cmds->v_rdr = ft_create_redir();
 		tmp_redir = tmp_cmds->v_rdr;
 	}
-	else {
+	else
+	{
 		tmp_redir = tmp_cmds->v_rdr;
 		new = ft_create_redir();
 		while (tmp_redir->next)
@@ -252,13 +274,15 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	if (*i > 0) {
+	if (*i > 0)
+	{
 		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
 		tmp = ft_substr(vars->str, *i, ft_strlen(vars->str) - *i - 1);
 	}
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = OUT;
-	if (vars->str[++(*i)] == '>') {
+	if (vars->str[++(*i)] == '>')
+	{
 		tmp_redir->type = APN;
 		++(*i);
 	}
@@ -283,7 +307,8 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_sup(tmp_cmds);
 	tmp_redir->type = INP;
-	if (vars->str[++(*i)] == '<') {
+	if (vars->str[++(*i)] == '<')
+	{
 		tmp_redir->type = HRD;
 		++(*i);
 	}
