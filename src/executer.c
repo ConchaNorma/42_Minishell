@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/19 22:51:14 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 23:04:16 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,23 @@ static void call_child(t_exec *vars)
 
 	redir_base(vars);
 	if (redirection_fd(vars->tm_cmd->v_rdr) == -1)
-		puterr_frexit(vars, ERFREX, 1, NULL);
+		ft_errfrex(vars, ERFREX, 1, NULL);
 	res = builtin_check_exec(vars);
 	if (res == -1)
-		puterr_frexit(vars, ERFREX, 1, NULL);
+		ft_errfrex(vars, ERFREX, 1, NULL);
 	if (!res)
 	{
 		vars->path = get_path(vars->envp, vars->tm_cmd->cmd[0]);
 		if (!vars->path)
-			puterr_frexit(vars, ERFREX, 1, NULL);
+			ft_errfrex(vars, ERFREX, 1, NULL);
 		if (execve(vars->path, vars->tm_cmd->cmd, vars->envp) == -1)
 		{
 			if (errno == 2)
-				puterr_frexit(vars, ERFREX, 127, NULL);
-			puterr_frexit(vars, ERFREX, 1, NULL);
+				ft_errfrex(vars, ERFREX, 127, NULL);
+			ft_errfrex(vars, ERFREX, 1, NULL);
 		}
 	}
-	puterr_frexit(vars, FREX, 0, NULL);
+	ft_errfrex(vars, FREX, 0, NULL);
 }
 
 static int call_parent(t_exec *vars)

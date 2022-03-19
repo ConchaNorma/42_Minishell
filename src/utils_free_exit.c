@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/19 23:00:02 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 23:04:21 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void put_err(t_exec *vars, char *str1, char *str2)
 	free(str1);
 }
 
-int	puterr_frexit(t_exec *vars, t_err tp, int ex_st, char *err)
+int	ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err)
 {
 	vars->exit_status = ex_st;
 	if (tp == ER || tp == ERFR || tp == ERFREX)

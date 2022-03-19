@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/19 22:27:50 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 23:03:40 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,6 @@ void	ft_signal_ctrl_d(t_exec *vars);
 char	*ft_readline(void);
 
 void	clean_base_struct(t_exec *vars, int ext);
-int		puterr_frexit(t_exec *vars, t_err tp, int ex_st, char *err);
+int		ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err);
 
 #endif
