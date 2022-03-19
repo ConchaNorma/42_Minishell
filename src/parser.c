@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/17 22:24:38 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/19 13:32:14 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ t_redir	*ft_create_redir(void)
 	return (tmp);
 }
 
-t_redir	*ft_redir_sup(t_cmd *tmp_cmds)
+t_redir	*ft_redir_new(t_cmd *tmp_cmds)
 {
 	t_redir	*tmp_redir;
 	t_redir	*new;
@@ -275,12 +275,11 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
 	if (*i > 0)
-	{
 		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
-		tmp = ft_substr(vars->str, *i, ft_strlen(vars->str) - *i - 1);
-	}
-	tmp_redir = ft_redir_sup(tmp_cmds);
+	tmp_redir = ft_redir_new(tmp_cmds);
 	tmp_redir->type = OUT;
+	if (vars->str[(*i)] == '<')
+		tmp_redir->type = INP;
 	if (vars->str[++(*i)] == '>')
 	{
 		tmp_redir->type = APN;
@@ -304,8 +303,10 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	vars->str = ft_space(vars, i);
-	tmp_redir = ft_redir_sup(tmp_cmds);
+	if (*i > 0)
+		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+	//vars->str = ft_space(vars, i);
+	tmp_redir = ft_redir_new(tmp_cmds);
 	tmp_redir->type = INP;
 	if (vars->str[++(*i)] == '<')
 	{
