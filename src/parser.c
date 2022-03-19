@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/19 13:32:14 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/19 15:51:50 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,35 @@ char	*ft_dquote_sup(char *str, int *i, char **envp)
 			break ;
 	}
 	return (str);
+}
+
+char	*ft_quote(char *str, int *i, char **envp)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+
+	j = *i;
+	if (str[*i] == '\"')
+		str = ft_dquote_sup(str, i, envp);
+	else if (str[*i] == '\'')
+	{
+		while (str[++(*i)])
+			if (str[*i] == '\'')
+				break ;
+	}
+	tmp = ft_substr(str, 0, j);
+	tmp2 = ft_substr(str, j + 1, *i - j - 1);
+	tmp3 = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
+	tmp = ft_strjoin(tmp3, tmp2);
+	*i -= 2;
+	free (tmp2);
+	free (tmp3);
+	return (tmp);
 }
 
 char	*ft_dquote(char *str, int *i, char **envp)
@@ -161,26 +190,13 @@ char	*ft_space(t_exec *vars, int *i)
 void	*ft_file_parser_check_str(t_exec *vars, int *i, t_rtp type)
 {
 	if (vars->str[*i] == '$' && type != HRD)
-	{
 		vars->str = ft_dollar(vars->str, i, vars->envp);
-//		++(*i);
-	}
 	else if (vars->str[*i] == '\\')
 		vars->str = ft_bslesh(vars->str, i);
 	else if (vars->str[*i] == '\"')
 		vars->str = ft_dquote(vars->str, i, vars->envp);
 	else if (vars->str[*i] == '\'')
 		vars->str = ft_squote(vars->str, i);
-//	else if (vars->str[*i] != '\"' && vars->str[*i] != '\'')
-//		;
-////		++(*i);
-//	else
-//	{
-//		if (vars->str[*i] == '\"')
-//			vars->str = ft_dquote(vars->str, i, vars->envp);
-//		if (vars->str[*i] == '\'')
-//			vars->str = ft_squote(vars->str, i);
-//	}
 	return (0);
 }
 
@@ -278,8 +294,6 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
 	tmp_redir = ft_redir_new(tmp_cmds);
 	tmp_redir->type = OUT;
-	if (vars->str[(*i)] == '<')
-		tmp_redir->type = INP;
 	if (vars->str[++(*i)] == '>')
 	{
 		tmp_redir->type = APN;
@@ -305,7 +319,6 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 		tmp_cmds = tmp_cmds->next;
 	if (*i > 0)
 		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
-	//vars->str = ft_space(vars, i);
 	tmp_redir = ft_redir_new(tmp_cmds);
 	tmp_redir->type = INP;
 	if (vars->str[++(*i)] == '<')
@@ -425,12 +438,14 @@ int parser(t_exec *vars)
 	i = -1;
 	while (vars->str[++i])
 	{
-		if (vars->str[i] == '\'')
-			vars->str = ft_squote(vars->str, &i);
+		if (vars->str[i] == '\'' || vars->str[i] == '\"')
+			vars->str = ft_quote(vars->str, &i, vars->envp);
+		//if (vars->str[i] == '\'')
+		//	vars->str = ft_squote(vars->str, &i);
+		//else if (vars->str[i] == '\"')
+		//	vars->str = ft_dquote(vars->str, &i, vars->envp);
 		else if (vars->str[i] == '\\')
 			vars->str = ft_bslesh(vars->str, &i);
-		else if (vars->str[i] == '\"')
-			vars->str = ft_dquote(vars->str, &i, vars->envp);
 		else if (vars->str[i] == '$')
 			vars->str = ft_dollar(vars->str, &i, vars->envp);
 		else if (vars->str[i] == ' ' || vars->str[i] == '\t')

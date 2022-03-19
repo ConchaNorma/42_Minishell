@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/02 23:04:58 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/19 15:46:45 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_exec
 
 int		parser(t_exec *vars);
 int		executer(t_exec *vars);
+char	*ft_quote(char *str, int *i, char **envp);
 char	*ft_dquote(char *str, int *i, char **envp);
 char	*ft_squote(char *str, int *i);
 char	*ft_bslesh(char *str, int *i);
