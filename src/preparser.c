@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/15 21:12:31 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/19 19:35:56 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	ft_preparser_redir(char *str, int *i)
 		return (printf("minishell: syntax error near unexpected token `|\'\n"));
 	else if (j - 1 > *i && str[j] == '|' && str[j + 1] != '|')
 		return (printf("minishell: syntax error near unexpected token `|\'\n"));
-	*i = j;
+	//*i = j;
 	return (0);
 }
 

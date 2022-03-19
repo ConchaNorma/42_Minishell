@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/09 22:14:06 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/19 20:41:21 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
+	vars.exit_status = 0;
 	// i = -1;
 	// while (vars.envp[++i])
 	//  	printf("vars.envp[%d] = %s\n", i, vars.envp[i]);
