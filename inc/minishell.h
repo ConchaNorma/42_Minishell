@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/17 19:57:12 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 22:27:50 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # include <signal.h>
 # include <termios.h>
 
-# define TMP_FILE "here_doc"
-
 // Здесь будут структуры переменных для создания списков и деревьев
 typedef enum e_tkn{
 	NOTOKEN,
@@ -39,6 +37,14 @@ typedef enum e_tkn{
 	FILE_,
 	WORD
 }	t_tkn;
+
+typedef enum e_err{
+	FR,
+	ER,
+	ERFR,
+	ERFREX,
+	FREX
+}	t_err;
 
 typedef enum e_rtp{
 	OUT,
@@ -74,6 +80,7 @@ typedef struct s_exec
 	t_cmd	*tm_cmd;
 	int		st;
 	char	*path;
+	int		exit_status;
 }	t_exec;
 
 
@@ -85,7 +92,6 @@ char	*ft_bslesh(char *str, int *i);
 char	*ft_dollar(char *str, int *i, char **envp);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 int		preparser(t_exec *vars);
-void	ft_exit(int err, char *str);
 char	*get_path(char **envp, char *cmd);
 int		redirection_fd(t_redir *v_rdr);
 
@@ -107,6 +113,6 @@ void	ft_signal_ctrl_d(t_exec *vars);
 char	*ft_readline(void);
 
 void	clean_base_struct(t_exec *vars, int ext);
-int		err_exit(t_exec *vars, int ext);
+int		puterr_frexit(t_exec *vars, t_err tp, int ex_st, char *err);
 
 #endif

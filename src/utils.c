@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/13 16:25:00 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 17:39:27 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*get_path(char **envp, char *cmd)
 	char	*rs;
 
 	i = 0;
-	while (envp[i] && cmd[0] != '/' && cmd[0] != '.')
+	while (envp[i] && cmd[0] != '/' && (cmd[0] != '.' || cmd[1] != '/'))
 	{
 		if (ft_strnstr(envp[i], "PATH=", 5))
 		{
@@ -56,10 +56,13 @@ char	*get_path(char **envp, char *cmd)
 		}
 		i++;
 	}
-	if (cmd[0] == '/' || cmd[0] == '.')
-		if (access(cmd, 0) == 0)
-			return (cmd);
-	return (NULL);
+	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	{
+		if (access(cmd, 0) == -1)
+			return (NULL);
+		return (cmd);
+	}
+	return (ft_strjoin("./", cmd));
 }
 
 int srch_var_in_envp(char **envp, char *var_name)

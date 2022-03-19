@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/16 19:36:56 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 22:50:12 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
+	vars.exit_status = 0;
 	//начать с нуля
 	//увеличить переменную SHLVL
 	//возможно при повторном запуске минишел, передать ей в переменную текущее envp или SHLVL
@@ -88,8 +89,10 @@ int	main(int argc, char **argv, char **envp)
 		free(vars.str);
 		vars.str = NULL;
 		//Здесь будет экзекютер
-		executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-		clean_base_struct(&vars, 0);
+		if (executer(&vars) == -1)
+			puterr_frexit(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		else
+			clean_base_struct(&vars, 0);
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	//добавить изменине SHLVL

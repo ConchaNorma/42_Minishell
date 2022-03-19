@@ -6,31 +6,55 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/17 20:28:47 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 23:00:02 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_exit(int err, char *str)
+static void put_err(t_exec *vars, char *str1, char *str2)
 {
-	if (str)
-	{
-		write(2, "ERROR: ", 7);
-		write(2, str, ft_strlen(str));
-		write(2, "\n", 2);
-	}
+	if (vars->exit_status != 258)
+		str1 = ft_strjoin("minishell: ", vars->tm_cmd->cmd[0]);
 	else
-		perror("ERROR");
-	exit(err);
+		str1 = ft_strjoin("minishell: syntax error near unexpected token ", str2);
+	if (vars->exit_status == 1)
+	{
+		str2 = ft_strjoin(str1, ": ");
+		free(str1);
+		str1 = str2;
+		str2 = ft_strjoin(str1, vars->tm_cmd->cmd[1]);
+		free(str1);
+		str1 = str2;
+	}
+	if (vars->exit_status == 127)
+	{
+		str2 = ft_strjoin(str1, ": command not found");
+		free(str1);
+		str1 = str2;
+	}
+	if (vars->exit_status == 127 || vars->exit_status == 258)
+		ft_putendl_fd(str1, 2);
+	else
+		perror(str1);
+	free(str1);
 }
 
-int err_exit(t_exec *vars, int ext)
+int	puterr_frexit(t_exec *vars, t_err tp, int ex_st, char *err)
 {
-	perror("ERROR");	//вывод ошибки сделать идентично башу
-	clean_base_struct(vars, ext);
-	if (ext);
-		exit(errno);
+	vars->exit_status = ex_st;
+	if (tp == ER || tp == ERFR || tp == ERFREX)
+	{
+		if (vars->exit_status != 127 && vars->exit_status != 258)
+			vars->exit_status = 1;
+		put_err(vars, NULL, err);
+	}
+	if (tp == FR || tp == ERFR)
+		clean_base_struct(vars, 0);
+	if (tp == ERFREX || tp == FREX)
+		clean_base_struct(vars, 1);
+	if (tp == ERFREX || tp == FREX)
+		exit(vars->exit_status);
 	return (1);
 }
 
