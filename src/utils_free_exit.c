@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/19 23:04:21 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/20 18:18:13 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,26 @@ int	ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err)
 		exit(vars->exit_status);
 	return (1);
 }
+static void clean_lstrdr(t_cmd *c_cmd)
+{
+	t_redir	*c_rdr;
+	t_redir	*t_rdr;
+
+	c_rdr = c_cmd->v_rdr;
+	while (c_rdr)
+	{
+		t_rdr = c_rdr->next;
+		if (c_rdr->file)
+			free(c_rdr->file);
+		free(c_rdr);
+		c_rdr = t_rdr;
+	}
+}
 
 static void clean_lstcmd(t_exec *vars)
 {
 	t_cmd	*c_cmd;
-	t_redir	*c_rdr;
 	t_cmd	*t_cmd;
-	t_redir	*t_rdr;
 
 	if (vars->cmds)
 	{
@@ -72,17 +85,7 @@ static void clean_lstcmd(t_exec *vars)
 		{
 			t_cmd = c_cmd->next;
 			if (c_cmd->v_rdr)
-			{
-				c_rdr = c_cmd->v_rdr;
-				while (c_rdr)
-				{
-					t_rdr = c_rdr->next;
-					if (c_rdr->file)
-						free(c_rdr->file);
-					free(c_rdr);
-					c_rdr = t_rdr;
-				}
-			}
+				clean_lstrdr(c_cmd);
 			if (c_cmd->cmd)
 				ft_frmtrx(c_cmd->cmd);
 			free(c_cmd);
