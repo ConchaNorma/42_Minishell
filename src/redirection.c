@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/20 18:32:16 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/20 20:36:29 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int redir_inp_out_apn(t_redir *v_rdr)
 	int fd;
 	int std;
 
+	fd = -1;
 	std = 1;
 	if (v_rdr->type == INP)
 	{
@@ -34,41 +35,50 @@ static int redir_inp_out_apn(t_redir *v_rdr)
 	//как быть при перенаправлении на один STDIN/STDOUT/STDERR
 }
 
+static int get_input(t_redir *v_rdr, char **res)
+{
+	char	*str;
+	char	*tmp;
+	size_t	len;
+
+	str = readline(">$ ");
+	if (!str)
+		return (1);
+	len = ft_strlen(str);
+	if(len < ft_strlen(v_rdr->file))
+		len = ft_strlen(v_rdr->file);
+	if(!ft_memcmp(str, v_rdr->file, len))
+	{
+		free(str);
+		return (2);
+	}
+	tmp = ft_strjoin(*res, str);
+	if (*res)
+		free(*res);
+	*res = ft_strjoin(tmp, "\n");
+	free(tmp);
+	free(str);
+	return (0);
+}
+
 static int redir_heredoc(t_redir *v_rdr)
 {
-	char *str;
-	size_t len;
-	int fd[2];
-	char *res;
-	char *tmp;
+	int		r;
+	size_t	len;
+	int		fd[2];
+	char	*res;
 
 	if (pipe(fd) == -1)
 		return (-1);
-	res = NULL;
-	tmp = NULL;
 	while (1)
 	{
-		str = readline(">$ ");
-		if (!str)
+		r = get_input(v_rdr, &res);
+		if (r == 1)
 			continue ;
-		len = ft_strlen(str);
-		if(len < ft_strlen(v_rdr->file))
-			len = ft_strlen(v_rdr->file);
-		if(!ft_memcmp(str, v_rdr->file, len))
-		{
-			free(str);
+		if (r == 2)
 			break ;
-		}
-		tmp = ft_strjoin(res, str);
-		if (res)
-			free(res);
-		res = ft_strjoin(tmp, "\n");
-		free(tmp);
-		free(str);
 	}
-	len = 0;
-	while (res[len])
-		len++;
+	len = ft_strlen(res);
 	write(fd[1], res, len);
 	close(fd[1]);
 	dup2(fd[0], 0);
