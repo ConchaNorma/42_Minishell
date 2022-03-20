@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/19 23:03:40 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/20 20:49:35 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str);
 int		preparser(t_exec *vars);
 char	*get_path(char **envp, char *cmd);
 int		redirection_fd(t_redir *v_rdr);
+int		redir_base(t_exec *vars);
 
 char	*get_varname(char *var_str, int with_eq);
 char	*get_varvalue(char *var_str);

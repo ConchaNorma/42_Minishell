@@ -6,11 +6,28 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/20 20:36:29 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/20 20:49:38 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int redir_base(t_exec *vars)
+{
+	if (vars->tm_cmd != vars->cmds)
+	{
+		close(vars->tfd[1]);
+		dup2(vars->tfd[0], 0);
+		close(vars->tfd[0]);
+	}
+	if (vars->tm_cmd->next)
+	{
+		close(vars->pfd[0]);
+		dup2(vars->pfd[1], 1);
+		close(vars->pfd[1]);
+	}
+	return (0);
+}
 
 static int redir_inp_out_apn(t_redir *v_rdr)
 {
