@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/21 19:34:04 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/21 22:14:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
-	vars.exit_status = 0;
 	//начать с нуля
 	//увеличить переменную SHLVL
 	//возможно при повторном запуске минишел, передать ей в переменную текущее envp или SHLVL
@@ -71,6 +70,7 @@ int	main(int argc, char **argv, char **envp)
 	//либо сделать структуру с указателями памяти для очистки, fd'шниками дл закрытия, и функцию гарбэйдж-коллектора
 
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
+	vars.exit_status = 0;
 
 	while(1)
 	{
@@ -110,10 +110,10 @@ int	main(int argc, char **argv, char **envp)
 		free(vars.str);
 		vars.str = NULL;
 		//Здесь будет экзекютер
-		//if (executer(&vars) == -1)
-		//	ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-		//else
-		//	clean_base_struct(&vars, 0);
+		if (executer(&vars) == -1)
+			ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		else
+			clean_base_struct(&vars, 0);
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	//добавить изменине SHLVL
