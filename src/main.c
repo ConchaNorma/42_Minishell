@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/21 08:06:04 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/21 19:34:04 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int	main(int argc, char **argv, char **envp)
 	//Нужно переменные занулять до выделения памяти, чтобы при очистке всех структур...
 	//...в случае выхода по ошибке или стандартного, можно было очищать то, что выделено, и не очищать то, что не выделено
 	t_exec	vars;
-	// t_cmd	*tmp_cmds;
-	// t_redir	*tmp_redir;
-	// int		i;
+	t_cmd	*tmp_cmds;
+	t_redir	*tmp_redir;
+	int		i;
 
 	(void)argv;
 	//инициализировать структуру или найти, где она инициализируется далее.
@@ -110,10 +110,10 @@ int	main(int argc, char **argv, char **envp)
 		free(vars.str);
 		vars.str = NULL;
 		//Здесь будет экзекютер
-		if (executer(&vars) == -1)
-			ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-		else
-			clean_base_struct(&vars, 0);
+		//if (executer(&vars) == -1)
+		//	ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		//else
+		//	clean_base_struct(&vars, 0);
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	//добавить изменине SHLVL
