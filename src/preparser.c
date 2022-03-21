@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/21 08:03:34 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/21 08:18:09 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,21 @@ int	ft_preparser_semi_pipe(char *str, int *i, t_exec *vars)
 	while (str[j] == ' ' && str[j])
 		j++;
 	if (str[*i] == ';' && str[j] == ';' && j - 1 == *i)
-		return (ft_err_exit(258, "syntax error near unexpected token `;;\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`;;\'"));
 	else if (str[*i] == '|' && str[j] == '|' && j - 1 == *i)
-		return (ft_err_exit(258, "syntax error near unexpected token `||\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`||\'"));
 	else if (j - 1 > *i && str[j] == ';' && str[j + 1] == ';')
-		return (ft_err_exit(258, "syntax error near unexpected token `;;\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`;;\'"));
 	else if (j - 1 > *i && str[j] == ';' && str[j + 1] != ';')
-		return (ft_err_exit(258, "syntax error near unexpected token `;\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`;\'"));
 	else if (str[*i] == ';' && str[j] == '|' && str[j + 1] == '|')
-		return (ft_err_exit(258, "syntax error near unexpected token `||\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`||\'"));
 	else if (str[*i] == ';' && str[j] == '|' && str[j + 1] != '|')
-		return (ft_err_exit(258, "syntax error near unexpected token `|\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`|\'"));
 	else if (j - 1 > *i && str[j] == '|' && str[j + 1] == '|')
-		return (ft_err_exit(258, "syntax error near unexpected token `||\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`||\'"));
 	else if (j - 1 > *i && str[j] == '|' && str[j + 1] != '|')
-		return (ft_err_exit(258, "syntax error near unexpected token `|\'", vars));
+		return (ft_errfrex(vars, ER, 258, "`|\'"));
 	*i = j;
 	return (0);
 }
@@ -73,6 +73,7 @@ int	ft_preparser_redir(char *str, int *i, t_exec *vars)
 	while (str[j] == ' ' && str[j])
 		j++;
 	if (str[j] == '>' && str[j + 1] == '>')
+		return (ft_errfrex(vars, ER, 258, "`|\'"));
 		return (ft_err_exit(258, "syntax error near unexpected token `>>\'", vars));
 	else if (str[j] == '<' && str[j + 1] == '<')
 		return (ft_err_exit(258, "syntax error near unexpected token `<<\'", vars));
