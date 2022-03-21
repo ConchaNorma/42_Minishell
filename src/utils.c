@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 21:16:37 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 22:00:37 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,17 @@ char *get_varvalue(char *var_str)
 	if(!eq)
 		return (NULL);
 	return(eq + 1);
+}
+
+int	ft_err_exit(int err, char *str, t_exec *vars)
+{
+	if (str)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putendl_fd(str, 2);
+		vars->exit_status = err;
+	}
+	else
+		perror("ERROR");
+	return (1);
 }
