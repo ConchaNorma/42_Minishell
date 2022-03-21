@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/19 22:14:03 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/21 08:03:34 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,3 +149,38 @@ int	preparser(t_exec *vars)
 	printf("finish preparsing\n");
 	return (0);
 }
+
+int preparser(t_exec *vars)
+{
+	if (ft_preparser_dquote(vars->str))
+		//return (printf("minishell: syntax error near unexpected token `\"\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`\"\'"));
+	if (ft_preparser_squote(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `\'\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`\'\'"));
+	if (ft_preparser_semicolon_sup(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `;\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`;\'"));
+	if (ft_preparser_dsemicolon(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `;;\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`;;\'"));
+	if (ft_preparser_single_pipe(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `|\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`|\'"));
+	if (ft_preparser_double_pipe(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `||\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`||\'"));
+	if (ft_preparser_semicolon_pipe(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `|\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`|\'"));
+	if (ft_preparser_pipe_semicolon(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `;\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`;\'"));
+	if (ft_preparser_redir(vars->str))
+		// return (printf("minishell: syntax error near unexpected token `> or `<\'\n"));
+		return (ft_errfrex(vars, ER, 258, "`> or `<\'"));
+	return (0);
+}
+
+/* \- в конце, ||, |;, ;|, ; - в начале, | - в начале и в конце, ;;, >>>, <<<
+*/

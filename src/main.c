@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/19 20:41:21 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/21 08:06:04 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,24 @@ char	*ft_readline(void)
 
 int	main(int argc, char **argv, char **envp)
 {
+	//Нужно переменные занулять до выделения памяти, чтобы при очистке всех структур...
+	//...в случае выхода по ошибке или стандартного, можно было очищать то, что выделено, и не очищать то, что не выделено
 	t_exec	vars;
-	t_cmd	*tmp_cmds;
-	t_redir	*tmp_redir;
-	int		i;
+	// t_cmd	*tmp_cmds;
+	// t_redir	*tmp_redir;
+	// int		i;
 
 	(void)argv;
+	//инициализировать структуру или найти, где она инициализируется далее.
+	//Возможно, инциализацию стоит сделать в начале бесконечного цикла ниже.
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
 	vars.exit_status = 0;
+	//начать с нуля
+	//увеличить переменную SHLVL
+	//возможно при повторном запуске минишел, передать ей в переменную текущее envp или SHLVL
+
 	// i = -1;
 	// while (vars.envp[++i])
 	//  	printf("vars.envp[%d] = %s\n", i, vars.envp[i]);
@@ -63,39 +71,20 @@ int	main(int argc, char **argv, char **envp)
 	//либо сделать структуру с указателями памяти для очистки, fd'шниками дл закрытия, и функцию гарбэйдж-коллектора
 
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
-	//ft_signals();
-	//ft_signals();
+
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
 		ft_signals();
-		vars.str = NULL;
-		//vars.str = readline("minishell>$ ");
 		vars.str = ft_readline();
-		//signal(SIGINT, &signal_handler);
-		//signal(SIGQUIT, SIG_IGN);
-		//if (!vars.str)
-		//	ft_signal_ctrl_d(&vars);
-
-		//if (!vars.str)
-		//{
-		//	ft_putstr_fd("\033[11C", 1);
-		//	ft_putstr_fd("\x1bM\x1b[`exit\n", 1);
-		//	//write(1, "exit", 4);
-		//	//ft_putstr_fd("exit\n", 0);
-		//	free(vars.str);
-		//	return(1);
-		//}
-		if (!vars.str)
-			continue;
-		//printf("%s\n", vars.str);
+		if (!vars.str || !ft_strlen(vars.str))
+			continue ;
 
 		//Здесь будет парсер
 		if (preparser(&vars))
 			continue ;
 		vars.st = 1;
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-/*		printf("vars.str1= %s\n", vars.str);*/
 
 		tmp_cmds = vars.cmds;
 		while (tmp_cmds)
@@ -119,35 +108,16 @@ int	main(int argc, char **argv, char **envp)
 		printf("finish parser\n");
 		//write(1, "  \b\b\n", 5);
 		free(vars.str);
-
+		vars.str = NULL;
 		//Здесь будет экзекютер
-		//executer(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-		//builtin_env(vars.envp);
-		// printf("11\n");
-		//break ; //Убрать, когда будет написан код, слушающий ввод строки
+		if (executer(&vars) == -1)
+			ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
+		else
+			clean_base_struct(&vars, 0);
 	}
-/*	printf("1");*/
-/*	 tmp_cmds = vars.cmds;
-	 while (tmp_cmds)
-	 {
-	 	i = -1;
-	 	printf("cmd_num= %d\n", tmp_cmds->cmd_num);
-	 	while (++i < tmp_cmds->cmd_num)
-	 		printf("pipes= %s\n", tmp_cmds->cmd[i]);
-	 	if (tmp_cmds->v_rdr)
-	 	{
-	 		tmp_redir = tmp_cmds->v_rdr;
-	 		while(tmp_redir){
-	 			printf("13\n");
-	 			printf("vars.cmds->v_rdr->type= %u\n", tmp_redir->type);
-	 			printf("vars.cmds->v_rdr->fd= %d\n", tmp_redir->fd);
-	 			printf("vars.cmds->v_rdr->file= %s\n", tmp_redir->file);
-	 			tmp_redir = tmp_redir->next;
-	 		}
-	 	}
-	 	tmp_cmds = tmp_cmds->next;
-	 }
-*/
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
+	//добавить изменине SHLVL
+	//добавить изменение $_
+
 	return (0);
 }

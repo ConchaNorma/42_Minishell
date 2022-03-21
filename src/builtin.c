@@ -6,27 +6,24 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 22:42:08 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/19 23:21:07 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*builtin_pwd(int sgn)
+int	builtin_pwd(void)
 {
 	char	*path;
 
-	path = getcwd(NULL, 0);
-	if(!sgn)
-	{
-		write(1, path, ft_strlen(path));
-		free(path);
-		path = NULL;
-	}
-	return (path);
+	path = getcwd(NULL, 0); //возможно нужна проверка на ошибку
+	write(1, path, ft_strlen(path));
+	write(1, "\n", 1);
+	free(path);
+	return (1);
 }
 
-void	builtin_env(char **envp)
+int	builtin_env(char **envp)
 {
 	int	i;
 
@@ -37,13 +34,18 @@ void	builtin_env(char **envp)
 		write(1, "\n", 1);
 		i++;
 	}
+	return (1);
 }
 
-/*
-static int builtin_exit(void);
-*/
+static void builtin_exit(t_exec *vars)
+{
+	if (vars->st == 1)
+		ft_putstr_fd("exit\n", 2);
+	clean_base_struct(vars, 1);
+	exit(0);
+}
 
-static void	builtin_echo(char **cmd)
+static int	builtin_echo(char **cmd)
 {
 	int	i;
 	int	nl;
@@ -65,35 +67,30 @@ static void	builtin_echo(char **cmd)
 	}
 	if (nl != 1)
 		write(1, "\n", 1);
+	return (1);
 }
 
-int builtin_check(char **cmd, t_exec *vars)
+int builtin_check_exec(t_exec *vars)
 {
-	int	len_cmd;
+	int	ln;
+	char **cmd;
 
-	len_cmd = ft_strlen(cmd[0]);
-	if (len_cmd == 6 && !ft_memcmp(cmd[0], "export", len_cmd))
-		//для экспорта может быть несколько значений
-		builtin_export(vars, cmd[1]);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
-	else if (len_cmd == 5 && !ft_memcmp(cmd[0], "unset", len_cmd))
-		//для ансет может быть несколько значений
-		builtin_unset(vars, cmd[1]);	//скорее всего этот билтин отсюда надо убрать, т.к. его надо делать до форков, и лучше до экзекютора
-	else if (len_cmd == 4)
-	{
-		if (!ft_memcmp(cmd[0], "echo", len_cmd))
-			builtin_echo(cmd);
-		if (!ft_memcmp(cmd[0], "exit", len_cmd))
-			; //Дописать
-	}
-	else if (len_cmd == 3)
-	{
-		if (!ft_memcmp(cmd[0], "env", len_cmd))
-			builtin_env(vars->envp);
-		if (!ft_memcmp(cmd[0], "pwd", len_cmd))
-			builtin_pwd(0);
-	}
-	else if (len_cmd == 2 && !ft_memcmp(cmd[0], "cd", len_cmd))
-		builtin_cd(cmd[1], vars->envp);
+	cmd = vars->tm_cmd->cmd;
+	ln = ft_strlen(cmd[0]);
+	if (ln == 6 && !ft_memcmp(cmd[0], "export", ln))
+		return(builtin_export(vars, cmd));	//возможно стоит дописать эту часть на случай 'v=123 export vv=234'
+	else if (ln == 5 && !ft_memcmp(cmd[0], "unset", ln))
+		return(builtin_unset(vars, cmd));
+	else if (ln == 4 && !ft_memcmp(cmd[0], "echo", ln))
+		return(builtin_echo(cmd));
+	else if (ln == 4 && !ft_memcmp(cmd[0], "exit", ln))
+		builtin_exit(vars);
+	else if (ln == 3 && !ft_memcmp(cmd[0], "env", ln))
+		return(builtin_env(vars->envp));
+	else if (ln == 3 && !ft_memcmp(cmd[0], "pwd", ln))
+		return(builtin_pwd());
+	else if (ln == 2 && !ft_memcmp(cmd[0], "cd", ln))
+		return(builtin_cd(cmd[1], vars->envp));
 	return (0);
 }
 

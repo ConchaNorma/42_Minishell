@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/19 21:53:36 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/21 08:07:12 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # include <signal.h>
 # include <termios.h>
 
-# define TMP_FILE "here_doc"
-
 // Здесь будут структуры переменных для создания списков и деревьев
 typedef enum e_tkn{
 	NOTOKEN,
@@ -39,6 +37,14 @@ typedef enum e_tkn{
 	FILE_,
 	WORD
 }	t_tkn;
+
+typedef enum e_err{
+	FR,
+	ER,
+	ERFR,
+	ERFREX,
+	FREX
+}	t_err;
 
 typedef enum e_rtp{
 	OUT,
@@ -68,11 +74,13 @@ typedef struct s_exec
 	t_cmd	*cmds;
 	pid_t	pid;
 	t_list	*lvar;
-	int		fd[2];
+	int		ofd[2];
+	int		pfd[2];
+	int		tfd[2];
+	t_cmd	*tm_cmd;
 	int		st;
 	char	*path;
 	int		exit_status;
-
 }	t_exec;
 
 
@@ -85,26 +93,28 @@ char	*ft_bslesh(char *str, int *i);
 char	*ft_dollar(char *str, int *i, char **envp);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 int		preparser(t_exec *vars);
-void	ft_exit(int err, char *str);
-int		ft_err_exit(int err, char *str, t_exec *vars);
 char	*get_path(char **envp, char *cmd);
 int		redirection_fd(t_redir *v_rdr);
+int		redir_base(t_exec *vars);
 
 char	*get_varname(char *var_str, int with_eq);
 char	*get_varvalue(char *var_str);
 int		srch_var_in_envp(char **envp, char *var_name);
 
-int		builtin_check(char **cmd, t_exec *vars);
-int		builtin_export(t_exec *vars, char *var);
-int		builtin_unset(t_exec *vars, char *var);
-char	*builtin_pwd(int sgn);
+int		builtin_check_exec(t_exec *vars);
+int		builtin_export(t_exec *vars, char **cmd);
+int		builtin_unset(t_exec *vars, char **cmd);
+int		builtin_pwd(void);
 int		builtin_cd(char *dir, char **envp);
-void	builtin_env(char **envp);
+int		builtin_env(char **envp);
 
 void	signal_handler(int signal);
 void	ft_signals(void);
 void	ft_signal_ctrl_d(t_exec *vars);
 
 char	*ft_readline(void);
+
+void	clean_base_struct(t_exec *vars, int ext);
+int		ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err);
 
 #endif

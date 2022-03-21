@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:09:20 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/19 12:12:59 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/17 21:37:45 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@ int builtin_cd(char *dir, char **envp)
 	int		i;
 	int		len;
 
-	path = builtin_pwd(1);
+	path = getcwd(NULL, 0); //возможно нужна проверка на ошибку
 	tmp = NULL;
 	i = 0;
-	len = ft_strlen(dir);
-	if (!dir || !len || dir[0] == '~')
+	if (!dir || dir[0] == '~')
 	{
 		while (envp[i])
 		{
@@ -32,7 +31,7 @@ int builtin_cd(char *dir, char **envp)
 			if (tmp)
 			{
 				free(path);
-				path = ft_strdup(tmp + 5);
+				path = ft_strdup(tmp + 5); //возможно нужна проверка на ошибку
 				break ;
 			}
 			i++;
@@ -40,6 +39,7 @@ int builtin_cd(char *dir, char **envp)
 	}
 	if (dir)
 	{
+		len = ft_strlen(dir);
 		if (dir[0] == '/')
 		{
 			free(path);
@@ -62,14 +62,14 @@ int builtin_cd(char *dir, char **envp)
 				if(dir[i] == '.' && dir[i + 1] == '.' && (!dir[i + 2] || dir[i + 2] == '/'))
 				{
 					tmp = ft_strrchr(path, '/');
-					tmp = ft_substr(path, 0, (tmp - path));
+					tmp = ft_substr(path, 0, (tmp - path));	//возможно нужна проверка на ошибку
 					free(path);
 					path = tmp;
 					i += 2;
 					continue ;
 				}
 			}
-			tmp = ft_strjoin(path, "/");
+			tmp = ft_strjoin(path, "/"); //возможно нужна проверка на ошибку
 			free(path);
 			path = tmp;
 			if (dir[i])
@@ -77,18 +77,18 @@ int builtin_cd(char *dir, char **envp)
 				tmp = ft_strchr((dir + i), '/');
 				if (tmp)
 				{
-					tmp2 = ft_substr(dir, i, (tmp - (dir + i)));
+					tmp2 = ft_substr(dir, i, (tmp - (dir + i))); //возможно нужна проверка на ошибку
 					i += (tmp - (dir + i));
-					tmp = ft_strjoin(path, tmp2);
+					tmp = ft_strjoin(path, tmp2); //возможно нужна проверка на ошибку
 					free(tmp2);
 					free(path);
 					path = tmp;
 				}
 				else
 				{
-					tmp2 = ft_substr(dir, i, ft_strlen((dir + i)));
+					tmp2 = ft_substr(dir, i, ft_strlen((dir + i))); //возможно нужна проверка на ошибку
 					i += ft_strlen((dir + i));
-					tmp = ft_strjoin(path, tmp2);
+					tmp = ft_strjoin(path, tmp2); //возможно нужна проверка на ошибку
 					free(tmp2);
 					free(path);
 					path = tmp;
@@ -96,9 +96,11 @@ int builtin_cd(char *dir, char **envp)
 			}
 		}
 	}
-	//printf("path = %s\n", path);
-	chdir(path);	//дописать обработку ошибок
-	//printf("pwd = %s\n", builtin_pwd(1));
+	if (chdir(path))
+	{
+		free(path);
+		return (-1);
+	}
 	free(path);
-	return (0);
+	return (1);
 }

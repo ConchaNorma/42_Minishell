@@ -6,100 +6,87 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/21 22:44:19 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/20 20:49:50 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// static int ft_exec(t_exec *vars, t_cmd *tmp)
-// {
-// 	return(execve(vars->path, tmp->cmd, vars->envp));
-// }
+static void call_child(t_exec *vars)
+{
+	int res;
+
+	redir_base(vars);
+	if (redirection_fd(vars->tm_cmd->v_rdr) == -1)
+		ft_errfrex(vars, ERFREX, 1, NULL);
+	res = builtin_check_exec(vars);
+	if (res == -1)
+		ft_errfrex(vars, ERFREX, 1, NULL);
+	if (!res)
+	{
+		vars->path = get_path(vars->envp, vars->tm_cmd->cmd[0]);
+		if (!vars->path)
+			ft_errfrex(vars, ERFREX, 1, NULL);
+		if (execve(vars->path, vars->tm_cmd->cmd, vars->envp) == -1)
+		{
+			if (errno == 2)
+				ft_errfrex(vars, ERFREX, 127, NULL);
+			ft_errfrex(vars, ERFREX, 1, NULL);
+		}
+	}
+	ft_errfrex(vars, FREX, 0, NULL);
+}
 
 static int call_parent(t_exec *vars)
 {
-	t_cmd *tmp;
-
-	// int i;
-
-	// i = -1;
-	// while (vars->cmds->cmd[++i])
-	// 	printf("vars->cmds->cmd[%d] = %s\n", i, vars->cmds->cmd[i]);
-
-	tmp = vars->cmds;
-	//vars->st--;
-	while (--vars->st)
-		tmp = tmp->next;
-	//здесь сделать обработку редиректов
-	redirection_fd(tmp->v_rdr);
-
-	// printf("len0 = %zu\n", ft_arrlen((void **)tmp->cmd));
-	// tmp->cmd = ft_add_str_to_arr(tmp->cmd, "");
-	// i = ft_arrlen((void **)tmp->cmd);
-	// printf("len1 = %d\n", i);
-	// tmp->cmd[i - 1] = NULL;
-	// printf("len2 = %zu\n", ft_arrlen((void **)tmp->cmd));
-
-	//здесь сделать проверку на built-in и их выполнение. В случае, если это не они, выполнять то, что ниже
-	builtin_check(tmp->cmd, vars);
-	vars->path = get_path(vars->envp, tmp->cmd[0]);
-	if (!vars->path)
+	if (vars->tm_cmd != vars->cmds)
 	{
-		ft_frmtrx(tmp->cmd);		//как сделать очистку в некоторой общей структуре
-		//сделать очистку списков и замолоченных структур
-		//здесь подумать на счет выхода
-		ft_exit(0, "The path to execute the parent command was not found.");
+		close(vars->tfd[0]);
+		close(vars->tfd[1]);
 	}
-	// printf("vars->path: %s\n", vars->path);
-	// i = -1;
-	// while (tmp->cmd[++i])
-	// 	printf("tmp->cmd[%d] = %s\n", i, tmp->cmd[i]);
-
-	//
-	//if (ft_exec(vars, tmp) == -1)
-	//if (execve(vars->path, cm, vars->envp) == -1)
-	if (execve(vars->path, tmp->cmd, vars->envp) == -1)
-	{
-		// printf("%s: err\n", tmp->cmd[0]);
-		free(vars->path);
-		ft_frmtrx(tmp->cmd);
-		//сделать очистку списков и замолоченных структур
-		//здесь подумать на счет выхода
-		ft_exit(errno, NULL);
-	}
-	free(vars->path);
-	ft_frmtrx(tmp->cmd);
-	//сделать очистку списков и замолоченных структур
-	//закрыть и удалить временнй файл heredoc
-	close(vars->fd[0]);
+	vars->tfd[0] = vars->pfd[0];
+	vars->tfd[1] = vars->pfd[1];
+	if(waitpid(vars->pid, &vars->exit_status, WUNTRACED) == -1)
+		return (-1);
 	return (0);
 }
 
-static int call_child(t_exec *vars)
+static int exec_cmd(t_exec *vars)
 {
-	vars->st--;
-	close(vars->fd[0]);
-	dup2(vars->fd[1], 1); //написать проверку
-	executer(vars);
-	return (0);
+	if (vars->tm_cmd->next && pipe(vars->pfd) == -1)
+		return (-1);
+	vars->pid = fork();		//дописать проверку на ошибку
+	if (vars->pid == -1)
+		return (-1);
+	if (!vars->pid)
+		call_child(vars);	//обработка ошибок?
+	return (call_parent(vars));
 }
 
 int executer(t_exec *vars)
 {
-	if(vars->st > 1)
+	int res;
+
+	res = 0;
+	vars->ofd[0] = dup(0);
+	vars->ofd[1] = dup(1);
+	vars->tm_cmd = vars->cmds;
+	while (vars->tm_cmd)
 	{
-		pipe(vars->fd);
-		vars->pid = fork();
-		//дописать проверку ошибок двух строк выше
-		if(!vars->pid)
-			return(call_child(vars));
-		else
+		if (vars->st == 1)
 		{
-			close(vars->fd[1]);
-			dup2(vars->fd[0], 0);	//дописать проверку на ошибку
-			waitpid(vars->pid, NULL, WUNTRACED);
+			res = builtin_check_exec(vars);
+			if (res)
+				break ;
 		}
+		res = exec_cmd(vars);
+		if(res == -1)
+			break ;
+		vars->tm_cmd = vars->tm_cmd->next;
 	}
-	return (call_parent(vars));
+	dup2(vars->ofd[0], 0);
+	dup2(vars->ofd[1], 1);
+	close(vars->ofd[0]);
+	close(vars->ofd[1]);
+	return (res);
 }
