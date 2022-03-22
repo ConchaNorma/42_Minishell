@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/21 08:07:12 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/22 19:46:07 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,12 @@ typedef struct s_exec
 
 int		parser(t_exec *vars);
 int		executer(t_exec *vars);
-char	*ft_quote(char *str, int *i, char **envp);
+char	*ft_quote(t_exec *vars, int *i);
 //char	*ft_dquote(char *str, int *i, char **envp);
 //char	*ft_squote(char *str, int *i);
 char	*ft_bslesh(char *str, int *i);
 char	*ft_dollar(char *str, int *i, char **envp);
+char	*ft_dollar_parse(t_exec *vars, int *i);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 int		preparser(t_exec *vars);
 char	*get_path(char **envp, char *cmd);

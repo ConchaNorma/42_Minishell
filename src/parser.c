@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/22 07:55:02 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/22 19:48:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,26 @@ char	*ft_bslesh(char *str, int *i)
 	return (tmp);
 }
 
-char	*ft_dquote_sup(char *str, int *i, char **envp)
+char	*ft_dquote_sup(t_exec *vars, int *i)
 {
-	while (str[++(*i)])
+	while (vars->str[++(*i)])
 	{
-		if (str[*i] =='\\' && (str[*i + 1] == '\"' || str[*i + 1] == '`'
-				|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
+		if (vars->str[*i] =='\\' && (vars->str[*i + 1] == '\"' \
+		|| vars->str[*i + 1] == '`' || vars->str[*i + 1] == '$' \
+		|| vars->str[*i + 1] == '\\'))
 		{
-			str = ft_bslesh(str, i);
+			vars->str = ft_bslesh(vars->str, i);
 			++(*i);
 		}
-		if (str[*i] == '$')
-			str = ft_dollar(str, i, envp);
-		if (str[*i] == '\"')
+		if (vars->str[*i] == '$')
+			vars->str = ft_dollar_parse(vars, i);
+		if (vars->str[*i] == '\"')
 			break ;
 	}
-	return (str);
+	return (vars->str);
 }
 
-char	*ft_quote(char *str, int *i, char **envp)
+char	*ft_quote(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
@@ -52,20 +53,20 @@ char	*ft_quote(char *str, int *i, char **envp)
 	char	*tmp3;
 
 	j = *i;
-	if (str[*i] == '\"')
-		str = ft_dquote_sup(str, i, envp);
-	else if (str[*i] == '\'')
+	if (vars->str[*i] == '\"')
+		vars->str = ft_dquote_sup(vars, i);
+	else if (vars->str[*i] == '\'')
 	{
-		while (str[++(*i)])
-			if (str[*i] == '\'')
+		while (vars->str[++(*i)])
+			if (vars->str[*i] == '\'')
 				break ;
 	}
-	tmp = ft_substr(str, 0, j);
-	tmp2 = ft_substr(str, j + 1, *i - j - 1);
+	tmp = ft_substr(vars->str, 0, j);
+	tmp2 = ft_substr(vars->str, j + 1, *i - j - 1);
 	tmp3 = ft_strjoin(tmp, tmp2);
 	free(tmp);
 	free(tmp2);
-	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
+	tmp2 = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
 	tmp = ft_strjoin(tmp3, tmp2);
 	*i -= 2;
 	free (tmp2);
@@ -181,11 +182,11 @@ char *ft_file_parser(t_exec *vars, int *i, t_rtp type)
 	while (vars->str[*i] && !ft_strchr(" |<>;()", vars->str[*i]))
 	{
 		if (vars->str[*i] == '$' && type != HRD)
-			vars->str = ft_dollar(vars->str, i, vars->envp);
+			vars->str = ft_dollar_parse(vars, i);
 		else if (vars->str[*i] == '\\')
 			vars->str = ft_bslesh(vars->str, i);
 		else if (vars->str[*i] == '\"' || vars->str[*i] == '\'')
-			vars->str = ft_quote(vars->str, i, vars->envp);
+			vars->str = ft_quote(vars, i);
 		(*i)++;
 	}
 	tmp = NULL;
@@ -392,13 +393,9 @@ int parser(t_exec *vars)
 	while (vars->str[++i])
 	{
 		if (vars->str[i] == '\'' || vars->str[i] == '\"')
-			vars->str = ft_quote(vars->str, &i, vars->envp);
+			vars->str = ft_quote(vars, &i);
 		else if (vars->str[i] == '\\')
 			vars->str = ft_bslesh(vars->str, &i);
-		//else if (vars->str[i] == '$' && vars->str[i + 1] != '?')
-		//	vars->str = ft_dollar(vars->str, &i, vars->envp, vars);
-		//else if (vars->str[i] == '$' && vars->str[i + 1] == '?')
-		//	vars->str = ft_dollar_question(vars->str, &i, vars);
 		else if (vars->str[i] == '$')
 			vars->str = ft_dollar_parse(vars, &i);
 		else if (vars->str[i] == ' ' || vars->str[i] == '\t')
