@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/21 22:10:02 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/22 07:55:02 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,17 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	tmp2[5] = ft_substr(str, j + 1, ft_strlen(str) - j);
 	tmp = ft_strjoin(tmp2[4], tmp2[5]);
 	ft_dollar_free(tmp2, 6);
+	return (tmp);
+}
+
+char	*ft_dollar_parse(t_exec *vars, int *i)
+{
+	char	*tmp;
+
+	if (vars->str[*i + 1] == '?')
+		tmp = ft_dollar_question(vars->str, i, vars);
+	else
+		tmp = ft_dollar(vars->str, i, vars->envp);
 	return (tmp);
 }
 
@@ -384,10 +395,12 @@ int parser(t_exec *vars)
 			vars->str = ft_quote(vars->str, &i, vars->envp);
 		else if (vars->str[i] == '\\')
 			vars->str = ft_bslesh(vars->str, &i);
-		else if (vars->str[i] == '$' && vars->str[i + 1] != '?')
-			vars->str = ft_dollar(vars->str, &i, vars->envp);
-		else if (vars->str[i] == '$' && vars->str[i + 1] == '?')
-			vars->str = ft_dollar_question(vars->str, &i, vars);
+		//else if (vars->str[i] == '$' && vars->str[i + 1] != '?')
+		//	vars->str = ft_dollar(vars->str, &i, vars->envp, vars);
+		//else if (vars->str[i] == '$' && vars->str[i + 1] == '?')
+		//	vars->str = ft_dollar_question(vars->str, &i, vars);
+		else if (vars->str[i] == '$')
+			vars->str = ft_dollar_parse(vars, &i);
 		else if (vars->str[i] == ' ' || vars->str[i] == '\t')
 			vars->str = ft_space(vars, &i);
 		else if (vars->str[i] == '>')

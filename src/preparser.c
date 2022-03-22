@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/21 20:56:13 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/22 08:13:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,30 +95,22 @@ int	ft_preparser_redir(char *str, int *i, t_exec *vars)
 	return (0);
 }
 
-int	ft_preparser_str_beg_end(char *str, int *i, t_exec *vars)
+int	ft_preparser_str_beg_end(char *str, t_exec *vars)
 {
 	int		j;
 
-	j = *i;
-	if (*i == 0)
-	{
-		while (str[j] == ' ')
-			j++;
-		if (str[j] != ';' && str[j] != '|')
-			return (0);
-		else if (str[j] == ';')
-			return (ft_errfrex(vars, ER, 258, "`;\'"));
-		else if (str[j] == '|')
-			return (ft_errfrex(vars, ER, 258, "`|\'"));
-	}
-	else
-	{
-		j = ft_strlen(str);
-		while (str[j] == ' ')
-			--j;
-		if (str[j] == '|')
-			return (ft_errfrex(vars, ER, 258, "`|\'"));
-	}
+	j = 0;
+	while (str[j] == ' ')
+		j++;
+	if (str[j] == ';')
+		return (ft_errfrex(vars, ER, 258, "`;\'"));
+	else if (str[j] == '|')
+		return (ft_errfrex(vars, ER, 258, "`|\'"));
+	j = ft_strlen(str) - 1;
+	while (str[j] == ' ')
+		--j;
+	if (str[j] == '|')
+		return (ft_errfrex(vars, ER, 258, "`|\'"));
 	return (0);
 }
 
@@ -131,9 +123,9 @@ int	preparser(t_exec *vars)
 	i = -1;
 	while (prepars[++i])
 	{
-		if (ft_preparser_str_beg_end(prepars, &i, vars))
+		if (i == 0 && ft_preparser_str_beg_end(prepars, vars))
 			return (1);
-		if ((prepars[i] == '\'' || prepars[i] == '\"' || prepars[i] == '\\') \
+		else if ((prepars[i] == '\'' || prepars[i] == '\"' || prepars[i] == '\\') \
 			&& ft_preparser_quote_bslesh(prepars, &i, vars))
 			return (1);
 		//else if (prepars[i] == '\\')
@@ -144,7 +136,7 @@ int	preparser(t_exec *vars)
 		else if ((prepars[i] == '>' || prepars[i] == '<') \
 				&& ft_preparser_redir(prepars, &i, vars))
 			return (1);
-	}
+
 	printf("finish preparsing\n");
 	return (0);
 }
