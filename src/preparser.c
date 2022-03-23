@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   preparser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/22 19:38:08 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 20:42:20 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	preparser(t_exec *vars)
 				&& ft_preparser_redir(prepars, &i, vars))
 			return (1);
 	}
-	printf("finish preparsing\n");
+	//printf("finish preparsing\n");
 	return (0);
 }
 /*

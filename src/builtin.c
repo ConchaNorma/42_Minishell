@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/23 22:08:30 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 22:15:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	builtin_pwd(void)
 	char	*path;
 
 	path = getcwd(NULL, 0); //возможно нужна проверка на ошибку
+	if (!path)
+		return (-1);
 	write(1, path, ft_strlen(path));
 	write(1, "\n", 1);
 	free(path);
