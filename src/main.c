@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/22 19:52:12 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 08:21:06 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,18 @@ char	*ft_readline(void)
 	else
 		add_history(input);
 	return (input);
+}
+
+void	ft_change_shlvl(t_exec *vars, int flag)
+{
+	char	*cur_shlvl;
+	int		new_shlvl;
+	char	**ex_shlvl[2];
+
+	cur_shlvl = ft_dollar("$SHLVL", 0, vars->envp);
+	new_shlvl = itoa(cur_shlvl) + flag;
+	ex_shlvl[0] = ft_strdup("export");
+	ex_shlvl[1] = ft_strdup("export");
 }
 
 int	main(int argc, char **argv, char **envp)

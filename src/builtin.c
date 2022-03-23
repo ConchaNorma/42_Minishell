@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/22 22:07:36 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/22 23:01:29 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,19 +97,19 @@ int builtin_check_exec(t_exec *vars)
 
 	cmd = vars->tm_cmd->cmd;
 	ln = ft_strlen(cmd[0]);
-	if (ln == 6 && !ft_memcmp(cmd[0], "export", ln))
+	if (!ft_memcmp(cmd[0], "export", ln))
 		return (builtin_export(vars, cmd));	//возможно стоит дописать эту часть на случай 'v=123 export vv=234'
-	else if (ln == 5 && !ft_memcmp(cmd[0], "unset", ln))
+	else if (!ft_memcmp(cmd[0], "unset", ln))
 		return (builtin_unset(vars, cmd));
-	else if (ln == 4 && !ft_memcmp(cmd[0], "echo", ln))
+	else if (!vars->pid && !ft_memcmp(cmd[0], "echo", ln))
 		return (builtin_echo(cmd));
-	else if (ln == 4 && !ft_memcmp(cmd[0], "exit", ln))
+	else if (!ft_memcmp(cmd[0], "exit", ln))
 		builtin_exit(vars);
-	else if (ln == 3 && !ft_memcmp(cmd[0], "env", ln))
+	else if (!vars->pid && !ft_memcmp(cmd[0], "env", ln))
 		return (builtin_env(vars->envp));
-	else if (ln == 3 && !ft_memcmp(cmd[0], "pwd", ln))
+	else if (!vars->pid && !ft_memcmp(cmd[0], "pwd", ln))
 		return (builtin_pwd());
-	else if (ln == 2 && !ft_memcmp(cmd[0], "cd", ln))
+	else if (!ft_memcmp(cmd[0], "cd", ln))
 		return (builtin_cd(cmd[1], vars->envp));
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/20 20:49:50 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/22 23:11:54 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int executer(t_exec *vars)
 	int res;
 
 	res = 0;
+	vars->pid = -1;
 	vars->ofd[0] = dup(0);
 	vars->ofd[1] = dup(1);
 	vars->tm_cmd = vars->cmds;
