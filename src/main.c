@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/23 20:41:45 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/23 21:10:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 		else
 			clean_base_struct(&vars, 0);
-		vars.exit_status = 0;
+		//vars.exit_status = 0;
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	//добавить изменине SHLVL
