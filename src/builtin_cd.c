@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:09:20 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/23 17:18:41 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/17 21:37:45 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,11 @@ int builtin_cd(char *dir, char **envp)
 			}
 		}
 	}
-	//printf("path = %s\n", path);
-	chdir(path);	//дописать обработку ошибок
-	//printf("pwd = %s\n", builtin_pwd(1));
+	if (chdir(path))
+	{
+		free(path);
+		return (-1);
+	}
 	free(path);
 	return (1);
 }

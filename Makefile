@@ -6,7 +6,7 @@
 #    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
-#    Updated: 2022/03/02 07:46:18 by cnorma           ###   ########.fr        #
+#    Updated: 2022/03/21 08:03:46 by cnorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC_DIR		=	./src/
 SRC_FILES	=	main.c			preparser.c 		parser.c	\
 				executer.c		redirection.c		builtin.c	\
 				builtin_cd.c	builtin_export.c	utils.c		\
-				builtin_unset.c \
+				builtin_unset.c utils_free_exit.c				\
 				signals.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))

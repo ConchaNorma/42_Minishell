@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_initial.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/22 19:48:20 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/19 18:40:54 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,25 @@ char	*ft_bslesh(char *str, int *i)
 	return (tmp);
 }
 
-char	*ft_dquote_sup(t_exec *vars, int *i)
+char	*ft_dquote_sup(char *str, int *i, char **envp)
 {
-	while (vars->str[++(*i)])
+	while (str[++(*i)])
 	{
-		if (vars->str[*i] =='\\' && (vars->str[*i + 1] == '\"' \
-		|| vars->str[*i + 1] == '`' || vars->str[*i + 1] == '$' \
-		|| vars->str[*i + 1] == '\\'))
+		if (str[*i] =='\\' && (str[*i + 1] == '\"' || str[*i + 1] == '`'
+				|| str[*i + 1] == '$' || str[*i + 1] == '\\'))
 		{
-			vars->str = ft_bslesh(vars->str, i);
+			str = ft_bslesh(str, i);
 			++(*i);
 		}
-		if (vars->str[*i] == '$')
-			vars->str = ft_dollar_parse(vars, i);
-		if (vars->str[*i] == '\"')
+		if (str[*i] == '$')
+			str = ft_dollar(str, i, envp);
+		if (str[*i] == '\"')
 			break ;
 	}
-	return (vars->str);
+	return (str);
 }
 
-char	*ft_quote(t_exec *vars, int *i)
+char	*ft_quote(char *str, int *i, char **envp)
 {
 	int		j;
 	char	*tmp;
@@ -53,24 +52,73 @@ char	*ft_quote(t_exec *vars, int *i)
 	char	*tmp3;
 
 	j = *i;
-	if (vars->str[*i] == '\"')
-		vars->str = ft_dquote_sup(vars, i);
-	else if (vars->str[*i] == '\'')
+	if (str[*i] == '\"')
+		str = ft_dquote_sup(str, i, envp);
+	else if (str[*i] == '\'')
 	{
-		while (vars->str[++(*i)])
-			if (vars->str[*i] == '\'')
+		while (str[++(*i)])
+			if (str[*i] == '\'')
 				break ;
 	}
-	tmp = ft_substr(vars->str, 0, j);
-	tmp2 = ft_substr(vars->str, j + 1, *i - j - 1);
+	tmp = ft_substr(str, 0, j);
+	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_strjoin(tmp, tmp2);
 	free(tmp);
 	free(tmp2);
-	tmp2 = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
+	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
 	tmp = ft_strjoin(tmp3, tmp2);
 	*i -= 2;
 	free (tmp2);
 	free (tmp3);
+	return (tmp);
+}
+
+char	*ft_dquote(char *str, int *i, char **envp)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+
+	j = *i;
+	str = ft_dquote_sup(str, i, envp);
+	tmp = ft_substr(str, 0, j);
+	tmp2 = ft_substr(str, j + 1, *i - j - 1);
+	tmp3 = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
+	tmp = ft_strjoin(tmp3, tmp2);
+	*i -= 2;
+	free (tmp2);
+	free (tmp3);
+	return (tmp);
+}
+
+char	*ft_squote(char *str, int *i)
+{
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+	char	*tmp4;
+
+	j = *i;
+	while (str[++(*i)])
+	{
+		if (str[*i] == '\'')
+			break ;
+	}
+	tmp = ft_substr(str, 0, j);
+	tmp2 = ft_substr(str, j + 1, *i - j - 1);
+	tmp3 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
+	tmp4 = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	tmp = ft_strjoin(tmp4, tmp3);
+	free(tmp3);
+	free(tmp4);
+	*i -= 2;
 	return (tmp);
 }
 
@@ -82,26 +130,6 @@ void	ft_dollar_free(char **tmp, int size)
 	while (++ii < size)
 		free(tmp[ii]);
 	free(tmp);
-}
-
-char	*ft_dollar_question(char *str, int *i, t_exec *vars)
-{
-	int		j;
-	char	*tmp;
-	char	*tmp1;
-	char	*tmp2;
-
-	j = *i + 1;
-	tmp = ft_substr(str, 0, *i);
-	tmp1 = ft_itoa (vars->exit_status);
-	tmp2 = ft_strjoin(tmp, tmp1);
-	free (tmp);
-	free (tmp1);
-	tmp1 = ft_substr(str, j + 1, ft_strlen(str) - j);
-	tmp = ft_strjoin(tmp2, tmp1);
-	free (tmp1);
-	free (tmp2);
-	return (tmp);
 }
 
 char	*ft_dollar(char *str, int *i, char **envp)
@@ -131,14 +159,39 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	return (tmp);
 }
 
-char	*ft_dollar_parse(t_exec *vars, int *i)
+char	*ft_dollar2(char *str, int *i, char **envp)
 {
+	int		j;
 	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+	char	*tmp4;
 
-	if (vars->str[*i + 1] == '?')
-		tmp = ft_dollar_question(vars->str, i, vars);
+	j = *i;
+	tmp3 = NULL;
+	while (str[j + 1] && (str[j + 1] == '_' || ft_isalnum(str[j + 1])))
+		j++;
+	if (j == *i)
+		return (str);
+	tmp = ft_substr(str, *i + 1, j - *i);
+	tmp2 = ft_strjoin(tmp, "=");
+	j = ft_str_in_arrstr(envp, tmp2, ft_strlen(tmp2));
+	if (j >= 0)
+		tmp3 = ft_substr(envp[j], ft_strlen(tmp2), \
+				ft_strlen(envp[j]) - ft_strlen(tmp2));
 	else
-		tmp = ft_dollar(vars->str, i, vars->envp);
+		return (str);
+		//tmp3 = ft_strdup("");
+	tmp4 = ft_substr(str, 0, *i);
+	free(tmp2);
+	tmp2 = ft_strjoin(tmp4, tmp3);
+	free(tmp3);
+	free(tmp4);
+	tmp4 = ft_substr(str, *i + ft_strlen(tmp) + 1, ft_strlen(str) - (*i + ft_strlen(tmp)));
+	free(tmp);
+	tmp = ft_strjoin(tmp2, tmp4);
+	free(tmp2);
+	free(tmp4);
 	return (tmp);
 }
 
@@ -171,26 +224,58 @@ char	*ft_space(t_exec *vars, int *i)
 	return (tmp);
 }
 
+void	*ft_file_parser_check_str(t_exec *vars, int *i, t_rtp type)
+{
+	if (vars->str[*i] == '$' && type != HRD)
+		vars->str = ft_dollar(vars->str, i, vars->envp);
+	else if (vars->str[*i] == '\\')
+		vars->str = ft_bslesh(vars->str, i);
+	else if (vars->str[*i] == '\"')
+		vars->str = ft_dquote(vars->str, i, vars->envp);
+	else if (vars->str[*i] == '\'')
+		vars->str = ft_squote(vars->str, i);
+	return (0);
+}
+
+/*
+char *ft_file_parser(t_exec *vars, int *i)
+{
+	int		j;
+	char	*tmp;
+	char	*str_tmp;
+
+	str_tmp = "{}[]%@.~=+-_#^\"\'$:\\>";
+	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
+		++(*i);
+	j = *i;
+	while (vars->str[*i] && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))
+		ft_file_parser_check_str(vars, i);
+	tmp = NULL;
+	tmp = ft_substr(vars->str, j, *i - j);
+	return (tmp);
+}
+*/
+
 char *ft_file_parser(t_exec *vars, int *i, t_rtp type)
 {
 	int		j;
 	char	*tmp;
+	//char	*str_tmp;
 
+	//str_tmp = "{}[]%@.~=+-_#^\"\'$:\\>";
 	while (vars->str[*i] == ' ' || vars->str[*i] == '\t')
 		++(*i);
 	j = *i;
-	while (vars->str[*i] && !ft_strchr(" |<>;()", vars->str[*i]))
+	//while (vars->str[*i] && vars->str[*i] != ' ') || (type != HRD && (ft_isalnum(vars->str[*i]) || ft_strchr(str_tmp, vars->str[*i])))))
+	while (vars->str[*i] && vars->str[*i] != ' ' && vars->str[*i] != '|'\
+			&& vars->str[*i] != '>' && vars->str[*i] != '<')
 	{
-		if (vars->str[*i] == '$' && type != HRD)
-			vars->str = ft_dollar_parse(vars, i);
-		else if (vars->str[*i] == '\\')
-			vars->str = ft_bslesh(vars->str, i);
-		else if (vars->str[*i] == '\"' || vars->str[*i] == '\'')
-			vars->str = ft_quote(vars, i);
+		ft_file_parser_check_str(vars, i, type);
 		(*i)++;
 	}
 	tmp = NULL;
 	tmp = ft_substr(vars->str, j, *i - j);
+	// проверить корректность имени файла, наличие (, ), !., |, /, <, ~, что-то еще
 	return (tmp);
 }
 
@@ -331,11 +416,10 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	tmp_cmds->cmd = ft_str_newline(tmp_cmds->cmd, \
-			new_str, ++(tmp_cmds->cmd_num));
+	tmp_cmds->cmd = ft_str_newline(tmp_cmds->cmd, new_str, ++(tmp_cmds->cmd_num));
 }
 
-char	*ft_split_pipe(t_exec *vars, int *i)
+char *ft_split_pipe(t_exec *vars, int *i)
 {
 	char	*tmp;
 	t_cmd	*new;
@@ -387,19 +471,24 @@ char	*ft_digit(t_exec *vars, int *i)
 int parser(t_exec *vars)
 {
 	int		i;
-
 	vars->cmds = ft_create_cmds();
 	i = -1;
 	while (vars->str[++i])
 	{
 		if (vars->str[i] == '\'' || vars->str[i] == '\"')
-			vars->str = ft_quote(vars, &i);
+			vars->str = ft_quote(vars->str, &i, vars->envp);
+		//if (vars->str[i] == '\'')
+		//	vars->str = ft_squote(vars->str, &i);
+		//else if (vars->str[i] == '\"')
+		//	vars->str = ft_dquote(vars->str, &i, vars->envp);
 		else if (vars->str[i] == '\\')
 			vars->str = ft_bslesh(vars->str, &i);
 		else if (vars->str[i] == '$')
-			vars->str = ft_dollar_parse(vars, &i);
+			vars->str = ft_dollar(vars->str, &i, vars->envp);
 		else if (vars->str[i] == ' ' || vars->str[i] == '\t')
 			vars->str = ft_space(vars, &i);
+		//else if (vars->str[i] == '\t')
+		//	vars->str = ft_tab(vars, &i);
 		else if (vars->str[i] == '>')
 			vars->str = ft_forward_redir(vars, &i, 1);
 		else if (vars->str[i] == '<')
@@ -410,9 +499,8 @@ int parser(t_exec *vars)
 			vars->str = ft_digit(vars, &i);
 	}
 	vars->str = ft_space(vars, &i);
-	//i = -1;
+	i = -1;
 	return (0);
-}
 	//получить строку и порезать/разложить по элементам - перенос строки, пайпы, разделители, команды, флаги, аргументы/файлы
 	//склеить по переносу "\"
 	//порезать по пайпам "|"
@@ -420,6 +508,7 @@ int parser(t_exec *vars)
 
 	//здесь же прописать проверки на некорректные символы, команды.
 	//(возможно, какие-то случаи или типы проверок лучше проводить в экзекютере)
+}
 //Вопросы-мысли по парсеру:
 // - Как shell работает с разделителями и пайпами?
 //		Какой приоритет?

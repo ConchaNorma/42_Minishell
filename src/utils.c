@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/20 21:16:37 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/21 08:03:42 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	ft_exit(int err, char *str)
-{
-	if (str)
-	{
-		write(2, "ERROR: ", 7);
-		write(2, str, ft_strlen(str));
-		write(2, "\n", 2);
-	}
-	else
-		perror("ERROR");
-	exit(err);
-}
 
 static char	*search_path(char *s_path, char *cmd)
 {
@@ -59,7 +46,7 @@ char	*get_path(char **envp, char *cmd)
 	char	*rs;
 
 	i = 0;
-	while (envp[i] && cmd[0] != '/' && cmd[0] != '.')
+	while (envp[i] && cmd[0] != '/' && (cmd[0] != '.' || cmd[1] != '/'))
 	{
 		if (ft_strnstr(envp[i], "PATH=", 5))
 		{
@@ -69,10 +56,13 @@ char	*get_path(char **envp, char *cmd)
 		}
 		i++;
 	}
-	if (cmd[0] == '/' || cmd[0] == '.')
-		if (access(cmd, 0) == 0)
-			return (cmd);
-	return (NULL);
+	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	{
+		if (access(cmd, 0) == -1)
+			return (NULL);
+		return (cmd);
+	}
+	return (ft_strjoin("./", cmd));
 }
 
 int srch_var_in_envp(char **envp, char *var_name)
@@ -108,4 +98,17 @@ char *get_varvalue(char *var_str)
 	if(!eq)
 		return (NULL);
 	return(eq + 1);
+}
+
+int	ft_err_exit(int err, char *str, t_exec *vars)
+{
+	if (str)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putendl_fd(str, 2);
+		vars->exit_status = err;
+	}
+	else
+		perror("ERROR");
+	return (1);
 }

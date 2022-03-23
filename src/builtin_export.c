@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:41:33 by aarnell           #+#    #+#             */
-/*   Updated: 2022/02/22 19:34:14 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/21 21:19:32 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int find_repl_val_var_in_envp(char **envp, char *var)
 		return (0);
 	tmp = envp[pos];
 	envp[pos] = ft_strdup(var);
-	if(!envp[pos])
+	if (!envp[pos])
 	{
 		envp[pos] = tmp;
 		pos = -1;
@@ -37,7 +37,7 @@ static int find_repl_val_var_in_envp(char **envp, char *var)
 	return (pos);
 }
 
-int builtin_export(t_exec *vars, char **cmd)
+int	builtin_export(t_exec *vars, char **cmd)
 {
 	char	**tmp;
 	int		i;
@@ -45,7 +45,7 @@ int builtin_export(t_exec *vars, char **cmd)
 
 	i = 0;
 	s = 0;
-	while(cmd[i])
+	while (cmd[i])
 	{
 		if (s == 0 && !ft_memcmp(cmd[i], "export", 6))
 			s = 1;
@@ -53,7 +53,7 @@ int builtin_export(t_exec *vars, char **cmd)
 		{
 			tmp = ft_add_str_to_arr(vars->envp, cmd[i]);	//возможно нужна проверка строки на корректность записи переменной
 			if (!tmp)
-				return (-1);
+				return (1);
 			ft_frmtrx(vars->envp);
 			vars->envp = tmp;
 		}
