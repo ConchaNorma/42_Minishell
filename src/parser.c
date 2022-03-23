@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/22 19:48:20 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 22:08:42 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,13 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	k = ft_str_in_arrstr(envp, tmp2[1], ft_strlen(tmp2[1]));
 	if (k < 0)
 		return (str);
+	printf("envp[k]]= %s\n", envp[k]);
 	tmp2[2] = ft_substr(envp[k], j - *i + 1, ft_strlen(envp[k]) - (j - *i) + 1);
 	tmp2[3] = ft_substr(str, 0, *i);
 	tmp2[4] = ft_strjoin(tmp2[3], tmp2[2]);
 	tmp2[5] = ft_substr(str, j + 1, ft_strlen(str) - j);
+	printf("tmp2[0]= %s\ttmp2[1]= %s\ttmp2[2]= %s\ttmp2[3]= %s\ttmp2[4]= %s\ttmp2[5]= %s\n",\
+		tmp2[0], tmp2[1], tmp2[2], tmp2[3], tmp2[4], tmp2[5]);
 	tmp = ft_strjoin(tmp2[4], tmp2[5]);
 	ft_dollar_free(tmp2, 6);
 	return (tmp);

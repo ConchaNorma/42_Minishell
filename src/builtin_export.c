@@ -6,13 +6,13 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:41:33 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/21 21:19:32 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 22:08:32 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int find_repl_val_var_in_envp(char **envp, char *var)
+int	find_repl_val_var_in_envp(char **envp, char *var)
 {
 	char	*var_name;
 	char	*tmp;

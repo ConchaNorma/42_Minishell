@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/23 08:21:06 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 22:09:30 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,36 @@ void	ft_change_shlvl(t_exec *vars, int flag)
 {
 	char	*cur_shlvl;
 	int		new_shlvl;
-	char	**ex_shlvl[2];
+	char	*ex_shlvl;
+	char	*tmp;
+	int		ii;
 
-	cur_shlvl = ft_dollar("$SHLVL", 0, vars->envp);
-	new_shlvl = itoa(cur_shlvl) + flag;
-	ex_shlvl[0] = ft_strdup("export");
-	ex_shlvl[1] = ft_strdup("export");
+	ii = srch_var_in_envp(vars->envp, "SHLVL");
+	cur_shlvl = get_varvalue(vars->envp[ii]);
+	new_shlvl = ft_atoi(cur_shlvl) + flag;
+	tmp = ft_itoa(new_shlvl);
+	ex_shlvl = ft_strjoin("SHLVL=", tmp);
+	find_repl_val_var_in_envp(vars->envp, ex_shlvl);
+	free (ex_shlvl);
+	free (tmp);
+}
+
+void	ft_init_struct(t_exec *vars)
+{
+	vars->envp = NULL;
+	vars->str = NULL;
+	vars->path = NULL;
+	vars->cmds = NULL;
+	vars->tm_cmd = NULL;
+	vars->pid = -1;
+	vars->ofd[0] = -1;
+	vars->ofd[1] = -1;
+	vars->pfd[0] = -1;
+	vars->pfd[1] = -1;
+	vars->tfd[0] = -1;
+	vars->tfd[1] = -1;
+	vars->st = 1;
+	vars->exit_status = 0;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -67,6 +91,7 @@ int	main(int argc, char **argv, char **envp)
 	//Возможно, инциализацию стоит сделать в начале бесконечного цикла ниже.
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
+	ft_init_struct(&vars);
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
 	//начать с нуля
 	//увеличить переменную SHLVL
@@ -83,12 +108,15 @@ int	main(int argc, char **argv, char **envp)
 
 	//Вероятно тут будет бесконечный цикл, который будет завершаться exit'ом или ошибкой minishell
 	vars.exit_status = 0;
+	ft_change_shlvl(&vars, 1);
 
 	while(1)
 	{
 		//Здесь нужен код, который будет слушать ввод, что-то там было про библиотеку readline
 		ft_signals();
 		vars.str = ft_readline();
+		//ft_change_shlvl(&vars, 1);
+
 		if (!vars.str || !ft_strlen(vars.str))
 			continue ;
 
@@ -126,7 +154,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 		else
 			clean_base_struct(&vars, 0);
-		vars.exit_status = 0;
+		//vars.exit_status = 0;
 	}
 	//Вероятно, тут должна быть очистка памяти и закрытие потоков в случае exit'а или ошибки
 	//добавить изменине SHLVL

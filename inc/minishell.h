@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/22 19:46:07 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 22:08:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,7 @@ char	*ft_readline(void);
 
 void	clean_base_struct(t_exec *vars, int ext);
 int		ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err);
+int		find_repl_val_var_in_envp(char **envp, char *var);
+void	ft_change_shlvl(t_exec *vars, int flag);
 
 #endif
