@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/23 22:08:42 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/23 23:21:34 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,21 +116,17 @@ char	*ft_dollar(char *str, int *i, char **envp)
 		j++;
 	if (j == *i)
 		return (str);
-	tmp2 = (char **)malloc(sizeof(char *) * 6);
+	tmp2 = (char **)malloc(sizeof(char *) * 5);
 	tmp2[0] = ft_substr(str, *i + 1, j - *i);
-	tmp2[1] = ft_strjoin(tmp2[0], "=");
-	k = ft_str_in_arrstr(envp, tmp2[1], ft_strlen(tmp2[1]));
+	k = srch_var_in_envp(envp, tmp2[0]);
 	if (k < 0)
 		return (str);
-	printf("envp[k]]= %s\n", envp[k]);
-	tmp2[2] = ft_substr(envp[k], j - *i + 1, ft_strlen(envp[k]) - (j - *i) + 1);
-	tmp2[3] = ft_substr(str, 0, *i);
-	tmp2[4] = ft_strjoin(tmp2[3], tmp2[2]);
-	tmp2[5] = ft_substr(str, j + 1, ft_strlen(str) - j);
-	printf("tmp2[0]= %s\ttmp2[1]= %s\ttmp2[2]= %s\ttmp2[3]= %s\ttmp2[4]= %s\ttmp2[5]= %s\n",\
-		tmp2[0], tmp2[1], tmp2[2], tmp2[3], tmp2[4], tmp2[5]);
-	tmp = ft_strjoin(tmp2[4], tmp2[5]);
-	ft_dollar_free(tmp2, 6);
+	tmp2[1] = get_varvalue(envp[k]);
+	tmp2[2] = ft_substr(str, 0, *i);
+	tmp2[3] = ft_strjoin(tmp2[2], tmp2[1]);
+	tmp2[4] = ft_substr(str, j + 1, ft_strlen(str) - j);
+	tmp = ft_strjoin(tmp2[3], tmp2[4]);
+	ft_dollar_free(tmp2, 5);
 	return (tmp);
 }
 
