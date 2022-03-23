@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/22 22:38:23 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/23 20:37:56 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	builtin_env(char **envp)
 	return (1);
 }
 
-static void builtin_exit(t_exec *vars)
+static void	builtin_exit(t_exec *vars)
 {
 	if (vars->st == 1)
 		ft_putstr_fd("exit\n", 2);
@@ -45,52 +45,72 @@ static void builtin_exit(t_exec *vars)
 	exit(0);
 }
 
+static int	ft_echo(char *cmd)
+{
+	int	j;
+
+	j = 0;
+	if (cmd[0] != '-')
+		return (-1);
+	if (cmd[j] == '-')
+	{
+		while (cmd[++j])
+		{
+			if (cmd[j] != 'n')
+				return (-1);
+		}
+	}
+	return (0);
+}
+
 static int	builtin_echo(char **cmd)
 {
 	int	i;
 	int	nl;
+	int	flag;
 
-	i = 1;
+	i = 0;
 	nl = 0;
-	while (cmd[i])
+	flag = 0;
+	while (cmd[++i])
 	{
-		if (nl != -1 && !nl && cmd[i][0] == '-' && ft_strchr(cmd[i], 'n'))
-			nl = 1;
-		if (cmd[i][0] != '-')
-			nl = -1;
+		if (nl != -1)
+			nl = ft_echo(cmd[i]);
 		if (nl == -1)
 		{
 			write(1, cmd[i], ft_strlen(cmd[i]));
-			write(1, " ", 1);
+			if (cmd[i + 1])
+				write(1, " ", 1);
 		}
-		i++;
+		if (nl == 0)
+			flag = 1;
 	}
-	if (nl != 1)
+	if (flag != 1)
 		write(1, "\n", 1);
 	return (1);
 }
 
 int builtin_check_exec(t_exec *vars)
 {
-	int	ln;
-	char **cmd;
+	int		ln;
+	char	**cmd;
 
 	cmd = vars->tm_cmd->cmd;
 	ln = ft_strlen(cmd[0]);
 	if (!ft_memcmp(cmd[0], "export", ln))
-		return(builtin_export(vars, cmd));	//возможно стоит дописать эту часть на случай 'v=123 export vv=234'
+		return (builtin_export(vars, cmd));	//возможно стоит дописать эту часть на случай 'v=123 export vv=234'
 	else if (!ft_memcmp(cmd[0], "unset", ln))
-		return(builtin_unset(vars, cmd));
+		return (builtin_unset(vars, cmd));
 	else if (!vars->pid && !ft_memcmp(cmd[0], "echo", ln))
-		return(builtin_echo(cmd));
+		return (builtin_echo(cmd));
 	else if (!ft_memcmp(cmd[0], "exit", ln))
 		builtin_exit(vars);
 	else if (!vars->pid && !ft_memcmp(cmd[0], "env", ln))
-		return(builtin_env(vars->envp));
+		return (builtin_env(vars->envp));
 	else if (!vars->pid && !ft_memcmp(cmd[0], "pwd", ln))
-		return(builtin_pwd());
+		return (builtin_pwd());
 	else if (!ft_memcmp(cmd[0], "cd", ln))
-		return(builtin_cd(cmd[1], vars->envp));
+		return (builtin_cd(cmd[1], vars->envp));
 	return (0);
 }
 

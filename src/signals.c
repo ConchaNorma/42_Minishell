@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:40:59 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/03 21:00:11 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/04 21:05:51 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,17 @@ void rl_replace_line (const char *text, int clear_undo)
 	return ;
 }
 */
+/*
 void	ft_signal_ctrl_d(t_exec *vars)
 {
 	ft_putstr_fd("\033[11C", 1);
 	ft_putstr_fd("\x1bM\x1b[`exit\n", 1);
 	//write(1, "exit", 4);
 	//ft_putstr_fd("exit\n", 0);
-	free(vars->str);
+	//free(vars->str);
 	//return(1);
 }
-
+*/
 void signal_handler(int signal)
 {
 	if (signal == SIGINT)
