@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/23 22:16:58 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/24 22:16:39 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int	main(int argc, char **argv, char **envp)
 		free(vars.str);
 		vars.str = NULL;
 		//Здесь будет экзекютер
-		if (executer(&vars) == -1)
+		if (vars.cmds->cmd && executer(&vars) == -1)
 			ft_errfrex(&vars, ERFR, vars.exit_status, NULL);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
 		else
 			clean_base_struct(&vars, 0);
