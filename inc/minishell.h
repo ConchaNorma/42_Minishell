@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/23 22:08:20 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/27 20:11:37 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include "../libft/libft.h"
 # include <signal.h>
 # include <termios.h>
+
+pid_t		*g_pid;
 
 // Здесь будут структуры переменных для создания списков и деревьев
 typedef enum e_tkn{
@@ -106,8 +108,8 @@ int		builtin_check_exec(t_exec *vars);
 int		builtin_export(t_exec *vars, char **cmd);
 int		builtin_unset(t_exec *vars, char **cmd);
 int		builtin_pwd(void);
-int		builtin_cd(char *dir, char **envp);
-int		builtin_env(char **envp);
+int		builtin_cd(char	*dir, t_exec *vars);
+int		builtin_env(t_exec *vars);
 
 void	signal_handler(int signal);
 void	ft_signals(void);

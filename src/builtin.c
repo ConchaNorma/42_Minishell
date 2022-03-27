@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/23 22:15:20 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/27 20:28:08 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	builtin_pwd(void)
 {
 	char	*path;
 
-	path = getcwd(NULL, 0); //возможно нужна проверка на ошибку
+	path = getcwd(NULL, 0);
 	if (!path)
 		return (-1);
 	write(1, path, ft_strlen(path));
@@ -25,15 +25,19 @@ int	builtin_pwd(void)
 	return (1);
 }
 
-int	builtin_env(char **envp)
+int	builtin_env(t_exec *vars)
 {
 	int	i;
 
-	i = 0;
-	while (envp[i])
+	if (srch_var_in_envp(vars->envp, "PATH") == -1)
 	{
-		write(1, envp[i], ft_strlen(envp[i]));
-		write(1, "\n", 1);
+		ft_putendl_fd("minishell: env: No such file or directory", 2);
+		ft_errfrex(vars, FREX, 127, NULL);
+	}
+	i = 0;
+	while (vars->envp[i])
+	{
+		ft_putendl_fd(vars->envp[i], 1);
 		i++;
 	}
 	return (1);
@@ -108,11 +112,11 @@ int builtin_check_exec(t_exec *vars)
 	else if (!ft_memcmp(cmd[0], "exit", ln))
 		builtin_exit(vars);
 	else if (!vars->pid && !ft_memcmp(cmd[0], "env", ln))
-		return (builtin_env(vars->envp));
+		return (builtin_env(vars));
 	else if (!vars->pid && !ft_memcmp(cmd[0], "pwd", ln))
 		return (builtin_pwd());
 	else if (!ft_memcmp(cmd[0], "cd", ln))
-		return (builtin_cd(cmd[1], vars->envp));
+		return (builtin_cd(cmd[1], vars));
 	return (0);
 }
 
