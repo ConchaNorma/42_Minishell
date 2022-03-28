@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/23 22:12:17 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/28 22:07:26 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,12 @@ static void call_child(t_exec *vars)
 		vars->path = get_path(vars->envp, vars->tm_cmd->cmd[0]);
 		if (!vars->path)
 			ft_errfrex(vars, ERFREX, 1, NULL);
-		//printf("dffdf\n");
 		if (execve(vars->path, vars->tm_cmd->cmd, vars->envp) == -1)
 		{
-			//printf("dffdf%d\n", errno);
 			if (errno == 2)
 				ft_errfrex(vars, ERFREX, 127, NULL);
 			ft_errfrex(vars, ERFREX, 1, NULL);
 		}
-		//printf("dffdf\n");
 	}
 	ft_errfrex(vars, FREX, 0, NULL);
 }
@@ -57,9 +54,6 @@ static int call_parent(t_exec *vars)
 		ft_errfrex(vars, ERFREX, 1, NULL);
 	}
 	vars->exit_status = WEXITSTATUS(status);
-	//printf("%d\n", vars->exit_status);
-	// if (WIFEXITED(status))
-	// 	return (-1);
 	return (0);
 }
 
@@ -67,13 +61,25 @@ static int exec_cmd(t_exec *vars)
 {
 	if (vars->tm_cmd->next && pipe(vars->pfd) == -1)
 		return (-1);
-	vars->pid = fork();		//дописать проверку на ошибку
+	vars->pid = fork();
 	if (vars->pid == -1)
 		return (-1);
 	if (!vars->pid)
-		call_child(vars);	//обработка ошибок?
+		call_child(vars);
 	return (call_parent(vars));
 }
+
+// static void ft_wait(t_exec *vars)
+// {
+// 	int status;
+
+// 	if (waitpid(vars->pid, &status, WUNTRACED) == -1)
+// 	{
+// 		perror("minishell: ");
+// 		ft_errfrex(vars, ERFREX, 1, NULL);
+// 	}
+// 	vars->exit_status = WEXITSTATUS(status);
+// }
 
 int executer(t_exec *vars)
 {
@@ -97,6 +103,7 @@ int executer(t_exec *vars)
 			break ;
 		vars->tm_cmd = vars->tm_cmd->next;
 	}
+	//ft_wait(vars);
 	dup2(vars->ofd[0], 0);
 	dup2(vars->ofd[1], 1);
 	close(vars->ofd[0]);

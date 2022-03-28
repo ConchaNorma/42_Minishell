@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/24 22:16:39 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/27 12:41:18 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (printf("Wrong arguments\n"));
 	ft_init_struct(&vars);
+	g_pid = &vars.pid;
 	vars.envp = ft_add_str_to_arr(envp, NULL); //почистить в конце
 	//начать с нуля
 	//увеличить переменную SHLVL

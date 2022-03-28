@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/23 23:02:58 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/28 23:30:05 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include "../libft/libft.h"
 # include <signal.h>
 # include <termios.h>
+
+pid_t		*g_pid;
 
 // Здесь будут структуры переменных для создания списков и деревьев
 typedef enum e_tkn{
@@ -104,8 +106,9 @@ int		builtin_check_exec(t_exec *vars);
 int		builtin_export(t_exec *vars, char **cmd);
 int		builtin_unset(t_exec *vars, char **cmd);
 int		builtin_pwd(void);
-int		builtin_cd(char *dir, char **envp);
-int		builtin_env(char **envp);
+char	*ft_cd_getpath(char	*dir, char **path);
+int		builtin_cd(char	*dir, t_exec *vars);
+int		builtin_env(t_exec *vars);
 
 void	signal_handler(int signal);
 void	ft_signals(void);
