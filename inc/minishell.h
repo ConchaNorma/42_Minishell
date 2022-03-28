@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/27 20:11:37 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/28 22:02:37 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int		builtin_check_exec(t_exec *vars);
 int		builtin_export(t_exec *vars, char **cmd);
 int		builtin_unset(t_exec *vars, char **cmd);
 int		builtin_pwd(void);
+char	*ft_cd_getpath(char	*dir, char **path);
 int		builtin_cd(char	*dir, t_exec *vars);
 int		builtin_env(t_exec *vars);
 
