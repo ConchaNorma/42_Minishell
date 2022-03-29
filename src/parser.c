@@ -6,25 +6,39 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 22:37:03 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 01:02:07 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_bslesh(char *str, int *i)
+void	ft_bslesh(t_exec *vars, int *i)
 {
 	char	*tmp;
 	char	*tmp2;
-	char	*tmp3;
+	//char	*tmp3;
 
-	tmp3 = ft_substr(str, 0, *i);
-	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
-	tmp = ft_strjoin(tmp3, tmp2);
-	free(tmp3);
+	tmp = ft_substr(vars->str, 0, *i);
+	tmp2 = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
+	free(vars->str);
+	vars->str = ft_strjoin(tmp, tmp2);
+	free(tmp);
 	free(tmp2);
-	return (tmp);
 }
+
+//char	*ft_bslesh(char *str, int *i)
+//{
+//	char	*tmp;
+//	char	*tmp2;
+//	char	*tmp3;
+
+//	tmp3 = ft_substr(str, 0, *i);
+//	tmp2 = ft_substr(str, *i + 1, ft_strlen(str) - *i);
+//	tmp = ft_strjoin(tmp3, tmp2);
+//	free(tmp3);
+//	free(tmp2);
+//	return (tmp);
+//}
 
 static void	ft_dquote_sup(t_exec *vars, int *i)
 {
@@ -36,9 +50,10 @@ static void	ft_dquote_sup(t_exec *vars, int *i)
 		|| vars->str[*i + 1] == '`' || vars->str[*i + 1] == '$' \
 		|| vars->str[*i + 1] == '\\'))
 		{
-			tmp = ft_bslesh(vars->str, i);
-			free(vars->str);
-			vars->str = tmp;
+			ft_bslesh(vars, i);
+			//tmp = ft_bslesh(vars->str, i);
+			//free(vars->str);
+			//vars->str = tmp;
 			++(*i);
 		}
 		if (vars->str[*i] == '$')
@@ -122,7 +137,8 @@ int	parser(t_exec *vars)
 		if (vars->str[i] == '\'' || vars->str[i] == '\"')
 			vars->str = ft_quote(vars, &i);
 		else if (vars->str[i] == '\\')
-			vars->str = ft_bslesh(vars->str, &i);
+			ft_bslesh(vars, &i);
+			//vars->str = ft_bslesh(vars->str, &i);
 		else if (vars->str[i] == '$')
 			vars->str = ft_dollar_parse(vars, &i);
 		else if (vars->str[i] == ' ' || vars->str[i] == '\t')
