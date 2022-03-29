@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/27 20:28:08 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/29 19:20:19 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int builtin_check_exec(t_exec *vars)
 	cmd = vars->tm_cmd->cmd;
 	ln = ft_strlen(cmd[0]);
 	if (!ft_memcmp(cmd[0], "export", ln))
-		return (builtin_export(vars, cmd));	//возможно стоит дописать эту часть на случай 'v=123 export vv=234'
+		return (builtin_export(vars, cmd));
 	else if (!ft_memcmp(cmd[0], "unset", ln))
 		return (builtin_unset(vars, cmd));
 	else if (!vars->pid && !ft_memcmp(cmd[0], "echo", ln))
