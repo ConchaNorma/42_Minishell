@@ -6,12 +6,11 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/28 23:35:37 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/29 20:20:32 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
 
 void	ft_dollar_free(char **tmp, int size)
 {

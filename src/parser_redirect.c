@@ -6,13 +6,13 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/28 23:40:04 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/29 20:21:09 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char *ft_file_parser(t_exec *vars, int *i, t_rtp type)
+char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 {
 	int		j;
 	char	*tmp;
