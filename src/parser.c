@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 00:07:19 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/29 07:55:31 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*ft_space(t_exec *vars, int *i)
 
 int parser(t_exec *vars)
 {
-	int		i;
+	int	i;
 
 	vars->cmds = ft_create_cmds();
 	i = -1;
