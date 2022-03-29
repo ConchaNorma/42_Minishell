@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 19:20:19 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/29 20:40:54 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,3 @@ int builtin_check_exec(t_exec *vars)
 		return (builtin_cd(cmd[1], vars));
 	return (0);
 }
-

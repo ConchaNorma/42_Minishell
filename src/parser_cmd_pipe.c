@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:47:38 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 08:00:03 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/29 21:57:19 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ t_cmd	*ft_create_cmds(void)
 	tmp = NULL;
 	tmp = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!tmp)
+	{
+		perror("minishell: ");
 		exit (1);
+	}
 	tmp->v_rdr = NULL;
 	tmp->cmd_num = 1;
 	tmp->cmd = NULL;

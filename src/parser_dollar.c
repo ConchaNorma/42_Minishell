@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 20:20:32 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/29 22:37:01 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_dollar_free(char **tmp, int size)
 	ii = -1;
 	while (++ii < size)
 		free(tmp[ii]);
-	free(tmp);
+	//free(tmp);
 }
 
 char	*ft_dollar_question(char *str, int *i, t_exec *vars)
@@ -59,7 +59,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	k = srch_var_in_envp(envp, tmp2[0]);
 	if (k < 0)
 		return (str);
-	tmp2[1] = get_varvalue(envp[k]);
+	tmp2[1] = ft_strdup(get_varvalue(envp[k]));
 	tmp2[2] = ft_substr(str, 0, *i);
 	tmp2[3] = ft_strjoin(tmp2[2], tmp2[1]);
 	tmp2[4] = ft_substr(str, j + 1, ft_strlen(str) - j);

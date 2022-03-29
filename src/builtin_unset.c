@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 15:22:05 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/17 21:44:08 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/29 20:58:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_unset(t_exec *vars, char **cmd)
 	int		i;
 
 	i = 1;
-	while(cmd[i])
+	while (cmd[i])
 	{
 		pos = srch_var_in_envp(vars->envp, cmd[i]);
 		if (pos == -1)

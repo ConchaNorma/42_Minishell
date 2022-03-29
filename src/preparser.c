@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 20:31:38 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/29 21:52:57 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	preparser(t_exec *vars)
 	char	*prepars;
 	int		i;
 
-	prepars = ft_strdup(vars->str);
+	prepars = vars->str;
 	i = -1;
 	while (prepars[++i])
 	{

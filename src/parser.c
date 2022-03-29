@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 20:32:28 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/29 22:37:03 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,31 @@ char	*ft_bslesh(char *str, int *i)
 	return (tmp);
 }
 
-char	*ft_dquote_sup(t_exec *vars, int *i)
+static void	ft_dquote_sup(t_exec *vars, int *i)
 {
+	char	*tmp;
+
 	while (vars->str[++(*i)])
 	{
 		if ((vars->str[*i] == '\\') && (vars->str[*i + 1] == '\"' \
 		|| vars->str[*i + 1] == '`' || vars->str[*i + 1] == '$' \
 		|| vars->str[*i + 1] == '\\'))
 		{
-			vars->str = ft_bslesh(vars->str, i);
+			tmp = ft_bslesh(vars->str, i);
+			free(vars->str);
+			vars->str = tmp;
 			++(*i);
 		}
 		if (vars->str[*i] == '$')
-			vars->str = ft_dollar_parse(vars, i);
+		{
+			tmp = ft_dollar_parse(vars, i);
+			free(vars->str);
+			vars->str = tmp;
+		}
 		if (vars->str[*i] == '\"')
 			break ;
 	}
-	return (vars->str);
+	//return (vars->str);
 }
 
 char	*ft_quote(t_exec *vars, int *i)
@@ -54,7 +62,7 @@ char	*ft_quote(t_exec *vars, int *i)
 
 	j = *i;
 	if (vars->str[*i] == '\"')
-		vars->str = ft_dquote_sup(vars, i);
+		ft_dquote_sup(vars, i);
 	else if (vars->str[*i] == '\'')
 	{
 		while (vars->str[++(*i)])

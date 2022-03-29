@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_exit.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/23 20:49:10 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/29 21:55:57 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void put_err(t_exec *vars, char *str1, char *str2)
+static void	put_err(t_exec *vars, char *str1, char *str2)
 {
 	if (vars->exit_status != 258)
 		str1 = ft_strjoin("minishell: ", vars->tm_cmd->cmd[0]);
 	else
-		str1 = ft_strjoin("minishell: syntax error near unexpected token ", str2);
+		str1 = ft_strjoin("minishell: syntax error near unexpected token ", \
+				str2);
 	if (vars->exit_status == 1)
 	{
 		str2 = ft_strjoin(str1, ": ");
