@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 08:05:27 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 20:53:52 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ void	ft_quote(t_exec *vars, int *i);
 //char	*ft_quote(t_exec *vars, int *i);
 void	ft_bslesh(t_exec *vars, int *i);
 //char	*ft_bslesh(char *str, int *i);
-char	*ft_space(t_exec *vars, int *i);
+void	ft_space(t_exec *vars, int *i);
+//char	*ft_space(t_exec *vars, int *i);
+
 
 char	*ft_dollar_parse(t_exec *vars, int *i);
 char	*ft_dollar(char *str, int *i, char **envp);
