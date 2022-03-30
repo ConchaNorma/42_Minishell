@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:47:38 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 22:34:55 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 23:46:34 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,21 @@ void	ft_split_pipe(t_exec *vars, int *i)
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
-	if (vars->str[*i])
-	{
+	//tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
+	if (*i)
+		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+		//tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i - 1);
+	//else
+	//{
+	//	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i - 1);
+	//}
+
+	//if (vars->str[*i])
+	//{
 		new = ft_create_cmds();
 		tmp_cmds->next = new;
-	}
+	//}
 	*i = -1;
 	vars->st++;
 	free(vars->str);
