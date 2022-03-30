@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 08:25:20 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:01:29 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	ft_space(t_exec *vars, int *i)
 		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
 	}
 	*i = -1;
-	return (tmp);
+	//return (tmp);
 }
 
 //char	*ft_space(t_exec *vars, int *i)

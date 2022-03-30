@@ -6,13 +6,13 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:09:20 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/28 22:42:29 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/30 20:40:31 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void chng_oldpwd(char **path, t_exec *vars)
+static void	chng_oldpwd(char **path, t_exec *vars)
 {
 	int		i;
 	char	*tmp;
@@ -31,7 +31,7 @@ static void chng_oldpwd(char **path, t_exec *vars)
 	free(*path);
 }
 
-static int ft_cd_hyphen(char **path, t_exec *vars, int pos)
+static int	ft_cd_hyphen(char **path, t_exec *vars, int pos)
 {
 	char	*tmp;
 
@@ -57,9 +57,9 @@ static int ft_cd_hyphen(char **path, t_exec *vars, int pos)
 	return (1);
 }
 
-static char *ft_cd_wavy_line(char **path, t_exec *vars)
+static char	*ft_cd_wavy_line(char **path, t_exec *vars)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
 	i = 0;
@@ -70,14 +70,14 @@ static char *ft_cd_wavy_line(char **path, t_exec *vars)
 		if (tmp)
 		{
 			free(*path);
-			return(ft_strdup(tmp + 5));
+			return (ft_strdup(tmp + 5));
 		}
 		i++;
 	}
 	return (*path);
 }
 
-int builtin_cd(char	*dir, t_exec *vars)
+int	builtin_cd(char	*dir, t_exec *vars)
 {
 	char	*path;
 	int		pos;

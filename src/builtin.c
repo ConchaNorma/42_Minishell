@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 20:29:24 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/30 20:38:42 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int	builtin_env(t_exec *vars)
 	return (1);
 }
 
-static int exstat_hand(char **code, int res)
+static int	exstat_hand(char **code, int res)
 {
-	char *tmp;
-	char *tmp2;
-	int ex_st;
+	char	*tmp;
+	char	*tmp2;
+	int		ex_st;
 
 	ex_st = 0;
 	if (code[1] && !res)
@@ -99,7 +99,7 @@ static void	builtin_exit(t_exec *vars, char **code)
 	exit(res);
 }
 
-int builtin_check_exec(t_exec *vars)
+int	builtin_check_exec(t_exec *vars)
 {
 	int		ln;
 	char	**cmd;
