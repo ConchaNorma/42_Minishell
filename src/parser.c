@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 21:03:02 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:14:10 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_bslesh(t_exec *vars, int *i)
 
 static void	ft_dquote_sup(t_exec *vars, int *i)
 {
-	char	*tmp;
+	//char	*tmp;
 
 	while (vars->str[++(*i)])
 	{
@@ -57,9 +57,10 @@ static void	ft_dquote_sup(t_exec *vars, int *i)
 		}
 		if (vars->str[*i] == '$')
 		{
-			tmp = ft_dollar_parse(vars, i);
-			free(vars->str);
-			vars->str = tmp;
+			ft_dollar_parse(vars, i);
+			//tmp = ft_dollar_parse(vars, i);
+			//free(vars->str);
+			//vars->str = tmp;
 		}
 		if (vars->str[*i] == '\"')
 			break ;
@@ -193,7 +194,8 @@ int	parser(t_exec *vars)
 			ft_bslesh(vars, &i);
 			//vars->str = ft_bslesh(vars->str, &i);
 		else if (vars->str[i] == '$')
-			vars->str = ft_dollar_parse(vars, &i);
+			ft_dollar_parse(vars, &i);
+			//vars->str = ft_dollar_parse(vars, &i);
 		else if (vars->str[i] == ' ' || vars->str[i] == '\t')
 			ft_space(vars, &i);
 			//vars->str = ft_space(vars, &i);

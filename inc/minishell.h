@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 20:53:52 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:12:55 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void	ft_space(t_exec *vars, int *i);
 //char	*ft_space(t_exec *vars, int *i);
 
 
-char	*ft_dollar_parse(t_exec *vars, int *i);
+void	ft_dollar_parse(t_exec *vars, int *i);
+//char	*ft_dollar_parse(t_exec *vars, int *i);
 char	*ft_dollar(char *str, int *i, char **envp);
 char	*ft_dollar_question(char *str, int *i, t_exec *vars);
 //void	ft_dollar_free(char **tmp, int size);

@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 08:03:13 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:11:56 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 	while (vars->str[*i] && !ft_strchr(" |<>;()", vars->str[*i]))
 	{
 		if (vars->str[*i] == '$' && type != HRD)
-			vars->str = ft_dollar_parse(vars, i);
+			ft_dollar_parse(vars, i);
+			//vars->str = ft_dollar_parse(vars, i);
 		else if (vars->str[*i] == '\\')
 			ft_bslesh(vars, i);
 			//vars->str = ft_bslesh(vars->str, i);

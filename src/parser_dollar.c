@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 22:37:01 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:12:28 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	return (tmp);
 }
 
-char	*ft_dollar_parse(t_exec *vars, int *i)
+void	ft_dollar_parse(t_exec *vars, int *i)
 {
 	char	*tmp;
 
@@ -76,5 +76,18 @@ char	*ft_dollar_parse(t_exec *vars, int *i)
 		tmp = ft_dollar_question(vars->str, i, vars);
 	else
 		tmp = ft_dollar(vars->str, i, vars->envp);
-	return (tmp);
+	free(vars->str);
+	vars->str = ft_strdup(tmp);
+	free(tmp);
 }
+
+//char	*ft_dollar_parse(t_exec *vars, int *i)
+//{
+//	char	*tmp;
+
+//	if (vars->str[*i + 1] == '?')
+//		tmp = ft_dollar_question(vars->str, i, vars);
+//	else
+//		tmp = ft_dollar(vars->str, i, vars->envp);
+//	return (tmp);
+//}
