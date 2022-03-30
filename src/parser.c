@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 21:14:10 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:31:35 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,13 +200,16 @@ int	parser(t_exec *vars)
 			ft_space(vars, &i);
 			//vars->str = ft_space(vars, &i);
 		else if (vars->str[i] == '>')
-			vars->str = ft_forward_redir(vars, &i, 1);
+			ft_forward_redir(vars, &i, 1);
+			//vars->str = ft_forward_redir(vars, &i, 1);
 		else if (vars->str[i] == '<')
-			vars->str = ft_backward_redir(vars, &i, 0);
+			ft_backward_redir(vars, &i, 0);
+			//vars->str = ft_backward_redir(vars, &i, 0);
 		else if (vars->str[i] == '|')
 			vars->str = ft_split_pipe(vars, &i);
 		else if (ft_isdigit(vars->str[i]))
-			vars->str = ft_digit(vars, &i);
+			ft_digit(vars, &i);
+			//vars->str = ft_digit(vars, &i);
 	}
 	ft_space(vars, &i);
 	//vars->str = ft_space(vars, &i);

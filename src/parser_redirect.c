@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 21:11:56 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:26:29 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_redir	*ft_redir_new(t_cmd *tmp_cmds)
 	return (tmp_redir);
 }
 
-char	*ft_forward_redir(t_exec *vars, int *i, int fd)
+void	ft_forward_redir(t_exec *vars, int *i, int fd)
 {
 	int		j;
 	t_cmd	*tmp_cmds;
@@ -99,11 +99,40 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+	free(vars->str);
+	vars->str = ft_strdup(tmp);
+	free(tmp);
 	*i = -1;
-	return (tmp);
 }
 
-char	*ft_backward_redir(t_exec *vars, int *i, int fd)
+//char	*ft_forward_redir(t_exec *vars, int *i, int fd)
+//{
+//	int		j;
+//	t_cmd	*tmp_cmds;
+//	t_redir	*tmp_redir;
+//	char	*tmp;
+
+//	tmp_cmds = vars->cmds;
+//	while (tmp_cmds->next)
+//		tmp_cmds = tmp_cmds->next;
+//	if (*i > 0)
+//		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+//	tmp_redir = ft_redir_new(tmp_cmds);
+//	tmp_redir->type = OUT;
+//	if (vars->str[++(*i)] == '>')
+//	{
+//		tmp_redir->type = APN;
+//		++(*i);
+//	}
+//	tmp_redir->fd = fd;
+//	j = *i;
+//	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
+//	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+//	*i = -1;
+//	return (tmp);
+//}
+
+void	ft_backward_redir(t_exec *vars, int *i, int fd)
 {
 	int		j;
 	t_cmd	*tmp_cmds;
@@ -126,6 +155,35 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+	free(vars->str);
+	vars->str = ft_strdup(tmp);
+	free(tmp);
 	*i = -1;
-	return (tmp);
 }
+
+//char	*ft_backward_redir(t_exec *vars, int *i, int fd)
+//{
+//	int		j;
+//	t_cmd	*tmp_cmds;
+//	t_redir	*tmp_redir;
+//	char	*tmp;
+
+//	tmp_cmds = vars->cmds;
+//	while (tmp_cmds->next)
+//		tmp_cmds = tmp_cmds->next;
+//	if (*i > 0)
+//		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+//	tmp_redir = ft_redir_new(tmp_cmds);
+//	tmp_redir->type = INP;
+//	if (vars->str[++(*i)] == '<')
+//	{
+//		tmp_redir->type = HRD;
+//		++(*i);
+//	}
+//	tmp_redir->fd = fd;
+//	j = *i;
+//	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
+//	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+//	*i = -1;
+//	return (tmp);
+//}
