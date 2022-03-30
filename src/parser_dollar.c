@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 21:12:28 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 00:06:43 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ void	ft_dollar_parse(t_exec *vars, int *i)
 	else
 		tmp = ft_dollar(vars->str, i, vars->envp);
 	free(vars->str);
-	vars->str = ft_strdup(tmp);
-	free(tmp);
+	vars->str = tmp;
+	//free(tmp);
 }
 
 //char	*ft_dollar_parse(t_exec *vars, int *i)

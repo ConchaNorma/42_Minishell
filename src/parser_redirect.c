@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 21:26:29 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 00:07:50 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ void	ft_forward_redir(t_exec *vars, int *i, int fd)
 	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	free(vars->str);
-	vars->str = ft_strdup(tmp);
-	free(tmp);
+	vars->str = tmp;
+	//free(tmp);
 	*i = -1;
 }
 
@@ -156,8 +156,8 @@ void	ft_backward_redir(t_exec *vars, int *i, int fd)
 	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	free(vars->str);
-	vars->str = ft_strdup(tmp);
-	free(tmp);
+	vars->str = tmp;
+	//free(tmp);
 	*i = -1;
 }
 
