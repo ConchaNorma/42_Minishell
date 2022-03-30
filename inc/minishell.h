@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 21:32:22 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 22:31:31 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ char 	*ft_file_parser(t_exec *vars, int *i, t_rtp type);
 
 void	ft_digit(t_exec *vars, int *i);
 //char	*ft_digit(t_exec *vars, int *i);
-char	*ft_split_pipe(t_exec *vars, int *i);
+void	ft_split_pipe(t_exec *vars, int *i);
+//char	*ft_split_pipe(t_exec *vars, int *i);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 char	**ft_str_newline(char **str_mas, char *new_str, int str_num);
 t_cmd	*ft_create_cmds(void);
