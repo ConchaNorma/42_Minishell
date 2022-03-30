@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 20:28:54 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/30 21:49:41 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,6 @@
 # include <termios.h>
 
 pid_t		*g_pid;
-
-// Здесь будут структуры переменных для создания списков и деревьев
-typedef enum e_tkn{
-	NOTOKEN,
-	CMD,
-	PIPE,
-	REDIR_IN,
-	REDIR_OUT,
-	APPEND,
-	HEREDOC,
-	FILE_,
-	WORD
-}	t_tkn;
 
 typedef enum e_err{
 	FR,
@@ -75,6 +62,7 @@ typedef struct s_exec
 	char	*str;
 	t_cmd	*cmds;
 	pid_t	pid;
+	pid_t	*pids;
 	int		ofd[2];
 	int		pfd[2];
 	int		tfd[2];
@@ -129,15 +117,15 @@ char	*ft_cd_getpath(char	*dir, char **path);
 int		builtin_cd(char	*dir, t_exec *vars);
 int		builtin_env(t_exec *vars);
 
-void	signal_handler(int signal);
+//void	signal_handler(int signal);
 void	ft_signals(void);
-void	ft_signal_ctrl_d(t_exec *vars);
+// void	ft_signal_ctrl_d(t_exec *vars);
 
-char	*ft_readline(void);
+// char	*ft_readline(void);
 
 void	clean_base_struct(t_exec *vars, int ext);
 int		ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err);
 int		find_repl_val_var_in_envp(char **envp, char *var);
-void	ft_change_shlvl(t_exec *vars, int flag);
+//void	ft_change_shlvl(t_exec *vars, int flag);
 
 #endif
