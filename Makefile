@@ -3,10 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 19:58:43 by cnorma            #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2022/03/29 21:12:28 by aarnell          ###   ########.fr        #
+=======
+#    Updated: 2022/03/29 00:03:57 by cnorma           ###   ########.fr        #
+>>>>>>> dev_cnorma_2202
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +24,19 @@ NAME 		=	minishell
 
 SRC_DIR		=	./src/
 
+<<<<<<< HEAD
 SRC_FILES	=	main.c			preparser.c 		parser.c	\
 				executer.c		redirection.c		builtin.c	\
 				builtin_cd.c	builtin_cd_getpath.c	builtin_echo.c	builtin_export.c	utils.c		\
 				builtin_unset.c utils_free_exit.c				\
 				signals.c
+=======
+SRC_FILES	=	main.c				preparser.c 				parser.c	\
+				executer.c			redirection.c				builtin.c	\
+				builtin_cd.c		builtin_cd_getpath.c		builtin_export.c	utils.c		\
+				builtin_unset.c		utils_free_exit.c			parser_dollar.c \
+				parser_redirect.c	parser_cmd_pipe.c			signals.c
+>>>>>>> dev_cnorma_2202
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 

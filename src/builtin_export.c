@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:41:33 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/27 20:28:44 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/29 20:58:34 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	find_repl_val_var_in_envp(char **envp, char *var)
 	int		pos;
 
 	var_name = get_varname(var, 0);
-	if(!var_name)
+	if (!var_name)
 		return (-1);
 	pos = srch_var_in_envp(envp, var_name);
 	if (pos == -1)

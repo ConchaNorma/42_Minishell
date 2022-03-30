@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 20:25:55 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/30 20:28:54 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_exec
 	char	*str;
 	t_cmd	*cmds;
 	pid_t	pid;
-	t_list	*lvar;
 	int		ofd[2];
 	int		pfd[2];
 	int		tfd[2];
@@ -88,12 +87,29 @@ typedef struct s_exec
 
 int		parser(t_exec *vars);
 int		executer(t_exec *vars);
-char	*ft_quote(t_exec *vars, int *i);
-//char	*ft_dquote(char *str, int *i, char **envp);
-//char	*ft_squote(char *str, int *i);
-char	*ft_bslesh(char *str, int *i);
-char	*ft_dollar(char *str, int *i, char **envp);
+void	ft_quote(t_exec *vars, int *i);
+//char	*ft_quote(t_exec *vars, int *i);
+void	ft_bslesh(t_exec *vars, int *i);
+//char	*ft_bslesh(char *str, int *i);
+char	*ft_space(t_exec *vars, int *i);
+
 char	*ft_dollar_parse(t_exec *vars, int *i);
+char	*ft_dollar(char *str, int *i, char **envp);
+char	*ft_dollar_question(char *str, int *i, t_exec *vars);
+//void	ft_dollar_free(char **tmp, int size);
+
+char	*ft_backward_redir(t_exec *vars, int *i, int fd);
+char	*ft_forward_redir(t_exec *vars, int *i, int fd);
+t_redir	*ft_redir_new(t_cmd *tmp_cmds);
+t_redir	*ft_create_redir(void);
+char 	*ft_file_parser(t_exec *vars, int *i, t_rtp type);
+
+char	*ft_digit(t_exec *vars, int *i);
+char	*ft_split_pipe(t_exec *vars, int *i);
+void	ft_create_cmdmas(t_exec *vars, char *new_str);
+char	**ft_str_newline(char **str_mas, char *new_str, int str_num);
+t_cmd	*ft_create_cmds(void);
+
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 int		preparser(t_exec *vars);
 char	*get_path(char **envp, char *cmd);

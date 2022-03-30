@@ -6,13 +6,13 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:40:59 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 21:40:02 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/30 20:29:38 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void signal_handler(int signal)
+void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
@@ -34,8 +34,8 @@ void signal_handler(int signal)
 	}
 }
 
-void ft_signals(void)
+void	ft_signals(void)
 {
-	signal(SIGINT, signal_handler); // CTRL + C
-	signal(SIGQUIT, signal_handler);    // CTRL + /
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 }

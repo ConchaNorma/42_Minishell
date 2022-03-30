@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 20:19:03 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/29 20:38:50 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void call_child(t_exec *vars)
+static void	call_child(t_exec *vars)
 {
-	int res;
+	int	res;
 
 	redir_base(vars);
 	if (redirection_fd(vars->tm_cmd->v_rdr) == -1)
@@ -37,16 +37,16 @@ static void call_child(t_exec *vars)
 	ft_errfrex(vars, FREX, 0, NULL);
 }
 
-static void ft_close_double_fd(int *fd)
+static void	ft_close_double_fd(int *fd)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < 2)
 		close(fd[i]);
 }
 
-static void exec_data_change(t_exec *vars, int *res, int *i, int part)
+static void	exec_data_change(t_exec *vars, int *res, int *i, int part)
 {
 	if (part == 0)
 	{
@@ -73,7 +73,7 @@ static void exec_data_change(t_exec *vars, int *res, int *i, int part)
 	}
 }
 
-static void ft_wait(t_exec *vars, pid_t	*pid)
+static void	ft_wait(t_exec *vars, pid_t	*pid)
 {
 	int	status;
 	int	i;
@@ -91,7 +91,7 @@ static void ft_wait(t_exec *vars, pid_t	*pid)
 	vars->exit_status = WEXITSTATUS(status);
 }
 
-int executer(t_exec *vars)
+int	executer(t_exec *vars)
 {
 	int		res;
 	int		i;
@@ -112,7 +112,7 @@ int executer(t_exec *vars)
 			call_child(vars);
 		exec_data_change(vars, &res, &i, 1);
 	}
-	if(!res)
+	if (!res)
 		ft_wait(vars, pid);
 	exec_data_change(vars, &res, &i, 2);
 	return (res);

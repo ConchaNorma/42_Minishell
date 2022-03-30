@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   preparser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/23 20:42:20 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/29 21:52:57 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_preparser_quote_bslesh(char *str, int *i, t_exec *vars)
 	}
 	while (str[++(*i)])
 	{
-		if (str[j] == '\"' && str[*i] =='\\' \
+		if (str[j] == '\"' && str[*i] == '\\' \
 			&& (str[*i + 1] == '\"' || str[*i + 1] == '\\'))
 			++(*i);
 		else if ((str[j] == '\"' && str[*i] == '\"') \
@@ -119,17 +119,16 @@ int	preparser(t_exec *vars)
 	char	*prepars;
 	int		i;
 
-	prepars = ft_strdup(vars->str);
+	prepars = vars->str;
 	i = -1;
 	while (prepars[++i])
 	{
 		if (i == 0 && ft_preparser_str_beg_end(prepars, vars))
 			return (1);
-		else if ((prepars[i] == '\'' || prepars[i] == '\"' || prepars[i] == '\\') \
+		else if ((prepars[i] == '\'' || prepars[i] == '\"' \
+			|| prepars[i] == '\\') \
 			&& ft_preparser_quote_bslesh(prepars, &i, vars))
 			return (1);
-		//else if (prepars[i] == '\\')
-		//	ft_preparser_quote_bslesh(prepars, &i, vars);
 		else if ((prepars[i] == ';' || prepars[i] == '|') \
 				&& ft_preparser_semi_pipe(prepars, &i, vars))
 			return (1);
@@ -137,41 +136,5 @@ int	preparser(t_exec *vars)
 				&& ft_preparser_redir(prepars, &i, vars))
 			return (1);
 	}
-	//printf("finish preparsing\n");
 	return (0);
 }
-/*
-int preparser(t_exec *vars)
-{
-	if (ft_preparser_dquote(vars->str))
-		//return (printf("minishell: syntax error near unexpected token `\"\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`\"\'"));
-	if (ft_preparser_squote(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `\'\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`\'\'"));
-	if (ft_preparser_semicolon_sup(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `;\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`;\'"));
-	if (ft_preparser_dsemicolon(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `;;\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`;;\'"));
-	if (ft_preparser_single_pipe(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `|\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`|\'"));
-	if (ft_preparser_double_pipe(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `||\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`||\'"));
-	if (ft_preparser_semicolon_pipe(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `|\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`|\'"));
-	if (ft_preparser_pipe_semicolon(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `;\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`;\'"));
-	if (ft_preparser_redir(vars->str))
-		// return (printf("minishell: syntax error near unexpected token `> or `<\'\n"));
-		return (ft_errfrex(vars, ER, 258, "`> or `<\'"));
-	return (0);
-}
-*/
-/* \- в конце, ||, |;, ;|, ; - в начале, | - в начале и в конце, ;;, >>>, <<<
-*/

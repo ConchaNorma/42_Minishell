@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 21:36:13 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/03/30 20:29:24 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,3 @@ int builtin_check_exec(t_exec *vars)
 		return (builtin_cd(cmd[1], vars));
 	return (0);
 }
-
