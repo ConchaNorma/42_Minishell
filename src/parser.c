@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 08:02:00 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 08:25:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	ft_quote(t_exec *vars, int *i)
 //	return (tmp);
 //}
 
-char	*ft_space(t_exec *vars, int *i)
+void	ft_space(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
@@ -154,6 +154,35 @@ char	*ft_space(t_exec *vars, int *i)
 	*i = -1;
 	return (tmp);
 }
+
+//char	*ft_space(t_exec *vars, int *i)
+//{
+//	int		j;
+//	char	*tmp;
+
+//	j = *i - 1;
+//	while (vars->str[++j] == '\t')
+//		vars->str[j] = ' ';
+//	j = *i;
+//	if (*i == 0)
+//	{
+//		while (vars->str[++j] == ' ')
+//			;
+//		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+//	}
+//	else
+//	{
+//		while (vars->str[++j])
+//		{
+//			if (vars->str[j] != ' ' || !vars->str[j])
+//				break ;
+//		}
+//		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+//		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
+//	}
+//	*i = -1;
+//	return (tmp);
+//}
 
 int	parser(t_exec *vars)
 {
