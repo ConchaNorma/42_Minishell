@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 22:31:09 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 23:57:04 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,13 +137,14 @@ void	ft_space(t_exec *vars, int *i)
 	j = *i;
 	while (vars->str[++j] == ' ')
 		;
-	if (*i == 0)
-		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
-	else
-	{
+	if (*i)
 		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
-		tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - *i - 1);
-	}
+	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+	//else
+	//{
+	//	ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+	//	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j); //*i - 1);
+	//}
 	*i = -1;
 	free(vars->str);
 	vars->str = ft_strdup(tmp);
