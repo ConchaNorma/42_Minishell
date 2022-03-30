@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 01:02:07 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 08:02:00 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	ft_dquote_sup(t_exec *vars, int *i)
 	//return (vars->str);
 }
 
-char	*ft_quote(t_exec *vars, int *i)
+void	ft_quote(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
@@ -90,12 +90,41 @@ char	*ft_quote(t_exec *vars, int *i)
 	free(tmp);
 	free(tmp2);
 	tmp2 = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
-	tmp = ft_strjoin(tmp3, tmp2);
-	*i -= 2;
+	free(vars->str);
+	vars->str = ft_strjoin(tmp3, tmp2);
 	free (tmp2);
 	free (tmp3);
-	return (tmp);
+	*i -= 2;
 }
+
+//char	*ft_quote(t_exec *vars, int *i)
+//{
+//	int		j;
+//	char	*tmp;
+//	char	*tmp2;
+//	char	*tmp3;
+
+//	j = *i;
+//	if (vars->str[*i] == '\"')
+//		ft_dquote_sup(vars, i);
+//	else if (vars->str[*i] == '\'')
+//	{
+//		while (vars->str[++(*i)])
+//			if (vars->str[*i] == '\'')
+//				break ;
+//	}
+//	tmp = ft_substr(vars->str, 0, j);
+//	tmp2 = ft_substr(vars->str, j + 1, *i - j - 1);
+//	tmp3 = ft_strjoin(tmp, tmp2);
+//	free(tmp);
+//	free(tmp2);
+//	tmp2 = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
+//	tmp = ft_strjoin(tmp3, tmp2);
+//	*i -= 2;
+//	free (tmp2);
+//	free (tmp3);
+//	return (tmp);
+//}
 
 char	*ft_space(t_exec *vars, int *i)
 {
@@ -135,7 +164,8 @@ int	parser(t_exec *vars)
 	while (vars->str[++i])
 	{
 		if (vars->str[i] == '\'' || vars->str[i] == '\"')
-			vars->str = ft_quote(vars, &i);
+			ft_quote(vars, &i);
+			//vars->str = ft_quote(vars, &i);
 		else if (vars->str[i] == '\\')
 			ft_bslesh(vars, &i);
 			//vars->str = ft_bslesh(vars->str, &i);

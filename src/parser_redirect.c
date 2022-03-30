@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 01:03:16 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 08:03:13 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 			ft_bslesh(vars, i);
 			//vars->str = ft_bslesh(vars->str, i);
 		else if (vars->str[*i] == '\"' || vars->str[*i] == '\'')
-			vars->str = ft_quote(vars, i);
+			ft_quote(vars, i);
+			//vars->str = ft_quote(vars, i);
 		(*i)++;
 	}
 	tmp = NULL;

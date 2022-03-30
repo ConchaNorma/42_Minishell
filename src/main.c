@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 20:55:31 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 08:07:32 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ int	main(int argc, char **argv, char **envp)
 	//Нужно переменные занулять до выделения памяти, чтобы при очистке всех структур...
 	//...в случае выхода по ошибке или стандартного, можно было очищать то, что выделено, и не очищать то, что не выделено
 	t_exec	vars;
-	//t_cmd	*tmp_cmds;
-	//t_redir	*tmp_redir;
-	//int		i;
+	t_cmd	*tmp_cmds;
+	t_redir	*tmp_redir;
+	int		i;
 	//int		i1;
 
 	(void)argv;
@@ -131,7 +131,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		vars.st = 1;
 		parser(&vars);	//Возможно, стоит добавить возврат ошибки для выхода из бесконечного цикла
-/*
+
 		tmp_cmds = vars.cmds;
 		while (tmp_cmds)
 		{
@@ -151,7 +151,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 			tmp_cmds = tmp_cmds->next;
 		}
-		printf("finish parser\n");*/
+		printf("finish parser\n");
 		//write(1, "  \b\b\n", 5);
 		free(vars.str);
 		vars.str = NULL;
