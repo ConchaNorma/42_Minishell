@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/03/31 01:14:55 by cnorma           ###   ########.fr       */
+=======
+/*   Updated: 2022/03/30 21:13:13 by aarnell          ###   ########.fr       */
+>>>>>>> dev_aarnell
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +77,7 @@ static void	exec_data_change(t_exec *vars, int *res, int *i, int part)
 	}
 }
 
-static void	ft_wait(t_exec *vars, pid_t	*pid)
+static void	ft_wait(t_exec *vars)
 {
 	int	status;
 	int	i;
@@ -81,7 +85,7 @@ static void	ft_wait(t_exec *vars, pid_t	*pid)
 	i = 0;
 	while (i < vars->st)
 	{
-		if (waitpid(pid[i], &status, WUNTRACED) == -1)
+		if (waitpid(vars->pids[i], &status, WUNTRACED) == -1)
 		{
 			perror("minishell: ");
 			ft_errfrex(vars, FREX, 1, NULL);
@@ -95,8 +99,8 @@ int	executer(t_exec *vars)
 {
 	int		res;
 	int		i;
-	pid_t	pid[vars->st];
 
+	vars->pids = (pid_t *)malloc(sizeof(pid_t) * (vars->st));
 	exec_data_change(vars, &res, &i, 0);
 	if (vars->st == 1)
 		res = builtin_check_exec(vars);
@@ -104,8 +108,8 @@ int	executer(t_exec *vars)
 	{
 		if (vars->tm_cmd->next && pipe(vars->pfd) == -1)
 			break ;
-		pid[i] = fork();
-		vars->pid = pid[i];
+		vars->pids[i] = fork();
+		vars->pid = vars->pids[i];
 		if (vars->pid == -1)
 			break ;
 		if (!vars->pid)
@@ -113,7 +117,7 @@ int	executer(t_exec *vars)
 		exec_data_change(vars, &res, &i, 1);
 	}
 	if (!res)
-		ft_wait(vars, pid);
+		ft_wait(vars);
 	exec_data_change(vars, &res, &i, 2);
 	return (res);
 }
