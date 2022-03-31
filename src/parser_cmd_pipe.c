@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:47:38 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 23:46:34 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 00:38:59 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ void	ft_split_pipe(t_exec *vars, int *i)
 	*i = -1;
 	vars->st++;
 	free(vars->str);
-	vars->str = ft_strdup(tmp);
-	free(tmp);
+	vars->str = tmp;
 }
 
 //char	*ft_split_pipe(t_exec *vars, int *i)

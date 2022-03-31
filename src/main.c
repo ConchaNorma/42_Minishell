@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 08:07:32 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 01:19:29 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		printf("finish parser\n");
 		//write(1, "  \b\b\n", 5);
-		free(vars.str);
+		if (vars.str)
+			free(vars.str);
 		vars.str = NULL;
 		//Здесь будет экзекютер
 		if (vars.cmds->cmd && executer(&vars) == -1)

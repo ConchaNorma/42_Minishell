@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 00:06:43 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 01:21:18 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_dollar_free(char **tmp, int size)
 	ii = -1;
 	while (++ii < size)
 		free(tmp[ii]);
-	//free(tmp);
+	free(tmp);
 }
 
 char	*ft_dollar_question(char *str, int *i, t_exec *vars)
@@ -47,6 +47,7 @@ char	*ft_dollar(char *str, int *i, char **envp)
 	int		j;
 	int		k;
 	char	*tmp;
+	char	*tmp1;
 	char	**tmp2;
 
 	j = *i;
@@ -54,17 +55,30 @@ char	*ft_dollar(char *str, int *i, char **envp)
 		j++;
 	if (j == *i)
 		return (str);
-	tmp2 = (char **)malloc(sizeof(char *) * 5);
-	tmp2[0] = ft_substr(str, *i + 1, j - *i);
-	k = srch_var_in_envp(envp, tmp2[0]);
+	tmp1 = ft_substr(str, *i + 1, j - *i);
+	k = srch_var_in_envp(envp, tmp1);
 	if (k < 0)
+	{
+		free(tmp1);
 		return (str);
+	}
+	free(tmp1);
+	tmp2 = (char **)malloc(sizeof(char *) * 6);
+	tmp2[0] = ft_substr(str, *i + 1, j - *i);
+	//k = srch_var_in_envp(envp, tmp2[0]);
+	//if (k < 0)
+	//{
+	//	ft_frmtrx(tmp2);
+	//	return (str);
+	//}
 	tmp2[1] = ft_strdup(get_varvalue(envp[k]));
 	tmp2[2] = ft_substr(str, 0, *i);
 	tmp2[3] = ft_strjoin(tmp2[2], tmp2[1]);
 	tmp2[4] = ft_substr(str, j + 1, ft_strlen(str) - j);
+	tmp2[5] = NULL;
 	tmp = ft_strjoin(tmp2[3], tmp2[4]);
-	ft_dollar_free(tmp2, 5);
+	ft_frmtrx(tmp2);
+	//ft_dollar_free(tmp2, 5);
 	return (tmp);
 }
 

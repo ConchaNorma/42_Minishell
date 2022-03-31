@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 00:07:50 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 00:14:11 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,10 @@ char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 	{
 		if (vars->str[*i] == '$' && type != HRD)
 			ft_dollar_parse(vars, i);
-			//vars->str = ft_dollar_parse(vars, i);
 		else if (vars->str[*i] == '\\')
 			ft_bslesh(vars, i);
-			//vars->str = ft_bslesh(vars->str, i);
 		else if (vars->str[*i] == '\"' || vars->str[*i] == '\'')
 			ft_quote(vars, i);
-			//vars->str = ft_quote(vars, i);
 		(*i)++;
 	}
 	tmp = NULL;
@@ -101,36 +98,8 @@ void	ft_forward_redir(t_exec *vars, int *i, int fd)
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	free(vars->str);
 	vars->str = tmp;
-	//free(tmp);
 	*i = -1;
 }
-
-//char	*ft_forward_redir(t_exec *vars, int *i, int fd)
-//{
-//	int		j;
-//	t_cmd	*tmp_cmds;
-//	t_redir	*tmp_redir;
-//	char	*tmp;
-
-//	tmp_cmds = vars->cmds;
-//	while (tmp_cmds->next)
-//		tmp_cmds = tmp_cmds->next;
-//	if (*i > 0)
-//		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
-//	tmp_redir = ft_redir_new(tmp_cmds);
-//	tmp_redir->type = OUT;
-//	if (vars->str[++(*i)] == '>')
-//	{
-//		tmp_redir->type = APN;
-//		++(*i);
-//	}
-//	tmp_redir->fd = fd;
-//	j = *i;
-//	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
-//	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
-//	*i = -1;
-//	return (tmp);
-//}
 
 void	ft_backward_redir(t_exec *vars, int *i, int fd)
 {
@@ -157,33 +126,5 @@ void	ft_backward_redir(t_exec *vars, int *i, int fd)
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
 	free(vars->str);
 	vars->str = tmp;
-	//free(tmp);
 	*i = -1;
 }
-
-//char	*ft_backward_redir(t_exec *vars, int *i, int fd)
-//{
-//	int		j;
-//	t_cmd	*tmp_cmds;
-//	t_redir	*tmp_redir;
-//	char	*tmp;
-
-//	tmp_cmds = vars->cmds;
-//	while (tmp_cmds->next)
-//		tmp_cmds = tmp_cmds->next;
-//	if (*i > 0)
-//		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
-//	tmp_redir = ft_redir_new(tmp_cmds);
-//	tmp_redir->type = INP;
-//	if (vars->str[++(*i)] == '<')
-//	{
-//		tmp_redir->type = HRD;
-//		++(*i);
-//	}
-//	tmp_redir->fd = fd;
-//	j = *i;
-//	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
-//	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
-//	*i = -1;
-//	return (tmp);
-//}
