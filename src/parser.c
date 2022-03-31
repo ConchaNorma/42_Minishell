@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/31 23:12:11 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 23:32:14 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_quote(t_exec *vars, int *i)
 	*i -= 2;
 }
 
-void	ft_space(t_exec *vars, int *i)
+static void	ft_space(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
@@ -89,7 +89,6 @@ void	ft_space(t_exec *vars, int *i)
 	*i = -1;
 	free(vars->str);
 	vars->str = tmp;
-
 }
 
 int	parser(t_exec *vars)

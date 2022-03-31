@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 23:11:45 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 23:32:12 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,33 +76,21 @@ typedef struct s_exec
 int		parser(t_exec *vars);
 int		executer(t_exec *vars);
 void	ft_quote(t_exec *vars, int *i);
-//char	*ft_quote(t_exec *vars, int *i);
 void	ft_bslesh(t_exec *vars, int *i);
-//char	*ft_bslesh(char *str, int *i);
-void	ft_space(t_exec *vars, int *i);
-//char	*ft_space(t_exec *vars, int *i);
-
+//void	ft_space(t_exec *vars, int *i);
 
 void	ft_dollar_parse(t_exec *vars, int *i);
-//char	*ft_dollar_parse(t_exec *vars, int *i);
 void	ft_dollar(t_exec *vars, int *i);
-//char	*ft_dollar(char *str, int *i, char **envp);
 void	ft_dollar_question(t_exec *vars, int *i);
-//char	*ft_dollar_question(char *str, int *i, t_exec *vars);
-//void	ft_dollar_free(char **tmp, int size);
 
 void	ft_backward_redir(t_exec *vars, int *i, int fd);
-//char	*ft_backward_redir(t_exec *vars, int *i, int fd);
 void	ft_forward_redir(t_exec *vars, int *i, int fd);
-//char	*ft_forward_redir(t_exec *vars, int *i, int fd);
 t_redir	*ft_redir_new(t_cmd *tmp_cmds);
 t_redir	*ft_create_redir(void);
 char 	*ft_file_parser(t_exec *vars, int *i, t_rtp type);
 
 void	ft_digit(t_exec *vars, int *i);
-//char	*ft_digit(t_exec *vars, int *i);
 void	ft_split_pipe(t_exec *vars, int *i);
-//char	*ft_split_pipe(t_exec *vars, int *i);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 char	**ft_str_newline(char **str_mas, char *new_str, int str_num);
 t_cmd	*ft_create_cmds(void);
@@ -126,11 +114,9 @@ char	*ft_cd_getpath(char	*dir, char **path);
 int		builtin_cd(char	*dir, t_exec *vars);
 int		builtin_env(t_exec *vars);
 
-//void	signal_handler(int signal);
 void	ft_signals(void);
 // void	ft_signal_ctrl_d(t_exec *vars);
 
-// char	*ft_readline(void);
 
 void	clean_base_struct(t_exec *vars, int ext);
 int		ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err);
