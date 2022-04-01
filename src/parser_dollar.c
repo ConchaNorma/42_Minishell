@@ -6,13 +6,13 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 22:25:52 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/01 01:06:05 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_dollar_question(t_exec *vars, int *i)
+static void	ft_dollar_question(t_exec *vars, int *i)
 {
 	int		j;
 	char	*tmp;
@@ -32,7 +32,7 @@ void	ft_dollar_question(t_exec *vars, int *i)
 	free (tmp2);
 }
 
-int	ft_dollar_word_lenth(t_exec *vars, int *i)
+static int	ft_dollar_word_lenth(t_exec *vars, int *i)
 {
 	int	j;
 
@@ -43,7 +43,7 @@ int	ft_dollar_word_lenth(t_exec *vars, int *i)
 	return (j);
 }
 
-void	ft_dollar(t_exec *vars, int *i)
+static void	ft_dollar(t_exec *vars, int *i)
 {
 	int		j;
 	int		k;

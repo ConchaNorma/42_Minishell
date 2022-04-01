@@ -6,13 +6,13 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 00:14:11 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/01 01:02:47 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
+static char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 {
 	int		j;
 	char	*tmp;
@@ -35,7 +35,7 @@ char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 	return (tmp);
 }
 
-t_redir	*ft_create_redir(void)
+static t_redir	*ft_create_redir(void)
 {
 	t_redir	*tmp;
 
@@ -50,7 +50,7 @@ t_redir	*ft_create_redir(void)
 	return (tmp);
 }
 
-t_redir	*ft_redir_new(t_cmd *tmp_cmds)
+static t_redir	*ft_redir_new(t_cmd *tmp_cmds)
 {
 	t_redir	*tmp_redir;
 	t_redir	*new;
