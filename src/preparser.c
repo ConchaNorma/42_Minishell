@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 23:35:26 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 19:17:36 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,15 @@ static int	ft_preparser_semi_pipe(char *str, int *i, t_exec *vars)
 		return (ft_errfrex(vars, ER, 258, "`||\'"));
 	else if (j - 1 > *i && str[j] == '|' && str[j + 1] != '|')
 		return (ft_errfrex(vars, ER, 258, "`|\'"));
-	*i = j;
 	return (0);
 }
 
-static int	ft_preparser_redir(char *str, int *i, t_exec *vars)
+static int	ft_preparser_redir(char *str, int *i, int j, t_exec *vars)
 {
-	int	j;
-
-	j = *i + 1;
 	while (str[j] == ' ' && str[j])
 		j++;
+	if (!str[j])
+		return (ft_errfrex(vars, ER, 258, "`newline\'"));
 	if (str[j] == '>' && str[j + 1] == '>')
 		return (ft_errfrex(vars, ER, 258, "`>>\'"));
 	else if (str[j] == '<' && str[j + 1] == '<')
@@ -133,7 +131,7 @@ int	preparser(t_exec *vars)
 				&& ft_preparser_semi_pipe(prepars, &i, vars))
 			return (1);
 		else if ((prepars[i] == '>' || prepars[i] == '<') \
-				&& ft_preparser_redir(prepars, &i, vars))
+				&& ft_preparser_redir(prepars, &i, i + 1, vars))
 			return (1);
 	}
 	return (0);

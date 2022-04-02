@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 21:23:08 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/02 16:11:19 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	get_input(t_redir *v_rdr, char **res)
 	char	*tmp;
 	size_t	len;
 
-	str = readline(">$ ");
+	str = readline("> ");
 	if (!str)
 		return (1);
 	len = ft_strlen(str);
@@ -66,7 +66,7 @@ static int	get_input(t_redir *v_rdr, char **res)
 	if (!ft_memcmp(str, v_rdr->file, len))
 	{
 		free(str);
-		return (2);
+		return (1);
 	}
 	tmp = ft_strjoin(*res, str);
 	if (*res)
@@ -77,39 +77,44 @@ static int	get_input(t_redir *v_rdr, char **res)
 	return (0);
 }
 
-static int	redir_heredoc(t_redir *v_rdr)
+static int	redir_heredoc(t_redir *v_rdr, int ofd)
 {
 	int		r;
 	size_t	len;
 	int		fd[2];
 	char	*res;
 
+	close(0);
+	dup2(ofd, 0);
 	if (pipe(fd) == -1)
 		return (-1);
 	while (1)
 	{
 		r = get_input(v_rdr, &res);
 		if (r == 1)
-			continue ;
-		if (r == 2)
 			break ;
 	}
-	len = ft_strlen(res);
-	write(fd[1], res, len);
+	if (res)
+	{
+		len = ft_strlen(res);
+		write(fd[1], res, len);
+		free(res);
+		res = NULL;
+	}
 	close(fd[1]);
 	dup2(fd[0], 0);
 	close(fd[0]);
 	return (0);
 }
 
-int	redirection_fd(t_redir *v_rdr)
+int	redirection_fd(t_redir *v_rdr, int fd)
 {
 	while (v_rdr)
 	{
 		if ((v_rdr->type == INP || v_rdr->type == OUT || \
 			v_rdr->type == APN) && redir_inp_out_apn(v_rdr) == -1)
 			return (-1);
-		else if (v_rdr->type == HRD && redir_heredoc(v_rdr) == -1)
+		else if (v_rdr->type == HRD && redir_heredoc(v_rdr, fd) == -1)
 			return (-1);
 		v_rdr = v_rdr->next;
 	}

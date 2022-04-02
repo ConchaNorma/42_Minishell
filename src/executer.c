@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/31 23:18:05 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 19:07:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	call_child(t_exec *vars)
 	int	res;
 
 	redir_base(vars);
-	if (redirection_fd(vars->tm_cmd->v_rdr) == -1)
+	if (redirection_fd(vars->tm_cmd->v_rdr, vars->ofd[0]) == -1)
 		ft_errfrex(vars, ERFREX, 1, NULL);
 	res = builtin_check_exec(vars);
 	if (res == -1)
@@ -26,7 +26,7 @@ static void	call_child(t_exec *vars)
 	{
 		vars->path = get_path(vars->envp, vars->tm_cmd->cmd[0]);
 		if (!vars->path)
-			ft_errfrex(vars, ERFREX, 1, NULL);
+			ft_errfrex(vars, ERFREX, 127, NULL);
 		if (execve(vars->path, vars->tm_cmd->cmd, vars->envp) == -1)
 		{
 			if (errno == 2)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:47:38 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 22:19:47 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 14:15:08 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,11 @@ void	ft_digit(t_exec *vars, int *i)
 	if (vars->str[j] == '>' || vars->str[j] == '<')
 		*i = -1;
 	if (vars->str[j] == '>')
+	{
 		ft_forward_redir(vars, &j, fd);
+	}
 	else if (vars->str[j] == '<')
+	{
 		ft_backward_redir(vars, &j, fd);
+	}
 }
