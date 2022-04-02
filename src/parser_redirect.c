@@ -6,13 +6,13 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:39:46 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/30 08:03:13 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/01 01:02:47 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
+static char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 {
 	int		j;
 	char	*tmp;
@@ -23,13 +23,11 @@ char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 	while (vars->str[*i] && !ft_strchr(" |<>;()", vars->str[*i]))
 	{
 		if (vars->str[*i] == '$' && type != HRD)
-			vars->str = ft_dollar_parse(vars, i);
+			ft_dollar_parse(vars, i);
 		else if (vars->str[*i] == '\\')
 			ft_bslesh(vars, i);
-			//vars->str = ft_bslesh(vars->str, i);
 		else if (vars->str[*i] == '\"' || vars->str[*i] == '\'')
 			ft_quote(vars, i);
-			//vars->str = ft_quote(vars, i);
 		(*i)++;
 	}
 	tmp = NULL;
@@ -37,7 +35,7 @@ char	*ft_file_parser(t_exec *vars, int *i, t_rtp type)
 	return (tmp);
 }
 
-t_redir	*ft_create_redir(void)
+static t_redir	*ft_create_redir(void)
 {
 	t_redir	*tmp;
 
@@ -52,7 +50,7 @@ t_redir	*ft_create_redir(void)
 	return (tmp);
 }
 
-t_redir	*ft_redir_new(t_cmd *tmp_cmds)
+static t_redir	*ft_redir_new(t_cmd *tmp_cmds)
 {
 	t_redir	*tmp_redir;
 	t_redir	*new;
@@ -75,7 +73,7 @@ t_redir	*ft_redir_new(t_cmd *tmp_cmds)
 	return (tmp_redir);
 }
 
-char	*ft_forward_redir(t_exec *vars, int *i, int fd)
+void	ft_forward_redir(t_exec *vars, int *i, int fd)
 {
 	int		j;
 	t_cmd	*tmp_cmds;
@@ -98,11 +96,12 @@ char	*ft_forward_redir(t_exec *vars, int *i, int fd)
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+	free(vars->str);
+	vars->str = tmp;
 	*i = -1;
-	return (tmp);
 }
 
-char	*ft_backward_redir(t_exec *vars, int *i, int fd)
+void	ft_backward_redir(t_exec *vars, int *i, int fd)
 {
 	int		j;
 	t_cmd	*tmp_cmds;
@@ -125,6 +124,7 @@ char	*ft_backward_redir(t_exec *vars, int *i, int fd)
 	j = *i;
 	tmp_redir->file = ft_file_parser(vars, &j, tmp_redir->type);
 	tmp = ft_substr(vars->str, j, ft_strlen(vars->str) - j);
+	free(vars->str);
+	vars->str = tmp;
 	*i = -1;
-	return (tmp);
 }

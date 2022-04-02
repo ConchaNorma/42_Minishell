@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:47:38 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 21:57:19 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 14:15:08 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,29 +64,27 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str)
 			new_str, ++(tmp_cmds->cmd_num));
 }
 
-char	*ft_split_pipe(t_exec *vars, int *i)
+void	ft_split_pipe(t_exec *vars, int *i)
 {
 	char	*tmp;
 	t_cmd	*new;
 	t_cmd	*tmp_cmds;
-	int		len;
 
-	len = *i;
 	tmp_cmds = vars->cmds;
 	while (tmp_cmds->next)
 		tmp_cmds = tmp_cmds->next;
-	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
-	if (vars->str[*i])
-	{
-		new = ft_create_cmds();
-		tmp_cmds->next = new;
-	}
+	if (*i)
+		ft_create_cmdmas(vars, ft_substr(vars->str, 0, *i));
+	tmp = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i - 1);
+	free(vars->str);
+	vars->str = tmp;
+	new = ft_create_cmds();
+	tmp_cmds->next = new;
 	*i = -1;
 	vars->st++;
-	return (tmp);
 }
 
-char	*ft_digit(t_exec *vars, int *i)
+void	ft_digit(t_exec *vars, int *i)
 {
 	int		j;
 	int		end_digit;
@@ -94,19 +92,22 @@ char	*ft_digit(t_exec *vars, int *i)
 	int		fd;
 
 	j = *i;
-	tmp = ft_strdup(vars->str);
 	while (ft_isdigit(vars->str[++j]))
 		;
 	end_digit = j;
 	while (vars->str[j] == ' ')
 		j++;
-	fd = ft_atoi(ft_substr(vars->str, *i, end_digit));
+	tmp = ft_substr(vars->str, *i, end_digit);
+	fd = ft_atoi(tmp);
+	free(tmp);
+	if (vars->str[j] == '>' || vars->str[j] == '<')
+		*i = -1;
 	if (vars->str[j] == '>')
-		tmp = ft_forward_redir(vars, &j, fd);
+	{
+		ft_forward_redir(vars, &j, fd);
+	}
 	else if (vars->str[j] == '<')
-		tmp = ft_backward_redir(vars, &j, fd);
-	else
-		return (tmp);
-	*i = -1;
-	return (tmp);
+	{
+		ft_backward_redir(vars, &j, fd);
+	}
 }
