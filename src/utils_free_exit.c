@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_exit.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 21:55:57 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:24:40 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err)
 		exit(vars->exit_status);
 	return (1);
 }
-static void clean_lstrdr(t_cmd *c_cmd)
+
+static void	clean_lstrdr(t_cmd *c_cmd)
 {
 	t_redir	*c_rdr;
 	t_redir	*t_rdr;
@@ -74,7 +75,7 @@ static void clean_lstrdr(t_cmd *c_cmd)
 	}
 }
 
-static void clean_lstcmd(t_exec *vars)
+static void	clean_lstcmd(t_exec *vars)
 {
 	t_cmd	*c_cmd;
 	t_cmd	*t_cmd;
@@ -95,41 +96,28 @@ static void clean_lstcmd(t_exec *vars)
 	}
 }
 
-void clean_base_struct(t_exec *vars, int ext)
+void	clean_base_struct(t_exec *vars, int ext)
 {
-	//саму структуру не очищать, т.к. выделена на стеке, только очистить переменные внутри
-	//вероятно, вывод данных о ошибке стоит проводить до очистки, т.к. в переменных может быть нужная инфа
-
 	if (vars->str)
 		free(vars->str);
-	vars->str = NULL;		//возможно зануление указателей вынести в отдельную функцию?
+	vars->str = NULL;
 	if (vars->path)
 		free(vars->path);
-	vars->path = NULL;		//возможно зануление указателей вынести в отдельную функцию?
+	vars->path = NULL;
 	if (vars->cmds)
 		clean_lstcmd(vars);
 	vars->cmds = NULL;
-	//не нашел, где эта переменная используется, при очистке ломает прогу
-	// if (vars->lvar)
-	// 	ft_lstclear(&vars->lvar, free);
-	// vars->lvar = NULL;
-
-	//возможно нужно проверить не работает ли процесс по указанному пиду
-	//Возможно пиды всех процессов записывать в некий массив, и принудительно завершать?
-	//...Вряд ли, есть же фоновые процессы. Как быть, когда они  завершатся, если уже запущеныследующие команды
 	vars->pid = -1;
-	//Возможно стоит закрыть все fd'шники.
-	//Для удобства - они должны при инициализации быть -1, чтобы не закрыть лишнее
-	//Вероятно, перед закрытием нужно проверить, а открыты ли
+	if (vars->pids)
+		free(vars->pids);
+	vars->pids = NULL;
 	vars->ofd[0] = -1;
 	vars->ofd[1] = -1;
 	vars->pfd[0] = -1;
 	vars->pfd[1] = -1;
 	vars->tfd[0] = -1;
 	vars->tfd[1] = -1;
-
-	vars->st = -1;
-	//envp чистить в конце и только в случае выхода из программы
+	vars->st = 1;
 	if (ext)
 		ft_frmtrx(vars->envp);
 }

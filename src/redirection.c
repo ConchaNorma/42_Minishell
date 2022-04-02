@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 20:25:14 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 21:23:08 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	redir_base(t_exec *vars)
 	return (0);
 }
 
-static int redir_inp_out_apn(t_redir *v_rdr)
+static int	redir_inp_out_apn(t_redir *v_rdr)
 {
 	int	fd;
 	int	std;
@@ -38,7 +38,7 @@ static int redir_inp_out_apn(t_redir *v_rdr)
 	std = 1;
 	if (v_rdr->type == INP)
 	{
-		fd = open(v_rdr->file, O_RDONLY, S_IREAD);		//дописать: при открытии нового, закрывать старый
+		fd = open(v_rdr->file, O_RDONLY, S_IREAD);
 		std = 0;
 	}
 	else if (v_rdr->type == OUT)
@@ -49,7 +49,6 @@ static int redir_inp_out_apn(t_redir *v_rdr)
 		return (-1);
 	dup2(fd, std);
 	return (0);
-	//как быть при перенаправлении на один STDIN/STDOUT/STDERR
 }
 
 static int	get_input(t_redir *v_rdr, char **res)
@@ -105,7 +104,6 @@ static int	redir_heredoc(t_redir *v_rdr)
 
 int	redirection_fd(t_redir *v_rdr)
 {
-	//дописать в редиректах открытие файла по пути типа /--/--/filename
 	while (v_rdr)
 	{
 		if ((v_rdr->type == INP || v_rdr->type == OUT || \

@@ -6,13 +6,13 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 18:29:10 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 21:52:57 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/31 23:35:26 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	ft_preparser_quote_bslesh(char *str, int *i, t_exec *vars)
+static int	ft_preparser_quote_bslesh(char *str, int *i, t_exec *vars)
 {
 	int	j;
 
@@ -40,7 +40,7 @@ int	ft_preparser_quote_bslesh(char *str, int *i, t_exec *vars)
 	return (0);
 }
 
-int	ft_preparser_semi_pipe(char *str, int *i, t_exec *vars)
+static int	ft_preparser_semi_pipe(char *str, int *i, t_exec *vars)
 {
 	int	j;
 
@@ -67,7 +67,7 @@ int	ft_preparser_semi_pipe(char *str, int *i, t_exec *vars)
 	return (0);
 }
 
-int	ft_preparser_redir(char *str, int *i, t_exec *vars)
+static int	ft_preparser_redir(char *str, int *i, t_exec *vars)
 {
 	int	j;
 
@@ -95,7 +95,7 @@ int	ft_preparser_redir(char *str, int *i, t_exec *vars)
 	return (0);
 }
 
-int	ft_preparser_str_beg_end(char *str, t_exec *vars)
+static int	ft_preparser_str_beg_end(char *str, t_exec *vars)
 {
 	int		j;
 

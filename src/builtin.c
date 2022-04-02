@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/29 20:40:54 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 20:38:42 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,60 +43,63 @@ int	builtin_env(t_exec *vars)
 	return (1);
 }
 
-static void	builtin_exit(t_exec *vars)
+static int	exstat_hand(char **code, int res)
 {
-	if (vars->st == 1)
-		ft_putstr_fd("exit\n", 2);
-	clean_base_struct(vars, 1);
-	exit(0);
-}
+	char	*tmp;
+	char	*tmp2;
+	int		ex_st;
 
-static int	ft_echo(char *cmd)
-{
-	int	j;
-
-	j = 0;
-	if (cmd[0] != '-')
-		return (-1);
-	if (cmd[j] == '-')
+	ex_st = 0;
+	if (code[1] && !res)
+		ex_st = ft_atoi(code[1]);
+	if (!res)
 	{
-		while (cmd[++j])
-		{
-			if (cmd[j] != 'n')
-				return (-1);
-		}
+		if (code[1] && code[2])
+			ft_putendl_fd("minishell: exit: too many arguments", 2);
+		ex_st = (int)(unsigned char)ex_st;
 	}
-	return (0);
+	else
+	{
+		tmp = ft_strjoin("minishell: exit: ", code[1]);
+		tmp2 = ft_strjoin(tmp, ": numeric argument required");
+		ft_putendl_fd(tmp2, 2);
+		free(tmp);
+		free(tmp2);
+		ex_st = 255;
+	}
+	return (ex_st);
 }
 
-static int	builtin_echo(char **cmd)
+static void	builtin_exit(t_exec *vars, char **code)
 {
+	int	res;
 	int	i;
-	int	nl;
-	int	flag;
 
+	res = 0;
 	i = 0;
-	nl = 0;
-	flag = 0;
-	while (cmd[++i])
+	if (vars->st == 1)
+		ft_putendl_fd("exit", 2);
+	while (code[1] && code[1][i])
 	{
-		if (nl != -1)
-			nl = ft_echo(cmd[i]);
-		if (nl == -1)
+		if (!i && code[1][i] == '-')
 		{
-			write(1, cmd[i], ft_strlen(cmd[i]));
-			if (cmd[i + 1])
-				write(1, " ", 1);
+			if (!code[1][i + 1])
+			{
+				res = 1;
+				break ;
+			}
+			i++;
+			continue ;
 		}
-		if (nl == 0)
-			flag = 1;
+		if (!ft_isdigit(code[1][i++]))
+			res = 1;
 	}
-	if (flag != 1)
-		write(1, "\n", 1);
-	return (1);
+	res = exstat_hand(code, res);
+	clean_base_struct(vars, 1);
+	exit(res);
 }
 
-int builtin_check_exec(t_exec *vars)
+int	builtin_check_exec(t_exec *vars)
 {
 	int		ln;
 	char	**cmd;
@@ -110,7 +113,7 @@ int builtin_check_exec(t_exec *vars)
 	else if (!vars->pid && !ft_memcmp(cmd[0], "echo", ln))
 		return (builtin_echo(cmd));
 	else if (!ft_memcmp(cmd[0], "exit", ln))
-		builtin_exit(vars);
+		builtin_exit(vars, cmd);
 	else if (!vars->pid && !ft_memcmp(cmd[0], "env", ln))
 		return (builtin_env(vars));
 	else if (!vars->pid && !ft_memcmp(cmd[0], "pwd", ln))

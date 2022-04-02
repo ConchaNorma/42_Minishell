@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:40:59 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/29 21:48:05 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/03/30 20:59:57 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	signal_handler(int signal)
+static void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
