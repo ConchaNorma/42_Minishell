@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/01 01:07:29 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 15:43:48 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ t_cmd	*ft_create_cmds(void);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 int		preparser(t_exec *vars);
 char	*get_path(char **envp, char *cmd);
-int		redirection_fd(t_redir *v_rdr);
+// int		redirection_fd(t_redir *v_rdr);
+int		redirection_fd(t_redir *v_rdr, int fd);
 int		redir_base(t_exec *vars);
 
 char	*get_varname(char *var_str, int with_eq);

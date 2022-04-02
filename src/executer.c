@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/31 23:18:05 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 15:45:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	call_child(t_exec *vars)
 	int	res;
 
 	redir_base(vars);
-	if (redirection_fd(vars->tm_cmd->v_rdr) == -1)
+	if (redirection_fd(vars->tm_cmd->v_rdr, vars->ofd[0]) == -1)
 		ft_errfrex(vars, ERFREX, 1, NULL);
 	res = builtin_check_exec(vars);
 	if (res == -1)
