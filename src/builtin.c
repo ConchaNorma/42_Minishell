@@ -3,14 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 20:38:42 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:31:15 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static int	ft_check_atollm(const char *str)
+{
+	unsigned long long	r;
+	int					s;
+
+	if (ft_strlen(str) > 20)
+		return (1);
+	r = 0;
+	s = 0;
+	while (*str)
+	{
+		if (*str == '-')
+		{
+			s++;
+			str++;
+			continue ;
+		}
+		r = (r * 10) + ((unsigned long long)*str - 48);
+		str++;
+	}
+	if (s)
+		r -= 1;
+	return (r > 9223372036854775807);
+}
 
 int	builtin_pwd(void)
 {
@@ -43,22 +68,21 @@ int	builtin_env(t_exec *vars)
 	return (1);
 }
 
-static int	exstat_hand(char **code, int res)
+static int	exstat_hand(char **code, int res, int ex_st)
 {
 	char	*tmp;
 	char	*tmp2;
-	int		ex_st;
 
-	ex_st = 0;
 	if (code[1] && !res)
 		ex_st = ft_atoi(code[1]);
 	if (!res)
-	{
-		if (code[1] && code[2])
-			ft_putendl_fd("minishell: exit: too many arguments", 2);
 		ex_st = (int)(unsigned char)ex_st;
+	if (code[1] && code[2])
+	{
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		return (1);
 	}
-	else
+	if (res || (code[1] && ft_check_atollm(code[1])))
 	{
 		tmp = ft_strjoin("minishell: exit: ", code[1]);
 		tmp2 = ft_strjoin(tmp, ": numeric argument required");
@@ -94,7 +118,7 @@ static void	builtin_exit(t_exec *vars, char **code)
 		if (!ft_isdigit(code[1][i++]))
 			res = 1;
 	}
-	res = exstat_hand(code, res);
+	res = exstat_hand(code, res, vars->exit_status);
 	clean_base_struct(vars, 1);
 	exit(res);
 }

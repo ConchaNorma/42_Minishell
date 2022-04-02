@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/02 15:45:09 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:07:20 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	call_child(t_exec *vars)
 	{
 		vars->path = get_path(vars->envp, vars->tm_cmd->cmd[0]);
 		if (!vars->path)
-			ft_errfrex(vars, ERFREX, 1, NULL);
+			ft_errfrex(vars, ERFREX, 127, NULL);
 		if (execve(vars->path, vars->tm_cmd->cmd, vars->envp) == -1)
 		{
 			if (errno == 2)
