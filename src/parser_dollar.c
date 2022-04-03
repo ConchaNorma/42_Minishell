@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/01 01:06:05 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 20:13:25 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,9 @@ static void	ft_dollar(t_exec *vars, int *i)
 	tmp2[0] = ft_substr(vars->str, *i + 1, j - *i);
 	k = srch_var_in_envp(vars->envp, tmp2[0]);
 	if (k < 0)
-	{
-		ft_frmtrx(tmp2);
-		return ;
-	}
-	tmp2[1] = ft_strdup(get_varvalue(vars->envp[k]));
+		tmp2[1] = ft_strdup("");
+	else
+		tmp2[1] = ft_strdup(get_varvalue(vars->envp[k]));
 	tmp2[2] = ft_substr(vars->str, 0, *i);
 	tmp2[3] = ft_strjoin(tmp2[2], tmp2[1]);
 	tmp2[4] = ft_substr(vars->str, j + 1, ft_strlen(vars->str) - j);
@@ -68,6 +66,7 @@ static void	ft_dollar(t_exec *vars, int *i)
 	free(vars->str);
 	vars->str = ft_strjoin(tmp2[3], tmp2[4]);
 	ft_frmtrx(tmp2);
+	i--;
 }
 
 void	ft_dollar_parse(t_exec *vars, int *i)

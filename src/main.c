@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:50:02 by cnorma            #+#    #+#             */
-/*   Updated: 2022/03/31 23:29:29 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/02 16:23:43 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static char	*ft_readline(void)
 {
 	char	*input;
 
-	input = readline("minishell>$ ");
+	//input = readline("minishell>$ ");
+	input = readline("");
 	if (!input)
 	{
 		printf(" exit\n");
