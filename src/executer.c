@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/02 19:07:20 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/03 14:32:22 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	call_child(t_exec *vars)
 {
 	int	res;
 
+	vars->exit_status = 0;
 	redir_base(vars);
 	if (redirection_fd(vars->tm_cmd->v_rdr, vars->ofd[0]) == -1)
 		ft_errfrex(vars, ERFREX, 1, NULL);
@@ -34,7 +35,7 @@ static void	call_child(t_exec *vars)
 			ft_errfrex(vars, ERFREX, 1, NULL);
 		}
 	}
-	ft_errfrex(vars, FREX, 0, NULL);
+	ft_errfrex(vars, FREX, vars->exit_status, NULL);
 }
 
 static void	ft_close_double_fd(int *fd)
