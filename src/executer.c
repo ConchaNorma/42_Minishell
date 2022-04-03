@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:18:59 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/03 14:32:22 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/03 20:01:51 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	executer(t_exec *vars)
 		vars->pids[i] = fork();
 		vars->pid = vars->pids[i];
 		if (vars->pid == -1)
-			break ;
+			return (-1);
 		if (!vars->pid)
 			call_child(vars);
 		exec_data_change(vars, &res, &i, 1);

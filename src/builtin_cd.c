@@ -6,43 +6,11 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:09:20 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/03 17:25:39 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/04 01:05:57 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-static void	err_search_var(char **path, t_exec *vars, char *str)
-{
-	char *tmp1;
-	char *tmp2;
-
-	tmp1 = ft_strjoin("minishell: cd: ", str);
-	tmp2 = ft_strjoin(tmp1, " not set");
-	ft_putendl_fd(tmp2, 2);
-	free(tmp1);
-	free(*path);
-	vars->exit_status = 1;
-}
-
-static void	chng_oldpwd(char **path, t_exec *vars)
-{
-	int		i;
-	char	*tmp;
-
-	i = srch_var_in_envp(vars->envp, "PWD");
-	tmp = NULL;
-	if (i != -1)
-	{
-		tmp = ft_strjoin("OLDPWD=", get_varvalue(vars->envp[i]));
-		find_repl_val_var_in_envp(vars->envp, tmp);
-		free(tmp);
-		tmp = ft_strjoin("PWD=", *path);
-		find_repl_val_var_in_envp(vars->envp, tmp);
-		free(tmp);
-	}
-	free(*path);
-}
 
 static int	ft_cd_hyphen(char **path, t_exec *vars)
 {
@@ -66,7 +34,7 @@ static int	ft_cd_hyphen(char **path, t_exec *vars)
 	return (1);
 }
 
-static int ft_cd_get_home(char **path, t_exec *vars, char *dir)
+static int	ft_cd_get_home(char **path, t_exec *vars, char *dir)
 {
 	int		i;
 	char	*tmp;
@@ -87,9 +55,9 @@ static int ft_cd_get_home(char **path, t_exec *vars, char *dir)
 	return (0);
 }
 
-static int init_path(t_exec *vars, char	**path)
+static int	init_path(t_exec *vars, char	**path)
 {
-	int pos;
+	int	pos;
 
 	pos = srch_var_in_envp(vars->envp, "PWD");
 	if (pos == -1)
@@ -113,7 +81,7 @@ static int init_path(t_exec *vars, char	**path)
 int	builtin_cd(char	*dir, t_exec *vars)
 {
 	char	*path;
-	int res;
+	int		res;
 
 	res = init_path(vars, &path);
 	if (res)

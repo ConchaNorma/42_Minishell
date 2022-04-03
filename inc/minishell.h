@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/02 16:14:18 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/04 01:06:21 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,18 @@ int		redir_base(t_exec *vars);
 char	*get_varname(char *var_str, int with_eq);
 char	*get_varvalue(char *var_str);
 int		srch_var_in_envp(char **envp, char *var_name);
+int		add_var_in_envp(t_exec *vars, char *var);
 
 int		builtin_check_exec(t_exec *vars);
 int		builtin_export(t_exec *vars, char **cmd);
 int		builtin_unset(t_exec *vars, char **cmd);
 int		builtin_pwd(void);
 int		builtin_echo(char **cmd);
+void	chng_oldpwd(char **path, t_exec *vars);
 char	*ft_cd_getpath(char	*dir, char **path);
 int		builtin_cd(char	*dir, t_exec *vars);
 int		builtin_env(t_exec *vars);
+void	builtin_exit(t_exec *vars, char **code);
 
 void	ft_signals(void);
 // void	ft_signal_ctrl_d(t_exec *vars);
@@ -122,6 +125,11 @@ void	ft_signals(void);
 void	clean_base_struct(t_exec *vars, int ext);
 int		ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err);
 int		find_repl_val_var_in_envp(char **envp, char *var);
+
+void	err_valid_id(t_exec *vars, char *str);
+void	put_err(t_exec *vars, char *str1, char *str2);
+void	err_search_var(char **path, t_exec *vars, char *str);
+
 //void	ft_change_shlvl(t_exec *vars, int flag);
 
 #endif

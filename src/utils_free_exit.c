@@ -6,40 +6,11 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 21:24:40 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/04 01:04:09 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-static void	put_err(t_exec *vars, char *str1, char *str2)
-{
-	if (vars->exit_status != 258)
-		str1 = ft_strjoin("minishell: ", vars->tm_cmd->cmd[0]);
-	else
-		str1 = ft_strjoin("minishell: syntax error near unexpected token ", \
-				str2);
-	if (vars->exit_status == 1)
-	{
-		str2 = ft_strjoin(str1, ": ");
-		free(str1);
-		str1 = str2;
-		str2 = ft_strjoin(str1, vars->tm_cmd->cmd[1]);
-		free(str1);
-		str1 = str2;
-	}
-	if (vars->exit_status == 127)
-	{
-		str2 = ft_strjoin(str1, ": command not found");
-		free(str1);
-		str1 = str2;
-	}
-	if (vars->exit_status == 127 || vars->exit_status == 258)
-		ft_putendl_fd(str1, 2);
-	else
-		perror(str1);
-	free(str1);
-}
 
 int	ft_errfrex(t_exec *vars, t_err tp, int ex_st, char *err)
 {
