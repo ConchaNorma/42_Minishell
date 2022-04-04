@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/02 22:04:47 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/04 21:29:22 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static void	ft_dquote_sup(t_exec *vars, int *i)
 			ft_bslesh(vars, i);
 			++(*i);
 		}
-		while (vars->str[*i] == '$')
+		if (vars->str[*i] == '$')
 			ft_dollar_parse(vars, i);
-		if (vars->str[*i] == '\"')
+		else if (vars->str[*i] == '\"')
 			break ;
 	}
 }
