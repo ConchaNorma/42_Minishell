@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 18:23:57 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/30 21:26:56 by aarnell          ###   ########.fr       */
+/*   Created: 2022/04/03 22:46:47 by aarnell           #+#    #+#             */
+/*   Updated: 2022/04/04 01:01:48 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,6 @@ char	*get_path(char **envp, char *cmd)
 		return (cmd);
 	}
 	return (ft_strjoin("./", cmd));
-}
-
-int	srch_var_in_envp(char **envp, char *var_name)
-{
-	char	*tmp;
-	int		i;
-
-	tmp = ft_strjoin(var_name, "=");
-	if (!tmp)
-		return (-1);
-	i = ft_str_in_arrstr(envp, tmp, ft_strlen(tmp));
-	free(tmp);
-	return (i);
 }
 
 char	*get_varname(char *var_str, int with_eq)

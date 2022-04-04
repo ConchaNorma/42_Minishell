@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/02 16:11:19 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/04 01:12:21 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static int	get_input(t_redir *v_rdr, char **res)
 	char	*tmp;
 	size_t	len;
 
-	str = readline("> ");
+	//str = readline("> ");
+	str = readline("");
 	if (!str)
 		return (1);
 	len = ft_strlen(str);
@@ -79,7 +80,6 @@ static int	get_input(t_redir *v_rdr, char **res)
 
 static int	redir_heredoc(t_redir *v_rdr, int ofd)
 {
-	int		r;
 	size_t	len;
 	int		fd[2];
 	char	*res;
@@ -88,12 +88,8 @@ static int	redir_heredoc(t_redir *v_rdr, int ofd)
 	dup2(ofd, 0);
 	if (pipe(fd) == -1)
 		return (-1);
-	while (1)
-	{
-		r = get_input(v_rdr, &res);
-		if (r == 1)
-			break ;
-	}
+	while (!get_input(v_rdr, &res))
+		;
 	if (res)
 	{
 		len = ft_strlen(res);

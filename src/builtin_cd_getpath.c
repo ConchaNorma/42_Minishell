@@ -6,7 +6,7 @@
 /*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 21:15:20 by aarnell           #+#    #+#             */
-/*   Updated: 2022/03/28 22:07:57 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/03 18:09:43 by aarnell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,23 @@ char	*ft_cd_getpath(char	*dir, char **path)
 			ft_cnct_nxt_stg(dir, &i, path);
 	}
 	return (*path);
+}
+
+void	chng_oldpwd(char **path, t_exec *vars)
+{
+	int		i;
+	char	*tmp;
+
+	i = srch_var_in_envp(vars->envp, "PWD");
+	tmp = NULL;
+	if (i != -1)
+	{
+		tmp = ft_strjoin("OLDPWD=", get_varvalue(vars->envp[i]));
+		find_repl_val_var_in_envp(vars->envp, tmp);
+		free(tmp);
+		tmp = ft_strjoin("PWD=", *path);
+		find_repl_val_var_in_envp(vars->envp, tmp);
+		free(tmp);
+	}
+	free(*path);
 }
