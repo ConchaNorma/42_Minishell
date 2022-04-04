@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:47:38 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/02 14:15:08 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/02 21:22:55 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_cmd	*ft_create_cmds(void)
 	return (tmp);
 }
 
-char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
+static char	**ft_str_newline(char **str_mas, char *new_str, int str_num)
 {
 	char	**tmp;
 	int		i;
@@ -103,11 +103,7 @@ void	ft_digit(t_exec *vars, int *i)
 	if (vars->str[j] == '>' || vars->str[j] == '<')
 		*i = -1;
 	if (vars->str[j] == '>')
-	{
 		ft_forward_redir(vars, &j, fd);
-	}
 	else if (vars->str[j] == '<')
-	{
 		ft_backward_redir(vars, &j, fd);
-	}
 }
