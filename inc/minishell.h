@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/04 01:38:22 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/05 08:04:02 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,27 +88,24 @@ int		preparser(t_exec *vars);
 PARSER
 */
 int		parser(t_exec *vars);
-
+//parser of quote and slesh
 void	ft_quote(t_exec *vars, int *i);
 void	ft_bslesh(t_exec *vars, int *i);
 
-
+//parser of dollar
 void	ft_dollar_parse(t_exec *vars, int *i);
 
-
+//parser of redirection
 void	ft_backward_redir(t_exec *vars, int *i, int fd);
 void	ft_forward_redir(t_exec *vars, int *i, int fd);
-
-
 void	ft_digit(t_exec *vars, int *i);
+
+//parser of pipes
 void	ft_split_pipe(t_exec *vars, int *i);
+//create command lines and pipes
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
-
 t_cmd	*ft_create_cmds(void);
-
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
-
-
 
 
 /*
