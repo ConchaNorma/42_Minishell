@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/04 21:35:29 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/05 07:54:57 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,31 @@ static int	ft_dollar_word_lenth(t_exec *vars, int *i)
 {
 	int	j;
 
+	j = 0;
 	j = *i;
-	while (vars->str[j + 1] && (vars->str[j + 1] == '_' \
-			|| ft_isalnum(vars->str[j + 1])))
-		j++;
+	if (ft_isdigit(vars->str[j + 1]))
+		//j += 1;
+		return (j + 1);
+	//else
+		while (vars->str[j + 1] && (vars->str[j + 1] == '_' \
+				|| ft_isalnum(vars->str[j + 1])))
+			j++;
 	return (j);
+}
+
+static char	*ft_dollar_check_digit(t_exec *vars, int j)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	if (ft_isdigit(vars->str[j]))
+	{
+		if (vars->str[j] == '0')
+			tmp = ft_strdup("./minishell");
+		else
+			tmp = ft_strdup("");
+	}
+	return (tmp);
 }
 
 static void	ft_dollar(t_exec *vars, int *i)
@@ -59,7 +79,7 @@ static void	ft_dollar(t_exec *vars, int *i)
 	tmp2[0] = ft_substr(vars->str, *i + 1, j - *i);
 	k = srch_var_in_envp(vars->envp, tmp2[0]);
 	if (k < 0)
-		tmp2[1] = NULL;
+		tmp2[1] = ft_dollar_check_digit(vars, j);
 	else
 		tmp2[1] = ft_strdup(get_varvalue(vars->envp[k]));
 	tmp2[2] = ft_substr(vars->str, 0, *i);
