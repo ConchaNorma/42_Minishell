@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:09:20 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/04 01:05:57 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/05 20:06:49 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,19 @@ int	builtin_cd(char	*dir, t_exec *vars)
 		return (-1);
 	}
 	chng_oldpwd(&path, vars);
+	return (1);
+}
+
+int	builtin_pwd(t_exec *vars)
+{
+	char	*path;
+	int		res;
+
+	res = init_path(vars, &path);
+	if (res)
+		return (res);
+	write(1, path, ft_strlen(path));
+	write(1, "\n", 1);
+	free(path);
 	return (1);
 }

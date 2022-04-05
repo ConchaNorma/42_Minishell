@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:28:34 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/04 01:12:21 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/05 20:07:29 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ static int	get_input(t_redir *v_rdr, char **res)
 	char	*tmp;
 	size_t	len;
 
-	//str = readline("> ");
-	str = readline("");
+	str = readline("> ");
 	if (!str)
 		return (1);
 	len = ft_strlen(str);

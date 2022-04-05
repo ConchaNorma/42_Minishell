@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarnell <aarnell@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 22:05:10 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/04 00:49:08 by aarnell          ###   ########.fr       */
+/*   Updated: 2022/04/05 20:06:30 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-int	builtin_pwd(void)
-{
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (!path)
-		return (-1);
-	write(1, path, ft_strlen(path));
-	write(1, "\n", 1);
-	free(path);
-	return (1);
-}
 
 int	builtin_env(t_exec *vars)
 {
@@ -61,7 +48,7 @@ int	builtin_check_exec(t_exec *vars)
 	else if (!vars->pid && !ft_memcmp(cmd[0], "env", ln))
 		return (builtin_env(vars));
 	else if (!vars->pid && !ft_memcmp(cmd[0], "pwd", ln))
-		return (builtin_pwd());
+		return (builtin_pwd(vars));
 	else if (!ft_memcmp(cmd[0], "cd", ln))
 		return (builtin_cd(cmd[1], vars));
 	return (0);

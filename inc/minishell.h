@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 22:45:20 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/05 08:04:02 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/05 22:50:05 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	ft_create_cmdmas(t_exec *vars, char *new_str);
 t_cmd	*ft_create_cmds(void);
 void	ft_create_cmdmas(t_exec *vars, char *new_str);
 
-
 /*
 EXECUTOR
 */
@@ -120,7 +119,8 @@ int		redirection_fd(t_redir *v_rdr, int fd);
 int		builtin_check_exec(t_exec *vars);
 int		builtin_export(t_exec *vars, char **cmd);
 int		builtin_unset(t_exec *vars, char **cmd);
-int		builtin_pwd(void);
+//int		builtin_pwd(void);
+int		builtin_pwd(t_exec *vars);
 int		builtin_echo(char **cmd);
 int		builtin_cd(char	*dir, t_exec *vars);
 int		builtin_env(t_exec *vars);
