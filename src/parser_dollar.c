@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 23:34:34 by cnorma            #+#    #+#             */
-/*   Updated: 2022/04/05 07:54:57 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/05 08:28:46 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,10 @@ static int	ft_dollar_word_lenth(t_exec *vars, int *i)
 	j = 0;
 	j = *i;
 	if (ft_isdigit(vars->str[j + 1]))
-		//j += 1;
 		return (j + 1);
-	//else
-		while (vars->str[j + 1] && (vars->str[j + 1] == '_' \
-				|| ft_isalnum(vars->str[j + 1])))
-			j++;
+	while (vars->str[j + 1] && (vars->str[j + 1] == '_' \
+			|| ft_isalnum(vars->str[j + 1])))
+		j++;
 	return (j);
 }
 
