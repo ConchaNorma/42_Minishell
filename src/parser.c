@@ -6,7 +6,7 @@
 /*   By: cnorma <cnorma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:30:14 by aarnell           #+#    #+#             */
-/*   Updated: 2022/04/04 21:29:22 by cnorma           ###   ########.fr       */
+/*   Updated: 2022/04/06 22:17:12 by cnorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ static void	ft_dquote_sup(t_exec *vars, int *i)
 void	ft_quote(t_exec *vars, int *i)
 {
 	int		j;
-	char	*tmp;
-	char	*tmp2;
-	char	*tmp3;
+	char	**tmp;
 
 	j = *i;
 	if (vars->str[*i] == '\"')
@@ -59,16 +57,17 @@ void	ft_quote(t_exec *vars, int *i)
 			if (vars->str[*i] == '\'')
 				break ;
 	}
-	tmp = ft_substr(vars->str, 0, j);
-	tmp2 = ft_substr(vars->str, j + 1, *i - j - 1);
-	tmp3 = ft_strjoin(tmp, tmp2);
-	free(tmp);
-	free(tmp2);
-	tmp2 = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
+	tmp = (char **)malloc(sizeof(char *) * 6);
+	tmp[0] = ft_substr(vars->str, 0, j);
+	if (j == 0 && *i == j + 1)
+		ft_create_cmdmas(vars, ft_strdup(""));
+	tmp[1] = ft_substr(vars->str, j + 1, *i - j - 1);
+	tmp[2] = ft_strjoin(tmp[0], tmp[1]);
+	tmp[3] = ft_substr(vars->str, *i + 1, ft_strlen(vars->str) - *i);
+	tmp[4] = NULL;
 	free(vars->str);
-	vars->str = ft_strjoin(tmp3, tmp2);
-	free (tmp2);
-	free (tmp3);
+	vars->str = ft_strjoin(tmp[2], tmp[3]);
+	ft_frmtrx(tmp);
 	*i -= 2;
 }
 
