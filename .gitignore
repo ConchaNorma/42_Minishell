@@ -56,3 +56,9 @@ minishell
 
 # My-directory
 test/*
+*tester
+
+# My-libft-git
+libft/.git
+libft/.gitignore
+
